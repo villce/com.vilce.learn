@@ -15,10 +15,11 @@ import java.io.IOException;
  * @Version: 1.0
  */
 @Component
-@RabbitListener(queues = "moreQueue")
+@RabbitListener(queues = "moreQueue",containerFactory = "rabbitListenerContainerFactory")
 public class MoreReceiver1 {
     @RabbitHandler
-    public void process(String hello) throws IOException {
+    public void process(String hello) throws IOException, InterruptedException {
+        Thread.sleep(100);
         System.out.println("Receiver1  : " + hello);
     }
 }

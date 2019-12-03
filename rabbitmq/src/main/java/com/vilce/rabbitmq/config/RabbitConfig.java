@@ -1,6 +1,7 @@
 package com.vilce.rabbitmq.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -51,6 +52,14 @@ public class RabbitConfig {
         return connectionFactory;
     }
 
+    @Bean
+    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory());
+        //0为循环调度，1为公平调度
+        factory.setPrefetchCount(1);
+        return factory;
+    }
     //////////////////////////////针对消息 delay queue////////////////////////////////
     /**
      * 发送到该队列的message会在一段时间后过期进入到delay_process_queue
@@ -260,7 +269,6 @@ public class RabbitConfig {
     Binding bindingExchangeC(Queue CMessage, FanoutExchange fanoutExchange) {
         return BindingBuilder.bind(CMessage).to(fanoutExchange);
     }
-
 
     @Bean
     //必须是prototype类型

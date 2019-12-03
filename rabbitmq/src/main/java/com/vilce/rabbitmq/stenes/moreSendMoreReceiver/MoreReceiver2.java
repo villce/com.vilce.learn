@@ -15,7 +15,7 @@ import java.io.IOException;
  * @Version: 1.0
  */
 @Component
-@RabbitListener(queues = "moreQueue")
+@RabbitListener(queues = "moreQueue",containerFactory = "rabbitListenerContainerFactory")
 public class MoreReceiver2 {
     @RabbitHandler
     public void process(String hello) throws IOException {

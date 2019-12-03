@@ -1,5 +1,6 @@
 package com.vilce.annotation.model.vo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
+@ApiModel("用户")
 public class UserRes {
     private String name;
     private Integer age;

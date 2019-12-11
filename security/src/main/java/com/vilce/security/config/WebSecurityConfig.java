@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/vip/test").hasAuthority("ROLE_VIP")
                 .antMatchers("/user/**").hasAuthority("USER")
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login");

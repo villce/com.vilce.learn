@@ -19,6 +19,7 @@
         <module>common</module>
         <module>test</module>
         <module>image</module>
+        <module>security</module>
     </modules>
     <dependencies>
         <dependency>

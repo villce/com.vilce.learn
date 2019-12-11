@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @Description: Security配置
@@ -15,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @Date: 2019/12/10 19:48
  * @Version: 1.0
  */
-//@EnableWebSecurity
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
@@ -30,22 +31,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
-                .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/user")
+                .antMatchers("/user/**").hasAuthority("USER")
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login");
+
+        http.addFilterAt(customFromLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
-     * 在内存中创建一个名为 "user" 的用户，密码为 "pwd"，拥有 "USER" 权限
+     * 自定义认证过滤器
      */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        auth.inMemoryAuthentication()
-                .withUser("anoyi")
-                .password(encoder.encode("pwd")).roles("USER");
+    private CustomFromLoginFilter customFromLoginFilter() {
+        return new CustomFromLoginFilter("/login");
     }
 
 }

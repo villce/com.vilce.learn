@@ -20,6 +20,8 @@
         <module>test</module>
         <module>image</module>
         <module>security</module>
+        <module>security_oauth</module>
+        <module>springboot_vue</module>
     </modules>
     <dependencies>
         <dependency>

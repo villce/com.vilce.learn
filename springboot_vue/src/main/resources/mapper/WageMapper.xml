@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilce.springboot_vue.dao.WageMapper">
+    <resultMap id="wageOrderMap" type="com.vilce.springboot_vue.model.po.WageOrder">
+        <id column="EID" property="eid"/>
+        <result column="CODE" property="code"/>
+        <result column="NAME" property="name"/>
+        <result column="ORDER_TIME" property="order_time"/>
+        <result column="BASIC_WAGE" property="basic_wage"/>
+        <result column="JOB_WAGE" property="job_wage"/>
+        <result column="BENCHMARK_PERFORMANCE" property="benchmark_performance"/>
+        <result column="STANDARD_SALARY" property="standard_salary"/>
+        <result column="FIXED_ALLOWANCE" property="fixed_allowance"/>
+        <result column="TECHNICAL_EXPERT_ALLOWANCE" property="technical_expert_allowance"/>
+        <result column="RANK_ALLOWANCE" property="rank_allowance"/>
+        <result column="FIXED_BONUS" property="fixed_bonus"/>
+        <result column="FLOATING_BONUS" property="floating_bonus"/>
+        <result column="TOTAL_WAGES" property="total_wages"/>
+        <result column="EXAMINATION_ALLOWANCE" property="examination_allowance"/>
+        <result column="ON_OFF_AFTER_LEAVE_PAY" property="on_off_after_leave_pay"/>
+        <result column="PERFORMANCE_ADJUSTMENT" property="performance_adjustment"/>
+        <result column="FLOATING_ALLOWANCE" property="floating_allowance"/>
+        <result column="DAILY_OVERTIME" property="daily_overtime"/>
+        <result column="SICK_LEAVE_DEDUCTION" property="sick_leave_deduction"/>
+        <result column="LATE_ABSENTEE_DEDUCTIONS" property="late_absentee_deductions"/>
+        <result column="OTHER_INCREASE_OR_DECREASE" property="other_increase_or_decrease"/>
+        <result column="MATERNITY_LEAVE_DEDUCTIONS" property="maternity_leave_deductions"/>
+        <result column="FLOATING_BONUS2" property="floating_bonus2"/>
+        <result column="RECOMMENDATION_AWARD" property="recommendation_award"/>
+        <result column="PRODUCT_EXPERIENCE_BONUS" property="product_experience_bonus"/>
+        <result column="PAYABLE" property="payable"/>
+        <result column="SOCIAL_SECURITY" property="social_security"/>
+        <result column="PROVIDENT_FUND" property="provident_fund"/>
+        <result column="POST_INSURANCE_PAY" property="post_insurance_pay"/>
+        <result column="EDUCATION_FOR_CHILDREN" property="education_for_children"/>
+        <result column="HOME_LOAN" property="home_loan"/>
+        <result column="HOUSING_RENT" property="housing_rent"/>
+        <result column="SUPPORT_FOR_THE_ELDERLY" property="support_for_the_elderly"/>
+        <result column="CONTINUING_EDUCATION" property="continuing_education"/>
+        <result column="DEFERRED_INSURANCE" property="deferred_insurance"/>
+        <result column="TAX" property="tax"/>
+        <result column="PAID_WAGES" property="paid_wages"/>
+    </resultMap>
+
+    <select id="getAllWageOrder" resultMap="wageOrderMap" >
+		SELECT *
+		FROM vilce.wage_order
+		ORDER BY order_time DESC
+    </select>
+
+</mapper>

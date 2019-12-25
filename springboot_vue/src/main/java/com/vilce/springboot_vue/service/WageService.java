@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.springboot_vue.model.po.WageOrder;
 import com.vilce.springboot_vue.model.vo.respones.WageOrderRes;
 
 import java.util.List;
@@ -13,5 +14,12 @@ import java.util.List;
  * @Version: 1.0
  */
 public interface WageService {
+
     List<WageOrderRes> getAllWageOrder();
+
+    boolean addWageOrder(WageOrder wageOrder);
+
+    boolean updateWageOrder(WageOrder wageOrder);
+
+    boolean deleteWageOrder(Long eid);
 }

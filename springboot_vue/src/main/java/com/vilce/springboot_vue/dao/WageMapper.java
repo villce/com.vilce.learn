@@ -17,4 +17,10 @@ import java.util.List;
 public interface WageMapper {
 
     List<WageOrder> getAllWageOrder();
+
+    boolean addWageOrder(WageOrder wageOrder);
+
+    boolean updateWageOrder(WageOrder wageOrder);
+
+    boolean deleteWageOrder(Long eid);
 }

@@ -48,4 +48,69 @@
 		ORDER BY order_time DESC
     </select>
 
+    <insert id="addWageOrder" parameterType="com.vilce.springboot_vue.model.po.WageOrder">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="eid">
+            SELECT vilce.eid.nextval AS eid FROM dual
+        </selectKey>
+        INSERT INTO vilce.wage_order
+        (EID,CODE,NAME,ORDER_TIME,BASIC_WAGE,JOB_WAGE,BENCHMARK_PERFORMANCE,STANDARD_SALARY,FIXED_ALLOWANCE,TECHNICAL_EXPERT_ALLOWANCE,
+        RANK_ALLOWANCE,FIXED_BONUS,FLOATING_BONUS,TOTAL_WAGES,EXAMINATION_ALLOWANCE,ON_OFF_AFTER_LEAVE_PAY,PERFORMANCE_ADJUSTMENT,
+        FLOATING_ALLOWANCE,DAILY_OVERTIME,SICK_LEAVE_DEDUCTION,LATE_ABSENTEE_DEDUCTIONS,OTHER_INCREASE_OR_DECREASE,
+        MATERNITY_LEAVE_DEDUCTIONS,FLOATING_BONUS2,RECOMMENDATION_AWARD,PRODUCT_EXPERIENCE_BONUS,PAYABLE,SOCIAL_SECURITY,PROVIDENT_FUND,
+        POST_INSURANCE_PAY,EDUCATION_FOR_CHILDREN,HOME_LOAN,HOUSING_RENT,SUPPORT_FOR_THE_ELDERLY,CONTINUING_EDUCATION,DEFERRED_INSURANCE,
+        TAX,PAID_WAGES)
+        VALUES (#{eid},#{code},#{name},#{order_time},#{basic_wage},#{job_wage},#{benchmark_performance},#{standard_salary},#{fixed_allowance},
+        #{technical_expert_allowance},#{rank_allowance},#{fixed_bonus},#{floating_bonus},#{total_wages},#{examination_allowance},
+        #{on_off_after_leave_pay},#{performance_adjustment},#{floating_allowance},#{daily_overtime},#{sick_leave_deduction},
+        #{late_absentee_deductions},#{other_increase_or_decrease},#{maternity_leave_deductions},#{floating_bonus2},#{recommendation_award},
+        #{product_experience_bonus},#{payable},#{social_security},#{provident_fund},#{post_insurance_pay},#{education_for_children},
+        #{home_loan},#{housing_rent},#{support_for_the_elderly},#{continuing_education},#{deferred_insurance},#{tax},#{paid_wages})
+    </insert>
+
+    <update id="updateWageOrder" parameterType="com.vilce.springboot_vue.model.po.WageOrder">
+        UPDATE vilce.wage_order
+        SET code=#{code},
+            name=#{name},
+            order_time=#{order_time},
+            basic_wage=#{basic_wage},
+            job_wage=#{job_wage},
+            benchmark_performance=#{benchmark_performance},
+            standard_salary=#{standard_salary},
+            fixed_allowance=#{fixed_allowance},
+            technical_expert_allowance=#{technical_expert_allowance},
+            rank_allowance=#{rank_allowance},
+            fixed_bonus=#{fixed_bonus},
+            floating_bonus=#{floating_bonus},
+            total_wages=#{total_wages},
+            examination_allowance=#{examination_allowance},
+            on_off_after_leave_pay=#{on_off_after_leave_pay},
+            performance_adjustment=#{performance_adjustment},
+            floating_allowance=#{floating_allowance},
+            daily_overtime=#{daily_overtime},
+            sick_leave_deduction=#{sick_leave_deduction},
+            late_absentee_deductions=#{late_absentee_deductions},
+            other_increase_or_decrease=#{other_increase_or_decrease},
+            maternity_leave_deductions=#{maternity_leave_deductions},
+            floating_bonus2=#{floating_bonus2},
+            recommendation_award=#{recommendation_award},
+            product_experience_bonus=#{product_experience_bonus},
+            payable=#{payable},
+            social_security=#{social_security},
+            provident_fund=#{provident_fund},
+            post_insurance_pay=#{post_insurance_pay},
+            education_for_children=#{education_for_children},
+            home_loan=#{home_loan},
+            housing_rent=#{housing_rent},
+            support_for_the_elderly=#{support_for_the_elderly},
+            continuing_education=#{continuing_education},
+            deferred_insurance=#{deferred_insurance},
+            tax=#{tax},
+            paid_wages=#{paid_wages}
+        WHERE eid=#{eid}
+    </update>
+
+    <delete id="deleteWageOrder" >
+        DELETE vilce.wage_order
+        WHERE EID=#{eid}
+    </delete>
 </mapper>

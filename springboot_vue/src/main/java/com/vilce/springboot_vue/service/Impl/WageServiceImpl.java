@@ -34,4 +34,19 @@ public class WageServiceImpl implements WageService {
         }
         return wageOrderResList;
     }
+
+    @Override
+    public boolean addWageOrder(WageOrder wageOrder) {
+        return wageMapper.addWageOrder(wageOrder);
+    }
+
+    @Override
+    public boolean updateWageOrder(WageOrder wageOrder) {
+        return wageMapper.updateWageOrder(wageOrder);
+    }
+
+    @Override
+    public boolean deleteWageOrder(Long eid) {
+        return wageMapper.deleteWageOrder(eid);
+    }
 }

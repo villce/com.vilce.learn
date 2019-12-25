@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilce.springboot_vue.dao.BookMapper">
+    <resultMap id="bookMap" type="com.vilce.springboot_vue.model.po.Book">
+        <result column="EID" property="eid"/>
+        <result column="COVER" property="cover"/>
+        <result column="TITLE" property="title"/>
+        <result column="AUTHOR" property="author"/>
+        <result column="TIME" property="time"/>
+        <result column="PRESS" property="press"/>
+        <result column="INTRODUCTION" property="introduction"/>
+        <result column="CID" property="cid"/>
+    </resultMap>
+
+    <select id="getAllBooks" resultMap="bookMap" >
+		SELECT *
+		FROM vilce.book
+		ORDER BY eid DESC
+    </select>
+
+    <insert id="addBook" parameterType="com.vilce.springboot_vue.model.po.Book" >
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="eid">
+            SELECT vilce.eid.nextval AS eid FROM dual
+        </selectKey>
+		INSERT INTO vilce.book
+		(EID,COVER,TITLE,AUTHOR,TIME,PRESS,INTRODUCTION,CID)
+		VALUES (#{eid},#{cover},#{title},#{author},#{time},#{press},#{introduction},#{cid})
+    </insert>
+
+    <update id="updateBook" parameterType="com.vilce.springboot_vue.model.po.Book" >
+		UPDATE vilce.book
+		SET COVER=#{cover},
+		    TITLE=#{title},
+		    AUTHOR=#{author},
+		    TIME=#{time},
+		    PRESS=#{press},
+		    INTRODUCTION=#{introduction},
+		    CID=#{cid}
+		WHERE eid=#{eid}
+    </update>
+
+    <delete id="deleteBookById" >
+		DELETE vilce.book
+		WHERE eid=#{eid}
+    </delete>
+
+    <select id="getBooksByCategory" resultMap="bookMap" >
+		SELECT *
+		FROM vilce.book
+		WHERE cid=#{cid}
+		ORDER BY eid DESC
+    </select>
+</mapper>

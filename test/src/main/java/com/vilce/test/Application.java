@@ -1,7 +1,9 @@
 package com.vilce.test;
 
+import com.vilce.common.utils.HiddenUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
@@ -18,4 +20,12 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
     }
+
+    /**
+     * 日志隐藏敏感字段
+     */
+//    @Bean
+//    public void hidden(){
+//        HiddenUtils.addHiddenRule();
+//    }
 }

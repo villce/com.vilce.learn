@@ -1,12 +1,11 @@
 package com.vilce.springboot_vue.controller;
 
+import com.vilce.springboot_vue.model.po.WageOrder;
 import com.vilce.springboot_vue.model.vo.respones.WageOrderRes;
 import com.vilce.springboot_vue.service.WageService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,8 +25,27 @@ public class WageController {
     @Autowired
     private WageService wageService;
 
-    @GetMapping("/all")
+    @CrossOrigin
+    @GetMapping("getAllWageOrder")
     public List<WageOrderRes> getAllWageOrder(){
         return wageService.getAllWageOrder();
+    }
+
+    @CrossOrigin
+    @PostMapping("addWageOrder")
+    public boolean addWageOrder(WageOrder wageOrder){
+        return wageService.addWageOrder(wageOrder);
+    }
+
+    @CrossOrigin
+    @PostMapping("updateWageOrder")
+    public boolean updateWageOrder(WageOrder wageOrder){
+        return wageService.updateWageOrder(wageOrder);
+    }
+
+    @CrossOrigin
+    @PostMapping("deleteWageOrder")
+    public boolean deleteWageOrder(Long eid){
+        return wageService.deleteWageOrder(eid);
     }
 }

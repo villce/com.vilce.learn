@@ -20,6 +20,8 @@ import org.springframework.cglib.beans.BeanCopier;
 @Data
 @ApiModel(value = "工资单返参")
 public class WageOrderRes {
+    @ApiModelProperty(value = "系统物理主键")
+    private Long eid;
     @ApiModelProperty(value = "工号")
     private String code;
     @ApiModelProperty(value = "姓名")

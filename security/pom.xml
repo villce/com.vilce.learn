@@ -46,4 +46,16 @@
             <version>12.1.0.2.0</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>security</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

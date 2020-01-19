@@ -8,4 +8,4 @@ CREATE TABLE vilce.book
     press        varchar2(255) DEFAULT '',
     introduction varchar2(255) DEFAULT NULL,
     cid          NUMBER(18, 0) DEFAULT NULL
-)
+);

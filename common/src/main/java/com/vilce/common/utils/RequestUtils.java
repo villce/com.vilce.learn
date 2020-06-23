@@ -1,8 +1,15 @@
 package com.vilce.common.utils;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,12 +24,16 @@ import java.util.regex.Pattern;
 @SuppressWarnings("all")
 public class RequestUtils {
 
-    private static final String UNKNOWN = "unknown";
-
     /**
-     * 获取客户端ip地址
-     * @param request
-     * @return
+     * unknown
+     */
+    private static final String UNKNOWN = "unknown";
+    private static final String LOCAL_IP = "127.0.0.1";
+    /**
+     * @Description 获取客户单IP地址
+     * @Author 姚明洋
+     * @Date 2019/5/21 13:17
+     * @Version  1.0
      */
     public static String getClientIp(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
@@ -43,11 +54,11 @@ public class RequestUtils {
         }
         return ip;
     }
-
     /**
-     * 判断请求Ip是否内网ip
-     * @param ip
-     * @return
+     * @Description 判断请求IP是否是内网IP
+     * @Author 姚明洋
+     * @Date 2019/5/27 13:44
+     * @Version  1.0
      */
     public static boolean isInnerIp(String ip) {
         String reg = "((192\\.168|172\\.([1][6-9]|[2]\\d|3[01]))"
@@ -59,15 +70,45 @@ public class RequestUtils {
     }
 
     /**
-     * 获取服务器端ip
-     * @return
+     * @Description 获取服务器端的IP
+     * @Author 姚明洋
+     * @Date 2019/9/2 15:17
+     * @Version  1.0
      */
     public static String getServerIp(){
         try{
-            InetAddress address = InetAddress.getLocalHost();
-            return address.getHostAddress();
-        } catch (UnknownHostException e){
-            return null;
+            Enumeration<NetworkInterface> allNetInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (allNetInterfaces.hasMoreElements()){
+                NetworkInterface netInterface = allNetInterfaces.nextElement();
+                Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
+                while (addresses.hasMoreElements()){
+                    InetAddress ip = addresses.nextElement();
+                    //loopback地址即本机地址，IPv4的loopback范围是127.0.0.0 ~ 127.255.255.255
+                    if (ip != null
+                            && ip instanceof Inet4Address
+                            && !ip.isLoopbackAddress()
+                            && ip.getHostAddress().indexOf(":")==-1){
+                        return ip.getHostAddress();
+                    }
+                }
+            }
+        }catch(Exception e){
         }
+        return LOCAL_IP;
+    }
+    /**
+     * 获取用户当前请求的HttpServletRequest
+     */
+    public static HttpServletRequest getRequest(){
+        ServletRequestAttributes attributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
+        return attributes.getRequest();
+    }
+
+    /**
+     * 获取当前请求的HttpServletResponse
+     */
+    public static HttpServletResponse getResponse(){
+        ServletRequestAttributes attributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
+        return attributes.getResponse();
     }
 }

@@ -1,6 +1,7 @@
 package com.vilce.springboot_vue.service;
 
 import com.vilce.springboot_vue.model.po.Book;
+import com.vilce.springboot_vue.model.vo.request.BookReq;
 import com.vilce.springboot_vue.model.vo.respones.BookRes;
 
 import java.util.List;
@@ -15,8 +16,12 @@ import java.util.List;
  */
 public interface BookService {
     List<BookRes> getAllBooks();
-    boolean addBook(Book book);
-    boolean updateBook(Book book);
+
+    boolean addOrUpdateBook(BookReq req);
+
     boolean deleteBookById(Long eid);
+
     List<BookRes> getBooksByCategory(Long cid);
+
+    List<BookRes> getBookByNameOrAuthor(String str);
 }

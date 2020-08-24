@@ -32,7 +32,6 @@ import java.util.Optional;
  */
 @Configuration
 @EnableSwagger2
-@EnableKnife4j
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfiguration {
 
@@ -45,7 +44,7 @@ public class SwaggerConfiguration {
                 .groupName("2.X版本")
                 .select()
                 //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("com.swagger.bootstrap.ui.demo.new2"))
+                .apis(RequestHandlerSelectors.basePackage("com.vilce.springboot_vue"))
                 .paths(PathSelectors.any())
                 .build();
         return docket;

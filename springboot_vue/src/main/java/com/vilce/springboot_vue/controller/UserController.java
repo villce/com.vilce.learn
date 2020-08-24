@@ -3,6 +3,7 @@ package com.vilce.springboot_vue.controller;
 import com.vilce.springboot_vue.model.vo.request.UserReq;
 import com.vilce.springboot_vue.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,12 @@ public class UserController {
     @PostMapping("login")
     public boolean login(@RequestBody UserReq req){
         return userService.login(req);
+    }
+
+    @PostMapping("addUser")
+    @ApiOperation(value = "添加用户")
+    public boolean addUser(@RequestBody UserReq req){
+        return userService.addUser(req);
     }
 
     @GetMapping("test")

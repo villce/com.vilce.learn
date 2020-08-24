@@ -29,7 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableKnife4j
 @Import(BeanValidatorPluginsConfiguration.class)
-public class SwaggerConfig implements WebMvcConfigurer {
+public class SwaggerConfig {
     @Value(value = "${swagger.enabled}")
     boolean swaggerEnabled;
 
@@ -39,7 +39,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .apiInfo(createApiInfo())
                 .enable(swaggerEnabled)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.vilce.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.vilce.knife4j"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -54,12 +54,4 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .licenseUrl("http://www,apache.org/licenses/LICENSE-2.0")
                 .build();
     }
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("**/swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars*")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
 }

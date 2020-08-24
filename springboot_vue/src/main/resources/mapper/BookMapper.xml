@@ -18,7 +18,7 @@
 		ORDER BY eid DESC
     </select>
 
-    <insert id="addBook" parameterType="com.vilce.springboot_vue.model.po.Book" >
+    <insert id="addBook" parameterType="com.vilce.springboot_vue.model.vo.request.BookReq" >
         <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="eid">
             SELECT vilce.eid.nextval AS eid FROM dual
         </selectKey>
@@ -27,7 +27,7 @@
 		VALUES (#{eid},#{cover},#{title},#{author},#{time},#{press},#{introduction},#{cid})
     </insert>
 
-    <update id="updateBook" parameterType="com.vilce.springboot_vue.model.po.Book" >
+    <update id="updateBook" parameterType="com.vilce.springboot_vue.model.vo.request.BookReq" >
 		UPDATE vilce.book
 		SET COVER=#{cover},
 		    TITLE=#{title},
@@ -49,5 +49,25 @@
 		FROM vilce.book
 		WHERE cid=#{cid}
 		ORDER BY eid DESC
+    </select>
+
+    <select id="getBookByNameAndAuthor" resultType="com.vilce.springboot_vue.model.po.Book" >
+		SELECT *
+		FROM vilce.book
+		WHERE title=#{title}
+		AND author=#{author}
+    </select>
+
+    <select id="getCategory" resultType="com.vilce.springboot_vue.model.po.Category" >
+		SELECT *
+		FROM vilce.category
+		WHERE eid=#{eid}
+    </select>
+
+    <select id="getBookByNameOrAuthor" resultMap="bookMap" >
+		SELECT *
+		FROM vilce.book
+		WHERE title like #{str}
+		OR author like #{str}
     </select>
 </mapper>

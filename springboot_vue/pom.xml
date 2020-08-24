@@ -38,16 +38,6 @@
             <artifactId>common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.google.code.google-collections</groupId>-->
-<!--            <artifactId>google-collect</artifactId>-->
-<!--            <version>snapshot-20080530</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.poi</groupId>-->
-<!--            <artifactId>poi</artifactId>-->
-<!--            <version>4.0.1</version>-->
-<!--        </dependency>-->
     </dependencies>
     <build>
         <finalName>springboot_vue</finalName>

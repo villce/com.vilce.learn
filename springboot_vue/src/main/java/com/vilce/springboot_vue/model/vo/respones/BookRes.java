@@ -1,6 +1,7 @@
 package com.vilce.springboot_vue.model.vo.respones;
 
 import com.vilce.springboot_vue.model.po.Book;
+import com.vilce.springboot_vue.model.po.Category;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -32,10 +33,10 @@ public class BookRes {
     private String press;
     @ApiModelProperty("简介")
     private String introduction;
-    @ApiModelProperty("种类id")
-    private Long cid;
+    @ApiModelProperty("种类")
+    private Category category;
 
-    public static BookRes create(Book book){
+    public static BookRes create(Book book, Category category){
         if (ObjectUtils.isEmpty(book)) {
             return new BookRes();
         }
@@ -43,6 +44,7 @@ public class BookRes {
         BeanCopier beanCopier = BeanCopier.create(Book.class, BookRes.class, false);
         BookRes bookRes = new BookRes();
         beanCopier.copy(book, bookRes, null);
+        bookRes.setCategory(category);
         return bookRes;
     }
 }

@@ -15,4 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UserMapper {
     User getUserByNamePassword(UserReq req);
+
+    boolean addUser(UserReq req);
 }

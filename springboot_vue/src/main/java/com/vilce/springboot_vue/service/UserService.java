@@ -12,4 +12,6 @@ import com.vilce.springboot_vue.model.vo.request.UserReq;
  */
 public interface UserService {
     boolean login(UserReq req);
+
+    boolean addUser(UserReq req);
 }

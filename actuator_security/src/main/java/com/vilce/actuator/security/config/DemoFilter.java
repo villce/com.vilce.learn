@@ -41,7 +41,7 @@ public class DemoFilter extends GenericFilterBean {
         if (uri.contains("actuator")) {
             //需要限制资源
             //判断是否内网
-            if (ip.equals("0:0:0:0:0:0:0:1") || flag) {
+            if (flag) {
                 //内网访问，不做限制
                 if(SecurityContextHolder.getContext().getAuthentication() == null){
                     SecurityContextHolder.getContext().setAuthentication(

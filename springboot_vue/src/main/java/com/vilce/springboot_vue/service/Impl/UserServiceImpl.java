@@ -31,4 +31,10 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+    @Override
+    public boolean addUser(UserReq req) {
+        boolean flag = userMapper.addUser(req);
+        return flag;
+    }
 }

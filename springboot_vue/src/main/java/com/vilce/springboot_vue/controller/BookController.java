@@ -1,6 +1,7 @@
 package com.vilce.springboot_vue.controller;
 
 import com.vilce.springboot_vue.model.po.Book;
+import com.vilce.springboot_vue.model.vo.request.BookReq;
 import com.vilce.springboot_vue.model.vo.respones.BookRes;
 import com.vilce.springboot_vue.service.BookService;
 import io.swagger.annotations.Api;
@@ -26,35 +27,31 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @CrossOrigin
     @GetMapping("getAllBooks")
     @ApiOperation("获取所有书籍")
     public List<BookRes> getAllBooks(){
         return bookService.getAllBooks();
     }
 
-    @CrossOrigin
-    @PostMapping("addBook")
+    @PostMapping("addOrUpdateBook")
     @ApiOperation("添加书籍")
-    public boolean addBook(Book book){
-        return bookService.addBook(book);
+    public boolean addOrUpdateBook(BookReq book){
+        return bookService.addOrUpdateBook(book);
     }
 
-    @PostMapping("updateBook")
-    @ApiOperation("更新书籍信息")
-    public boolean updateBook(Book book){
-        return bookService.updateBook(book);
-    }
-
-    @CrossOrigin
     @PostMapping("deleteBookById")
     @ApiOperation("删除书籍")
     public boolean deleteBookById(Long eid){
         return bookService.deleteBookById(eid);
     }
 
-    @CrossOrigin
-    @PostMapping("getBooksByCategory")
+    @GetMapping("getBookByNameOrAuthor")
+    @ApiOperation("根据作者名或书名搜索书")
+    public List<BookRes> getBookByNameOrAuthor(String str){
+        return bookService.getBookByNameOrAuthor(str);
+    }
+
+    @GetMapping("getBooksByCategory")
     @ApiOperation("根据分类查询书籍")
     public List<BookRes> getBooksByCategory(Long cid){
         return bookService.getBooksByCategory(cid);

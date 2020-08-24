@@ -15,4 +15,9 @@ public class User {
     private String name;
     private Integer age;
     private String phoneNumber;
+
+    private User(){};
+    public User(String name) {
+        this.name = name;
+    }
 }

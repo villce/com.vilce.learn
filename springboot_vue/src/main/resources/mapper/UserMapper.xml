@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vilce.springboot_vue.dao.UserMapper">
-    <resultMap id="userMap" type="com.vilce.springboot_vue.model.po.User">
-        <id column="EID" property="eid"/>
-        <result column="USER_NAME" property="username"/>
-        <result column="PASSWORD" property="password"/>
-    </resultMap>
+<mapper namespace="com.vilce.springboot_vue.mapper.UserMapper">
 
-    <select id="getUserByNamePassword" resultMap="userMap" >
+    <select id="findAll" resultType="com.vilce.springboot_vue.model.po.User" >
 		SELECT *
-		FROM vilce.users
-		WHERE user_name=#{username}
-		AND password=#{password}
+		FROM admin_user
     </select>
 
-    <insert id="addUser" parameterType="com.vilce.springboot_vue.model.vo.request.UserReq" >
-		INSERT INTO vilce.users (eid,user_name,password)
-		VALUES (vilce.eid.nextval,
-		        #{username},
-		        #{password})
+    <select id="getUserByUsername" resultType="com.vilce.springboot_vue.model.po.User" >
+		SELECT *
+		FROM admin_user
+		WHERE username=#{username}
+    </select>
+
+    <insert id="addUser" parameterType="com.vilce.springboot_vue.model.po.User" >
+		INSERT INTO admin_user (user_name,password,salt,name,phone,email,enabled)
+		VALUES (#{username},
+		        #{password},
+		        #{salt},
+		        #{name},
+		        #{phone},
+		        #{email},
+		        #{enabled})
     </insert>
+
+    <update id="updateUserInfo" parameterType="com.vilce.springboot_vue.model.po.User" >
+        UPDATE admin_user
+		SET name=#{name},
+		    phone=#{phone},
+		    email=#{email}
+		WHERE id=#{id}
+    </update>
+
+    <update id="updateUserStatus" parameterType="com.vilce.springboot_vue.model.po.User" >
+        UPDATE admin_user
+		SET enabled=#{enabled}
+		WHERE id=#{id}
+    </update>
+
+    <update id="updatePassword" parameterType="com.vilce.springboot_vue.model.po.User" >
+        UPDATE admin_user
+		SET password=#{password},
+		    salt=#{salt}
+		WHERE id=#{id}
+    </update>
 </mapper>

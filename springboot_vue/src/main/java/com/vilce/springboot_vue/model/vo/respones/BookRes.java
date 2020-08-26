@@ -5,7 +5,6 @@ import com.vilce.springboot_vue.model.po.Category;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.cglib.beans.BeanCopier;
 
 /**
@@ -19,27 +18,24 @@ import org.springframework.cglib.beans.BeanCopier;
 @Data
 @ApiModel("书籍返参")
 public class BookRes {
-    @ApiModelProperty("系统物理主键")
-    private Long eid;
-    @ApiModelProperty("图片封面")
+    @ApiModelProperty(value = "系统物理主键",example = "0")
+    private int id;
+    @ApiModelProperty(value = "图片封面",example = "d:/img/1.png")
     private String cover;
-    @ApiModelProperty("书名")
+    @ApiModelProperty(value = "书名",example = "示例")
     private String title;
-    @ApiModelProperty("作者")
+    @ApiModelProperty(value = "作者",example = "示例")
     private String author;
-    @ApiModelProperty("时间")
-    private String time;
-    @ApiModelProperty("出版社")
+    @ApiModelProperty(value = "时间",example = "2020.08.26")
+    private String date;
+    @ApiModelProperty(value = "出版社",example = "示例")
     private String press;
-    @ApiModelProperty("简介")
-    private String introduction;
-    @ApiModelProperty("种类")
+    @ApiModelProperty(value = "简介",example = "示例")
+    private String abs;
+    @ApiModelProperty(value = "种类",example = "{}")
     private Category category;
 
     public static BookRes create(Book book, Category category){
-        if (ObjectUtils.isEmpty(book)) {
-            return new BookRes();
-        }
         //将属性和名称相似的值进行拷贝
         BeanCopier beanCopier = BeanCopier.create(Book.class, BookRes.class, false);
         BookRes bookRes = new BookRes();

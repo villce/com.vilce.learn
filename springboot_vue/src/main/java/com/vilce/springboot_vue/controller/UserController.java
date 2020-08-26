@@ -1,57 +1,56 @@
 package com.vilce.springboot_vue.controller;
 
-import com.vilce.springboot_vue.model.vo.request.UserReq;
+import com.vilce.springboot_vue.model.po.User;
 import com.vilce.springboot_vue.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.ConcurrentHashMap;
+import javax.validation.Valid;
+import java.util.List;
 
 /**
- * @Description: Description
+ * @Description: 用户相关API
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.springboot_vue.controller.UserController
  * @Author: 雷才哲
- * @Date: 2019/12/20 16:36
+ * @Date: 2020/8/26 16:36
  * @Version: 1.0
  */
 @RestController
 @RequestMapping("/user")
-@Api(tags = "用户API")
+@Api(tags = "用户相关API")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
-    private ConcurrentHashMap<String,Integer> map = new ConcurrentHashMap();
-
-    @CrossOrigin
-    @PostMapping("login")
-    public boolean login(@RequestBody UserReq req){
-        return userService.login(req);
+//    @GetMapping("/api/admin/user")
+    @GetMapping("getAllUsers")
+    @ApiOperation(value = "列出所有用户信息")
+    public List<User> listAllUsers() {
+        return userService.listAllUsers();
     }
 
-    @PostMapping("addUser")
-    @ApiOperation(value = "添加用户")
-    public boolean addUser(@RequestBody UserReq req){
-        return userService.addUser(req);
+//    @PutMapping("/api/admin/user/status")
+    @PutMapping("updateUserStatus")
+    @ApiOperation(value = "更新用户状态信息")
+    public boolean updateUserStatus(@RequestBody @Valid User requestUser) {
+        return  userService.updateUserStatus(requestUser);
     }
 
-    @GetMapping("test")
-    public String test(){
-        if (ObjectUtils.isEmpty(map.get("key"))){
-            map.put("key",0);
-        }else {
-            Integer a = map.get("key");
-            a = a+1;
-            map.put("key",a);
-            if (map.get("key")>3){
-                return "成功！";
-            }
-        }
-        throw new RuntimeException();
+//    @PutMapping("/api/admin/user/password")
+    @PutMapping("resetPassword")
+    @ApiOperation(value = "重置密码")
+    public boolean resetPassword(@RequestBody @Valid User requestUser) {
+        return userService.updatePassword(requestUser);
+    }
+
+//    @PutMapping("/api/admin/user")
+    @PutMapping("editUser")
+    @ApiOperation(value = "更新用户基础信息")
+    public boolean editUser(@RequestBody @Valid User requestUser) {
+        return userService.editUser(requestUser);
     }
 }

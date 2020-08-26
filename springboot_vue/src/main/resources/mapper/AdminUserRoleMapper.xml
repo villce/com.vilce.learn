@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilce.springboot_vue.mapper.AdminUserRoleMapper">
+
+    <select id="getUserRoleByUid" resultType="com.vilce.springboot_vue.model.po.AdminUserRole" >
+		SELECT *
+		FROM admin_user_role
+		WHERE uid = #{uid}
+    </select>
+
+    <delete id="deleteUserRoleByUid">
+		DELETE *
+		FROM admin_user_role
+		WHERE uid = #{uid}
+    </delete>
+
+    <insert id="addUserRole">
+		INSERT INTO admin_user_role
+		(uid,rid)
+		VALUES (#{uid},#{rid})
+    </insert>
+</mapper>

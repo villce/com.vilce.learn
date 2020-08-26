@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vilce.springboot_vue.dao.CategoryMapper">
-    <resultMap id="categoryMap" type="com.vilce.springboot_vue.model.po.Category">
-        <id column="EID" property="eid"/>
-        <result column="NAME" property="name"/>
-    </resultMap>
+<mapper namespace="com.vilce.springboot_vue.mapper.CategoryMapper">
 
-    <select id="getAllCategory" resultMap="categoryMap" >
+    <select id="getAllCategory" resultType="com.vilce.springboot_vue.model.po.Category" >
 		SELECT *
 		FROM vilce.category
-		ORDER BY eid DESC
+		ORDER BY id DESC
     </select>
 
-    <select id="getCategoryById" resultMap="categoryMap" >
+    <select id="getCategoryById" resultType="com.vilce.springboot_vue.model.po.Category" >
 		SELECT *
 		FROM vilce.category
-		WHERE eid=#{eid}
+		WHERE id=#{id}
     </select>
 </mapper>

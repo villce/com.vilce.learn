@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.service.Impl;
 
-import com.vilce.springboot_vue.dao.WageMapper;
+import com.vilce.springboot_vue.mapper.WageMapper;
 import com.vilce.springboot_vue.model.po.WageOrder;
 import com.vilce.springboot_vue.model.vo.respones.WageOrderRes;
 import com.vilce.springboot_vue.service.WageService;

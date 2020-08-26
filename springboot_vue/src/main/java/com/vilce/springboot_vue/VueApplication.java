@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Version: 1.0
  */
 @SpringBootApplication(scanBasePackages = "com.vilce")
-@MapperScan(basePackages = "com.vilce.springboot_vue.dao")
+@MapperScan(basePackages = "com.vilce.springboot_vue.mapper")
 public class VueApplication {
     public static void main(String[] args) {
         SpringApplication.run(VueApplication.class);

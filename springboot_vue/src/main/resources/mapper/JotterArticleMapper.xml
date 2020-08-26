@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilce.springboot_vue.mapper.JotterArticleMapper">
+
+    <select id="findArticleById" resultType="com.vilce.springboot_vue.model.po.JotterArticle" >
+		SELECT *
+		FROM jotter_article
+		WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultType="com.vilce.springboot_vue.model.po.JotterArticle" >
+		SELECT *
+		FROM jotter_article
+		ORDER BY id
+		LIMIT #{page},#{size}
+    </select>
+
+    <insert id="addArticle" parameterType="com.vilce.springboot_vue.model.po.JotterArticle" >
+		INSERT INTO jotter_article
+		(article_title,article_content_html,article_content_md,article_abstract,article_cover,article_date)
+		VALUES
+		(#{articleTitle},#{articleContentHtml},#{articleContentMd},#{articleAbstract},#{articleCover},#{articleDate})
+    </insert>
+
+    <delete id="deleteArticleById">
+		DELETE *
+		FROM jotter_article
+		WHERE id = #{id}
+    </delete>
+
+    <update id="updateArticle"  parameterType="com.vilce.springboot_vue.model.po.JotterArticle" >
+        UPDATE jotter_article
+        SET articleTitle=#{articleTitle},
+            articleContentHtml=#{articleContentHtml},
+            articleContentMd=#{articleContentMd},
+            articleAbstract=#{articleAbstract},
+            articleCover=#{articleCover},
+            articleDate=#{articleDate}
+        WHERE id=#{id}
+    </update>
+
+</mapper>

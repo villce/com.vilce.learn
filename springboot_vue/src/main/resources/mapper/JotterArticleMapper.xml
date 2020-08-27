@@ -19,7 +19,7 @@
 		INSERT INTO jotter_article
 		(article_title,article_content_html,article_content_md,article_abstract,article_cover,article_date)
 		VALUES
-		(#{articleTitle},#{articleContentHtml},#{articleContentMd},#{articleAbstract},#{articleCover},#{articleDate})
+		(#{article_title},#{article_content_html},#{article_content_md},#{article_abstract},#{article_cover},#{article_date})
     </insert>
 
     <delete id="deleteArticleById">
@@ -30,12 +30,12 @@
 
     <update id="updateArticle"  parameterType="com.vilce.springboot_vue.model.po.JotterArticle" >
         UPDATE jotter_article
-        SET articleTitle=#{articleTitle},
-            articleContentHtml=#{articleContentHtml},
-            articleContentMd=#{articleContentMd},
-            articleAbstract=#{articleAbstract},
-            articleCover=#{articleCover},
-            articleDate=#{articleDate}
+        SET article_title=#{article_title},
+            article_content_html=#{article_content_html},
+            article_content_md=#{article_content_md},
+            article_abstract=#{article_abstract},
+            article_cover=#{article_cover},
+            article_date=#{article_date}
         WHERE id=#{id}
     </update>
 

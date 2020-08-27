@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.config.redis.RedisService;
 import com.vilce.springboot_vue.mapper.JotterArticleMapper;
 import com.vilce.springboot_vue.model.po.JotterArticle;
@@ -66,8 +67,10 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         String key = StringUtils.join(ARTICLE, "id:", id);
         // todo 优化redis
         JotterArticle article = (JotterArticle) redisService.get(key);
+        System.out.println(ObjectUtils.isEmpty(article));
         if (ObjectUtils.isEmpty(article)) {
             article = jotterArticleMapper.findArticleById(id);
+            System.out.println(JSONUtils.toJson(article));
             redisService.set(key, article);
         }
         return article;

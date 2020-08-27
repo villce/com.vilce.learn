@@ -104,6 +104,6 @@ public class AdminMenuServiceImpl implements AdminMenuService {
             List<AdminMenu> children = getAllByParentId(m.getId());
             m.setChildren(children);
         });
-        menuList.removeIf(m -> m.getParentId() != 0);
+        menuList.removeIf(m -> m.getParent_id() != 0);
     }
 }

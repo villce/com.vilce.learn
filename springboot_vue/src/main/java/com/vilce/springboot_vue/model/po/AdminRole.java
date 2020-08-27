@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.model.po;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -23,7 +24,7 @@ public class AdminRole {
     @ApiModelProperty(value = "角色名",example = "test")
     private String name;
     @ApiModelProperty(value = "角色中文名",example = "示例")
-    private String nameZh;
+    private String name_zh;
     @ApiModelProperty(value = "角色状态",example = "true")
     private boolean enabled;
     @ApiModelProperty(value = "角色权限",example = "{}")

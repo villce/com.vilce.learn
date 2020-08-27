@@ -53,7 +53,7 @@ public class ResponseMethodReturnValueHandler implements HandlerMethodReturnValu
             if (!methodParameter.getMethod().getReturnType().equals(Void.TYPE)) {
                 baseResponse.setData(o);
             }
-            proxyObject.handleReturnValue(ResponseEntity.ok(baseResponse), methodParameter, modelAndViewContainer, nativeWebRequest);
+            proxyObject.handleReturnValue(baseResponse, methodParameter, modelAndViewContainer, nativeWebRequest);
         }
     }
 }

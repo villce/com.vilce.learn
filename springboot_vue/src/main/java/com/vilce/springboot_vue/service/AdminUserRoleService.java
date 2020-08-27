@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.AdminRole;
 import com.vilce.springboot_vue.model.po.AdminUserRole;
 
@@ -18,11 +19,11 @@ public interface AdminUserRoleService {
     /**
      * 更新用户角色信息
      *
-     * @param id
+     * @param uid
      * @param roles
      * @return
      */
-    boolean updateRoleChanges(int id, List<AdminRole> roles);
+    BaseResponse updateRoleChanges(int uid, List<AdminRole> roles);
 
     /**
      * 根据用户id获取用户角色

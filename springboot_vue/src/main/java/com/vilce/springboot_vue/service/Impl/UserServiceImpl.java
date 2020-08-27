@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.UserMapper;
 import com.vilce.springboot_vue.model.po.AdminRole;
 import com.vilce.springboot_vue.model.po.User;
@@ -59,7 +60,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserByUsername(String username) {
-        // todo 与isExist重复，是否合并
         return userMapper.getUserByUsername(username);
     }
 
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public boolean addUser(User user) {
+    public BaseResponse addUser(User user) {
         String username = user.getUsername();
         String name = user.getName();
         String phone = user.getPhone();
@@ -87,13 +87,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setEnabled(true);
         if (username.equals("") || password.equals("")) {
-            // todo 返回message "用户名和密码不能为空"
-            return false;
+            return BaseResponse.buildResponse(-1, "用户名和密码不能为空");
         }
         User userFind = userMapper.getUserByUsername(username);
         if (ObjectUtils.isNotEmpty(userFind)) {
-            // todo 返回message "用户已存在"
-            return false;
+            return BaseResponse.buildResponse(-1, "用户已存在");
         }
         // 默认生成 16 位盐
         String salt = new SecureRandomNumberGenerator().nextBytes().toString();
@@ -105,11 +103,9 @@ public class UserServiceImpl implements UserService {
 
         boolean result = userMapper.addUser(user);
         if (result) {
-            // todo 返回message "注册成功"
-            return true;
+            return BaseResponse.buildResponse(0, "注册成功！");
         } else {
-            // todo 返回message "注册失败，未知错误"
-            return false;
+            return BaseResponse.buildResponse(0, "注册失败，未知错误！");
         }
     }
 
@@ -119,13 +115,11 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
-    public boolean updateUserStatus(User user) {
+    public BaseResponse updateUserStatus(User user) {
         if (userMapper.updateUserStatus(user)) {
-            // todo 返回message "更新状态成功"
-            return true;
+            return BaseResponse.buildResponse(0, "更新用户状态成功！");
         } else {
-            // todo 返回message "更新状态失败"
-            return false;
+            return BaseResponse.buildResponse(-1, "更新用户状态失败！");
         }
     }
 
@@ -136,18 +130,16 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public boolean updatePassword(User requestUser) {
+    public BaseResponse updatePassword(User requestUser) {
         String salt = new SecureRandomNumberGenerator().nextBytes().toString();
         int times = 2;
         requestUser.setSalt(salt);
         String encodedPassword = new SimpleHash("md5", "123", salt, times).toString();
         requestUser.setPassword(encodedPassword);
         if (userMapper.updatePassword(requestUser)) {
-            // todo 返回message "密码更新成功"
-            return true;
+            return BaseResponse.buildResponse(0, "更新用户密码成功！");
         } else {
-            // todo 返回massge "密码更新失败"
-            return false;
+            return BaseResponse.buildResponse(-1, "更新用户密码失败！");
         }
     }
 
@@ -158,18 +150,17 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean editUser(User requestUser) {
+    public BaseResponse editUser(User requestUser) {
         if (userMapper.updateUserInfo(requestUser)) {
-            if (adminUserRoleService.updateRoleChanges(requestUser.getId(), requestUser.getRoles())) {
-                // todo 返回message "用户基础信息更新成功"
-                return true;
+            int uid = userMapper.getUserByUsername(requestUser.getUsername()).getId();
+            BaseResponse baseResponse = adminUserRoleService.updateRoleChanges(uid, requestUser.getRoles());
+            if (baseResponse.getStatus() == 0) {
+                return BaseResponse.buildResponse(0, "更新用户信息成功！");
             } else {
-                // todo 返回message "用户角色信息更新失败"
-                return false;
+                return BaseResponse.buildResponse(-1, baseResponse.getMessage());
             }
         } else {
-            // todo 返回message "用户基础信息更新失败"
-            return false;
+            return BaseResponse.buildResponse(-1, "更新用户基础信息失败！");
         }
     }
 }

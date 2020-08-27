@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.controller;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.JotterArticle;
 import com.vilce.springboot_vue.service.JotterArticleService;
 import io.swagger.annotations.Api;
@@ -29,7 +30,7 @@ public class JotterController {
     //    @PostMapping("api/admin/content/article")
     @ApiOperation(value = "添加或更新文章信息")
     @PostMapping("saveArticle")
-    public boolean saveArticle(@RequestBody @Valid JotterArticle article) {
+    public BaseResponse saveArticle(@RequestBody @Valid JotterArticle article) {
         return jotterArticleService.addOrUpdate(article);
     }
 
@@ -50,7 +51,7 @@ public class JotterController {
     //    @DeleteMapping("/api/admin/content/article/{id}")
     @GetMapping("deleteArticle")
     @ApiOperation(value = "根据id删除文章")
-    public boolean deleteArticle(int id) {
+    public BaseResponse deleteArticle(int id) {
         return jotterArticleService.deleteArticle(id);
     }
 }

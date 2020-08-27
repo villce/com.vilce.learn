@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.AdminPermission;
 import com.vilce.springboot_vue.model.po.AdminRolePermission;
 
@@ -22,7 +23,7 @@ public interface AdminRolePermissionService {
      * @param perms
      * @return
      */
-    boolean updateRolePermission(int rid, List<AdminPermission> perms);
+    BaseResponse updateRolePermission(int rid, List<AdminPermission> perms);
 
     /**
      * 根据角色id获取角色权限

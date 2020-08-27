@@ -9,7 +9,7 @@
     </select>
 
     <delete id="deleteRolePermissionByRid" >
-		DELETE *
+		DELETE
 		FROM admin_role_permission
 		WHERE rid = #{rid}
     </delete>

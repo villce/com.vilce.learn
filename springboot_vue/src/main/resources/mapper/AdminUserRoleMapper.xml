@@ -9,7 +9,7 @@
     </select>
 
     <delete id="deleteUserRoleByUid">
-		DELETE *
+		DELETE
 		FROM admin_user_role
 		WHERE uid = #{uid}
     </delete>

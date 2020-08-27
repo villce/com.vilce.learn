@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.AdminRoleMapper;
 import com.vilce.springboot_vue.model.po.*;
 import com.vilce.springboot_vue.service.*;
@@ -81,15 +82,12 @@ public class AdminRoleServiceImpl implements AdminRoleService {
      * @return
      */
     @Override
-    public boolean updateRoleStatus(AdminRole role) {
-        // 更新角色状态信息
-        boolean result = adminRoleMapper.updateRoleStatus(role);
-        if (result) {
-            // todo 返回message "状态更新成功"
+    public BaseResponse updateRoleStatus(AdminRole role) {
+        if (adminRoleMapper.updateRoleStatus(role)) {
+            return BaseResponse.buildResponse(0, "状态更新成功！");
         }else {
-            // todo 返回message "状态更新失败"
+            return BaseResponse.buildResponse(-1 , "状态更新失败！");
         }
-        return result;
     }
 
     /**
@@ -99,20 +97,28 @@ public class AdminRoleServiceImpl implements AdminRoleService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean addOrUpdateRole(@RequestBody AdminRole role) {
-        boolean result = false;
+    public BaseResponse addOrUpdateRole(@RequestBody AdminRole role) {
+        BaseResponse baseResponse;
         if (ObjectUtils.isEmpty(role.getId())) {
             // 当角色id为空时，添加角色
-            result = adminRoleMapper.addRole(role);
+            if (adminRoleMapper.addRole(role)) {
+                baseResponse = BaseResponse.buildResponse(0, "添加角色成功！");
+            }else {
+                baseResponse = BaseResponse.buildResponse(-1, "添加角色失败！");
+            }
         }else {
             // 当角色id不为空时，更新角色，更新角色对应权限信息
-            result = adminRoleMapper.updateRole(role) && adminRolePermissionService.updateRolePermission(role.getId(), role.getPerms());
+            if (adminRoleMapper.updateRole(role)) {
+                BaseResponse response = adminRolePermissionService.updateRolePermission(role.getId(), role.getPerms());
+                if (response.getStatus() == 0) {
+                    baseResponse = BaseResponse.buildResponse(0, "更新角色信息成功！");
+                }else {
+                    baseResponse = BaseResponse.buildResponse(-1, response.getMessage());
+                }
+            }else {
+                baseResponse = BaseResponse.buildResponse(-1, "更新角色基础信息失败！");
+            }
         }
-        if (result) {
-            // todo 返回message "添加或更新角色信息"
-        }else {
-            // todo 返回message "添加或更新角色信息"
-        }
-        return result;
+        return baseResponse;
     }
 }

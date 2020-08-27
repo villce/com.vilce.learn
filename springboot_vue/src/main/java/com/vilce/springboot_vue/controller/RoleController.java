@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.controller;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.AdminPermission;
 import com.vilce.springboot_vue.model.po.AdminRole;
 import com.vilce.springboot_vue.service.AdminPermissionService;
@@ -42,14 +43,14 @@ public class RoleController {
     //    @PutMapping("/api/admin/role/status")
     @PutMapping("updateRoleStatus")
     @ApiOperation(value = "更改角色状态信息")
-    public boolean updateRoleStatus(@RequestBody AdminRole role) {
+    public BaseResponse updateRoleStatus(@RequestBody AdminRole role) {
         return adminRoleService.updateRoleStatus(role);
     }
 
     //    @PutMapping("/api/admin/role")
     @PutMapping("addOrUpdateRole")
     @ApiOperation(value = "添加角色或更新角色及角色权限信息")
-    public boolean addOrUpdateRole(@RequestBody AdminRole role) {
+    public BaseResponse addOrUpdateRole(@RequestBody AdminRole role) {
         return adminRoleService.addOrUpdateRole(role);
     }
 
@@ -63,7 +64,7 @@ public class RoleController {
 //    @PutMapping("/api/admin/role/menu")
     @PutMapping("updateRoleMenu")
     @ApiOperation(value = "更新角色菜单信息")
-    public boolean updateRoleMenu(@RequestParam int rid, @RequestBody Map<String, List<Integer>> menusIds) {
+    public BaseResponse updateRoleMenu(@RequestParam int rid, @RequestBody Map<String, List<Integer>> menusIds) {
         return  adminRoleMenuService.updateRoleMenu(rid, menusIds);
     }
 }

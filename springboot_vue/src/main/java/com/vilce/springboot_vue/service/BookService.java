@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.Book;
 import com.vilce.springboot_vue.model.vo.respones.BookRes;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +30,7 @@ public interface BookService {
      * @param book
      * @return
      */
-    boolean addOrUpdateBooks(Book book);
+    BaseResponse addOrUpdateBooks(Book book);
 
     /**
      * 根据id删除图书信息
@@ -37,7 +38,7 @@ public interface BookService {
      * @param id
      * @return
      */
-    boolean deleteBookById(int id);
+    BaseResponse deleteBookById(int id);
 
 
     /**

@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.AdminRoleMenu;
 import com.vilce.springboot_vue.model.po.AdminUserRole;
 
@@ -39,6 +40,6 @@ public interface AdminRoleMenuService {
      * @param menusIds
      * @return
      */
-    boolean updateRoleMenu(int rid, Map<String, List<Integer>> menusIds);
+    BaseResponse updateRoleMenu(int rid, Map<String, List<Integer>> menusIds);
 
 }

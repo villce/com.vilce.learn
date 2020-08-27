@@ -110,7 +110,8 @@
     </update>
 
     <delete id="deleteWageOrder" >
-        DELETE vilce.wage_order
+        DELETE
+        FROM wage_order
         WHERE EID=#{eid}
     </delete>
 </mapper>

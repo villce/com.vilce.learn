@@ -23,7 +23,7 @@
     </insert>
 
     <delete id="deleteArticleById">
-		DELETE *
+		DELETE
 		FROM jotter_article
 		WHERE id = #{id}
     </delete>

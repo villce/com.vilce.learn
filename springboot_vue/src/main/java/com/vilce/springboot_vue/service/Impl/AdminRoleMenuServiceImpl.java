@@ -1,9 +1,11 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.AdminRoleMenuMapper;
 import com.vilce.springboot_vue.model.po.AdminRoleMenu;
 import com.vilce.springboot_vue.model.po.AdminUserRole;
 import com.vilce.springboot_vue.service.AdminRoleMenuService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 角色菜单相关服务实现
@@ -33,13 +36,12 @@ public class AdminRoleMenuServiceImpl implements AdminRoleMenuService {
      */
     @Override
     public List<AdminRoleMenu> getRoleMenuByUserRole(List<AdminUserRole> userRoleList) {
-        // todo 代码优化
         List<AdminRoleMenu> adminRoleMenuList = new LinkedList<>();
         userRoleList.forEach(userRole -> {
             List<AdminRoleMenu> adminRoleMenus = adminRoleMenuMapper.getRoleMenuAByRid(userRole.getRid());
             adminRoleMenuList.addAll(adminRoleMenus);
         });
-        return adminRoleMenuList;
+        return adminRoleMenuList.stream().distinct().collect(Collectors.toList());
     }
 
     /**
@@ -61,17 +63,20 @@ public class AdminRoleMenuServiceImpl implements AdminRoleMenuService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateRoleMenu(int rid, Map<String, List<Integer>> menusIds) {
-        // 删除之前角色菜单信息
-        if (adminRoleMenuMapper.deleteRoleMenuByRid(rid)){
-            for (Integer mid : menusIds.get("menusIds")) {
-                if (!adminRoleMenuMapper.addRoleMenu(rid, mid)) {
-                    // todo 返回message "保存失败，未知错误"
-                }
+    public BaseResponse updateRoleMenu(int rid, Map<String, List<Integer>> menusIds) {
+        // 判断当前是否存在角色菜单信息
+        List<AdminRoleMenu> roleMenuList = adminRoleMenuMapper.getRoleMenuAByRid(rid);
+        if (ObjectUtils.isNotEmpty(roleMenuList)) {
+            // 删除之前角色菜单信息
+            if (!adminRoleMenuMapper.deleteRoleMenuByRid(rid)) {
+                return BaseResponse.buildResponse(-1, "删除角色菜单信息失败！");
             }
-        }else {
-            // todo 返回message "删除失败，未知错误"
         }
-        return true;
+        for (Integer mid : menusIds.get("menusIds")) {
+            if (!adminRoleMenuMapper.addRoleMenu(rid, mid)) {
+                return BaseResponse.buildResponse(-1, "保存角色菜单信息失败！");
+            }
+        }
+        return BaseResponse.buildResponse(0, "更新角色菜单信息成功！");
     }
 }

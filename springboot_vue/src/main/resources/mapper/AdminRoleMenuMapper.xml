@@ -9,7 +9,7 @@
     </select>
 
     <delete id="deleteRoleMenuByRid" >
-		DELETE *
+		DELETE
 		FROM admin_role_menu
 		WHERE rid = #{rid}
     </delete>

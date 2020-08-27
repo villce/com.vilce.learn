@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.User;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface UserService {
      * @param requestUser
      * @return
      */
-    boolean updateUserStatus(User requestUser);
+    BaseResponse updateUserStatus(User requestUser);
 
     /**
      * 更新用户密码
@@ -43,7 +44,7 @@ public interface UserService {
      * @param requestUser
      * @return
      */
-    boolean updatePassword(User requestUser);
+    BaseResponse updatePassword(User requestUser);
 
     /**
      * 更新用户基础信息
@@ -51,7 +52,7 @@ public interface UserService {
      * @param requestUser
      * @return
      */
-    boolean editUser(User requestUser);
+    BaseResponse editUser(User requestUser);
 
     /**
      * 添加用户
@@ -59,5 +60,5 @@ public interface UserService {
      * @param user
      * @return
      */
-    boolean addUser(User user);
+    BaseResponse addUser(User user);
 }

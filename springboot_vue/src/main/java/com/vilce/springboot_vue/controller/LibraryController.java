@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.controller;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.Book;
 import com.vilce.springboot_vue.model.vo.respones.BookRes;
 import com.vilce.springboot_vue.service.BookService;
@@ -39,14 +40,14 @@ public class LibraryController {
 //    @PostMapping("/api/admin/content/books")
     @PostMapping("addOrUpdateBooks")
     @ApiOperation(value = "添加或更新图书信息")
-    public boolean addOrUpdateBooks(@RequestBody @Valid Book book) {
+    public BaseResponse addOrUpdateBooks(@RequestBody @Valid Book book) {
         return bookService.addOrUpdateBooks(book);
     }
 
 //    @PostMapping("/api/admin/content/books/delete")
     @PostMapping("deleteBook")
     @ApiOperation(value = "根据id删除图书信息")
-    public boolean deleteBook(@RequestBody @Valid Book book) {
+    public BaseResponse deleteBook(@RequestBody @Valid Book book) {
         return  bookService.deleteBookById(book.getId());
     }
 

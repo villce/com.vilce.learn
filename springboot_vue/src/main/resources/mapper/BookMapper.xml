@@ -27,7 +27,7 @@
     </update>
 
     <delete id="deleteBookById" >
-		DELETE *
+		DELETE
 		FROM book
 		WHERE id=#{id}
     </delete>

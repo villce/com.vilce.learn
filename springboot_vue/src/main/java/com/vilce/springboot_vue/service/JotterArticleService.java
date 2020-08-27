@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.JotterArticle;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface JotterArticleService {
      * @param article
      * @return
      */
-    boolean addOrUpdate(JotterArticle article);
+    BaseResponse addOrUpdate(JotterArticle article);
 
     /**
      * 分页获取文章信息
@@ -44,5 +45,5 @@ public interface JotterArticleService {
      * @param id
      * @return
      */
-    boolean deleteArticle(int id);
+    BaseResponse deleteArticle(int id);
 }

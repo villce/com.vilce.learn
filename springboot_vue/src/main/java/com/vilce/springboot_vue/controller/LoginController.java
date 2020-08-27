@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.controller;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.User;
 import com.vilce.springboot_vue.service.UserService;
 import io.swagger.annotations.Api;
@@ -32,7 +33,8 @@ public class LoginController {
 //    @PostMapping("/api/login")
     @PostMapping("in")
     @ApiOperation(value = "用户登录")
-    public Boolean login(@RequestBody User requestUser) {
+    public BaseResponse login(@RequestBody User requestUser) {
+        BaseResponse baseResponse;
         String username = requestUser.getUsername();
         username = HtmlUtils.htmlEscape(username);
 
@@ -43,35 +45,32 @@ public class LoginController {
             subject.login(usernamePasswordToken);
             User user = userService.getUserByUsername(username);
             if (!user.isEnabled()) {
-                // todo 设置返回message "该用户已被禁用"
-                return false;
+                baseResponse = BaseResponse.buildResponse(-1, "该用户已被禁用");
+            }else {
+                baseResponse = BaseResponse.buildResponse(0, username);
             }
-            // todo 设置返回message username
-            return true;
         } catch (IncorrectCredentialsException e) {
-            // todo 设置返回message "密码错误"
-            return false;
+            baseResponse = BaseResponse.buildResponse(-1, "密码错误");
         } catch (UnknownAccountException e) {
-            // todo 设置返回message "账户不存在"
-            return false;
+            baseResponse = BaseResponse.buildResponse(-1, "账户不存在");
         }
+        return baseResponse;
     }
 
 //    @PostMapping("/api/register")
     @PostMapping("register")
     @ApiOperation(value = "用户注册")
-    public boolean register(@RequestBody User user) {
+    public BaseResponse register(@RequestBody User user) {
         return userService.addUser(user);
     }
 
 //    @GetMapping("/api/logout")
     @GetMapping("out")
     @ApiOperation(value = "退出登录")
-    public boolean logout() {
+    public BaseResponse logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        // todo 返回message "成功登出"
-        return true;
+        return BaseResponse.buildResponse(0, "成功登出！");
     }
 
 //    @GetMapping("/api/authentication")

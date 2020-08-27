@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.AdminRole;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface AdminRoleService {
      * @param role
      * @return
      */
-    boolean updateRoleStatus(AdminRole role);
+    BaseResponse updateRoleStatus(AdminRole role);
 
     /**
      * 添加或更新角色信息
@@ -43,5 +44,5 @@ public interface AdminRoleService {
      * @param role
      * @return
      */
-    boolean addOrUpdateRole(AdminRole role);
+    BaseResponse addOrUpdateRole(AdminRole role);
 }

@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.BookMapper;
 import com.vilce.springboot_vue.model.po.Book;
 import com.vilce.springboot_vue.model.po.Category;
@@ -56,20 +57,31 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean addOrUpdateBooks(Book book) {
+    public BaseResponse addOrUpdateBooks(Book book) {
+        BaseResponse baseResponse;
         if (ObjectUtils.isNotEmpty(book.getId())) {
             // 当id不为空时，更新书信息
-            return bookMapper.updateBook(book);
+            if (bookMapper.updateBook(book)) {
+                baseResponse = BaseResponse.buildResponse(0, "更新图书信息成功！");
+            }else {
+                baseResponse = BaseResponse.buildResponse(-1, "更新图书信息失败！");
+            }
         } else {
             // 根据书名和作者获取图书信息
             Book result = bookMapper.getBookByNameAndAuthor(book);
             if (ObjectUtils.isNotEmpty(result)) {
                 // 当eid为空，但书名、作者相同时，不能添加
-                return false;
+                baseResponse = BaseResponse.buildResponse(-1, "添加图书失败，存在相同的书名和作者名");
+            }else {
+                // 当eid为空，但书名、作者不相同时，能添加
+                if (bookMapper.addBook(book)) {
+                    baseResponse = BaseResponse.buildResponse(0, "添加图书成功！");
+                }else {
+                    baseResponse = BaseResponse.buildResponse(-1 , "添加图书失败！");
+                }
             }
-            // 当eid为空，但书名、作者不相同时，能添加
-            return bookMapper.addBook(book);
         }
+        return baseResponse;
     }
 
     /**
@@ -79,8 +91,12 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
-    public boolean deleteBookById(int id) {
-        return bookMapper.deleteBookById(id);
+    public BaseResponse deleteBookById(int id) {
+        if (bookMapper.deleteBookById(id)) {
+            return BaseResponse.buildResponse(0, "删除图书成功！");
+        }else {
+            return BaseResponse.buildResponse(-1, "删除图书失败！");
+        }
     }
 
     /**

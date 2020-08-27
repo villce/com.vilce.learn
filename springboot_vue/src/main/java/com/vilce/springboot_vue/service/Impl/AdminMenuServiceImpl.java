@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.mapper.AdminMenuMapper;
 import com.vilce.springboot_vue.model.po.AdminMenu;
 import com.vilce.springboot_vue.model.po.AdminRoleMenu;
@@ -56,17 +57,19 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     public List<AdminMenu> getMenusByCurrentUser() {
         // 获取当前用户
         String username = SecurityUtils.getSubject().getPrincipal().toString();
+        System.out.println(username);
         User user = userService.getUserByUsername(username);
 
         // 获取用户角色
         List<AdminUserRole> userRoleList = adminUserRoleService.getUserRoleByUid(user.getId());
+        System.out.println(JSONUtils.toJsonPretty(userRoleList));
 
         // 获取角色菜单
         List<AdminRoleMenu> roleMenuList = adminRoleMenuService.getRoleMenuByUserRole(userRoleList);
 
         List<AdminMenu> menuList = new LinkedList<>();
         roleMenuList.forEach(roleMenu -> {
-            AdminMenu adminMenu = adminMenuMapper.getMenuById(roleMenu);
+            AdminMenu adminMenu = adminMenuMapper.getMenuById(roleMenu.getMid());
             menuList.add(adminMenu);
         });
         menuList.stream().distinct().collect(Collectors.toList());
@@ -87,7 +90,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         // 对应菜单id获取菜单信息
         List<AdminMenu> menuList = new LinkedList<>();
         roleMenuList.forEach(roleMenu -> {
-            AdminMenu adminMenu = adminMenuMapper.getMenuById(roleMenu);
+            AdminMenu adminMenu = adminMenuMapper.getMenuById(roleMenu.getMid());
             menuList.add(adminMenu);
         });
         handleMenus(menuList);

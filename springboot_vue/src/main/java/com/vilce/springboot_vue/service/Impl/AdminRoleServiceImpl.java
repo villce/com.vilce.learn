@@ -6,6 +6,7 @@ import com.vilce.springboot_vue.service.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.LinkedList;
@@ -97,6 +98,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
      * @param role
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean addOrUpdateRole(@RequestBody AdminRole role) {
         boolean result = false;
         if (ObjectUtils.isEmpty(role.getId())) {

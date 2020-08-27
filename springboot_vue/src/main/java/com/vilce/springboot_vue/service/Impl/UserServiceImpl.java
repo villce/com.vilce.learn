@@ -11,6 +11,7 @@ import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
@@ -106,7 +107,7 @@ public class UserServiceImpl implements UserService {
         if (result) {
             // todo 返回message "注册成功"
             return true;
-        }else {
+        } else {
             // todo 返回message "注册失败，未知错误"
             return false;
         }
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.updateUserStatus(user)) {
             // todo 返回message "更新状态成功"
             return true;
-        }else {
+        } else {
             // todo 返回message "更新状态失败"
             return false;
         }
@@ -144,7 +145,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.updatePassword(requestUser)) {
             // todo 返回message "密码更新成功"
             return true;
-        }else {
+        } else {
             // todo 返回massge "密码更新失败"
             return false;
         }
@@ -156,6 +157,7 @@ public class UserServiceImpl implements UserService {
      * @param requestUser
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean editUser(User requestUser) {
         if (userMapper.updateUserInfo(requestUser)) {
             if (adminUserRoleService.updateRoleChanges(requestUser.getId(), requestUser.getRoles())) {
@@ -165,7 +167,7 @@ public class UserServiceImpl implements UserService {
                 // todo 返回message "用户角色信息更新失败"
                 return false;
             }
-        }else {
+        } else {
             // todo 返回message "用户基础信息更新失败"
             return false;
         }

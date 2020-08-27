@@ -21,14 +21,14 @@
 
     <insert id="addRole" parameterType="com.vilce.springboot_vue.model.po.AdminRole" >
 		INSERT INTO admin_role
-		(name,nameZh,enabled)
-		VALUES (#{name},#{nameZh},#{enabled})
+		(name,name_zh,enabled)
+		VALUES (#{name},#{name_zh},#{enabled})
     </insert>
 
     <update id="updateRole" parameterType="com.vilce.springboot_vue.model.po.AdminRole">
 		UPDATE admin_role
 		SET name=#{name},
-		    nameZh=#{nameZh},
+		    name_zh=#{name_zh},
 		    enabled=#{enabled}
 		WHERE id=#{id}
     </update>

@@ -29,19 +29,19 @@
 		SET name=#{name},
 		    phone=#{phone},
 		    email=#{email}
-		WHERE id=#{id}
+		WHERE username=#{username}
     </update>
 
     <update id="updateUserStatus" parameterType="com.vilce.springboot_vue.model.po.User" >
         UPDATE admin_user
 		SET enabled=#{enabled}
-		WHERE id=#{id}
+		WHERE username=#{username}
     </update>
 
     <update id="updatePassword" parameterType="com.vilce.springboot_vue.model.po.User" >
         UPDATE admin_user
 		SET password=#{password},
 		    salt=#{salt}
-		WHERE id=#{id}
+		WHERE username=#{username}
     </update>
 </mapper>

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -54,6 +55,7 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean addOrUpdateBooks(Book book) {
         if (ObjectUtils.isNotEmpty(book.getId())) {
             // 当id不为空时，更新书信息
@@ -107,6 +109,12 @@ public class BookServiceImpl implements BookService {
         return coverBook(bookList);
     }
 
+    /**
+     * 上传图书封面图片
+     *
+     * @param file
+     * @return
+     */
     @Override
     public String coversUpload(MultipartFile file) {
         File imageFolder = new File(coversUrl);

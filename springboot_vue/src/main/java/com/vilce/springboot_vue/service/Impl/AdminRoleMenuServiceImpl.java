@@ -6,6 +6,7 @@ import com.vilce.springboot_vue.model.po.AdminUserRole;
 import com.vilce.springboot_vue.service.AdminRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class AdminRoleMenuServiceImpl implements AdminRoleMenuService {
      * @param menusIds
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateRoleMenu(int rid, Map<String, List<Integer>> menusIds) {
         // 删除之前角色菜单信息
         if (adminRoleMenuMapper.deleteRoleMenuByRid(rid)){

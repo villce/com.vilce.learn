@@ -5,13 +5,13 @@
     <select id="getMenuById" resultType="com.vilce.springboot_vue.model.po.AdminMenu" >
 		SELECT *
 		FROM admin_menu
-		WHERE id = #{id}
+		WHERE id = #{mid}
     </select>
 
     <select id="findAllByParentId" resultType="com.vilce.springboot_vue.model.po.AdminMenu" >
 		SELECT *
 		FROM admin_menu
-		WHERE parent_id = #{parentId}
+		WHERE parent_id = #{parent_id}
     </select>
 
 </mapper>

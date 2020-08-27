@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -18,25 +17,19 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "文章")
-public class JotterArticle implements Serializable {
+public class JotterArticle {
     @ApiModelProperty(value = "文章id",example = "0")
     private int id;
     @ApiModelProperty(value = "文章标题",example = "示例")
-    @JsonProperty("article_title")
-    private String articleTitle;
+    private String article_title;
     @ApiModelProperty(value = "文章html",example = "示例")
-    @JsonProperty("article_content_html")
-    private String articleContentHtml;
+    private String article_content_html;
     @ApiModelProperty(value = "文章md",example = "示例")
-    @JsonProperty("article_content_md")
-    private String articleContentMd;
+    private String article_content_md;
     @ApiModelProperty(value = "文章摘要",example = "示例")
-    @JsonProperty("article_abstract")
-    private String articleAbstract;
+    private String article_abstract;
     @ApiModelProperty(value = "文章封面地址",example = "d:/img/1.png")
-    @JsonProperty("article_cover")
-    private String articleCover;
+    private String article_cover;
     @ApiModelProperty(value = "文章发布时间",example = "2020.08.26")
-    @JsonProperty("article_date")
-    private Date articleDate;
+    private Date article_date;
 }

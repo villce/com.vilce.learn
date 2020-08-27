@@ -7,6 +7,7 @@ import com.vilce.springboot_vue.model.po.AdminUserRole;
 import com.vilce.springboot_vue.service.AdminUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class AdminUserRoleServiceImpl implements AdminUserRoleService {
      * @param roles
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateRoleChanges(int uid, List<AdminRole> roles) {
         // 删除旧的用户角色信息
         if (adminUserRoleMapper.deleteUserRoleByUid(uid)) {

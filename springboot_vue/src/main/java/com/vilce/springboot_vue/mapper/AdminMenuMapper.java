@@ -28,8 +28,8 @@ public interface AdminMenuMapper {
     /**
      * 根据菜单id获取菜单信息
      *
-     * @param roleMenu
+     * @param mid
      * @return
      */
-    AdminMenu getMenuById(AdminRoleMenu roleMenu);
+    AdminMenu getMenuById(int mid);
 }

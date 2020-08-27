@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @param article
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean addOrUpdate(JotterArticle article) {
         boolean result = false;
         if (ObjectUtils.isEmpty(article.getId())) {

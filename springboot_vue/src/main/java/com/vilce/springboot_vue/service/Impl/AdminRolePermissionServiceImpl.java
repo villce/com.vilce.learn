@@ -6,6 +6,7 @@ import com.vilce.springboot_vue.model.po.AdminRolePermission;
 import com.vilce.springboot_vue.service.AdminRolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class AdminRolePermissionServiceImpl implements AdminRolePermissionServic
      * @param perms
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateRolePermission(int rid, List<AdminPermission> perms) {
         // 删除当前角色所有的权限
         if (adminRolePermissionMapper.deleteRolePermissionByRid(rid)) {

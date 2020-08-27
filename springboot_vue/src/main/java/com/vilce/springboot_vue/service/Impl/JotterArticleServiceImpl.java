@@ -1,17 +1,18 @@
 package com.vilce.springboot_vue.service.Impl;
 
 import com.vilce.common.utils.JSONUtils;
-import com.vilce.springboot_vue.config.redis.RedisService;
 import com.vilce.springboot_vue.mapper.JotterArticleMapper;
 import com.vilce.springboot_vue.model.po.JotterArticle;
 import com.vilce.springboot_vue.service.JotterArticleService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description: 文章相关服务实现
@@ -27,9 +28,10 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     @Autowired
     private JotterArticleMapper jotterArticleMapper;
     @Autowired
-    private RedisService redisService;
+    private StringRedisTemplate redisTemplate;
 
     private static final String ARTICLE = "com.vilce.springbootVue.article:";
+    private static final int redisTimeOut = 300;
 
     /**
      * 分页获取文章
@@ -41,14 +43,16 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     @Override
     public List<JotterArticle> listArticles(int page, int size) {
         List<JotterArticle> articleList = new ArrayList<>();
-        String key = StringUtils.join(ARTICLE, "size:", size);
+        String redisKey = StringUtils.join(ARTICLE, "size:", size);
+        System.out.println(redisKey);
         // 只缓存第一页
         if (page == 1) {
-            // todo 优化redis
-            articleList = (List<JotterArticle>) redisService.get(key);
-            if (articleList.isEmpty()) {
+            String redisStr = redisTemplate.opsForValue().get(redisKey);
+            if (StringUtils.isEmpty(redisStr)) {
                 articleList = jotterArticleMapper.findAll(page - 1, size);
-                redisService.set(key, articleList);
+                redisTemplate.opsForValue().set(redisKey, JSONUtils.toJson(articleList), redisTimeOut, TimeUnit.SECONDS);
+            }else {
+                articleList = JSONUtils.toJavaBean(redisStr, List.class, JotterArticle.class);
             }
         } else {
             articleList = jotterArticleMapper.findAll(page - 1, size);
@@ -64,15 +68,13 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      */
     @Override
     public JotterArticle findArticleById(int id) {
-        String key = StringUtils.join(ARTICLE, "id:", id);
-        // todo 优化redis
-        JotterArticle article = (JotterArticle) redisService.get(key);
-        System.out.println(ObjectUtils.isEmpty(article));
-        if (ObjectUtils.isEmpty(article)) {
-            article = jotterArticleMapper.findArticleById(id);
-            System.out.println(JSONUtils.toJson(article));
-            redisService.set(key, article);
+        String redisKey = StringUtils.join(ARTICLE, "id:", id);
+        String redisStr = redisTemplate.opsForValue().get(redisKey);
+        if (StringUtils.isNotEmpty(redisStr)) {
+            return JSONUtils.toJavaBean(redisStr, JotterArticle.class);
         }
+        JotterArticle article = jotterArticleMapper.findArticleById(id);
+        redisTemplate.opsForValue().set(redisKey, JSONUtils.toJson(article), redisTimeOut, TimeUnit.SECONDS);
         return article;
     }
 
@@ -93,9 +95,8 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         }
         // 添加或更新成功后，也同步添加或更新缓存
         if (result) {
-            String url = StringUtils.join(ARTICLE, article.getId());
-            // todo 缓存优化
-            redisService.set(url, article);
+            String redisKey = StringUtils.join(ARTICLE, article.getId());
+            redisTemplate.opsForValue().set(redisKey, JSONUtils.toJson(article), redisTimeOut, TimeUnit.SECONDS);
         }
         return result;
     }
@@ -109,8 +110,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     public boolean deleteArticle(int id) {
         boolean result = jotterArticleMapper.deleteArticleById(id);
         if (result) {
-            // todo 缓存优化
-            redisService.delete(StringUtils.join(ARTICLE, "id:", id));
+            redisTemplate.opsForValue().decrement(StringUtils.join(ARTICLE, "id:", id));
         }
         return result;
     }

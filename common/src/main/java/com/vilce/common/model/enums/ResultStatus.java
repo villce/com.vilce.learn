@@ -4,9 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- 错误码
- * @author vector
- *
+ * @Description: 返回枚举类
+ * @ProjectName: com.vilce.learn
+ * @Package: com.vilce.common.model.enums.ResultStatus
+ * @Author: 雷才哲
+ * @Date: 2020/8/26 18:09
+ * @Version: 1.0
  */
 public enum ResultStatus {
 
@@ -94,48 +97,48 @@ public enum ResultStatus {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultStatus.class);
 
 
-	private int code;
-	private String msg;
+	private int status;
+	private String message;
 
-	ResultStatus(int code, String msg){
-		this.code = code;
-		this.msg = msg;
+	ResultStatus(int status, String message){
+		this.status = status;
+		this.message = message;
 	}
 
-	public static int getCode(String define){
+	public static int getStatus(String define){
 		try {
-			return ResultStatus.valueOf(define).code;
+			return ResultStatus.valueOf(define).status;
 		} catch (IllegalArgumentException e) {
 			LOGGER.error("undefined error code: {}", define);
-			return FAIL.getErrorCode();
+			return FAIL.getStatus();
 		}
 	}
 
-	public static String getMsg(String define){
+	public static String getMessage(String define){
 		try {
-			return ResultStatus.valueOf(define).msg;
+			return ResultStatus.valueOf(define).message;
 		} catch (IllegalArgumentException e) {
 			LOGGER.error("undefined error code: {}", define);
-			return FAIL.getErrorMsg();
+			return FAIL.getMessage();
 		}
 
 	}
 
-	public static String getMsg(int code){
+	public static String getMessage(int status){
 		for(ResultStatus err : ResultStatus.values()){
-			if(err.code==code){
-				return err.msg;
+			if(err.status==status){
+				return err.message;
 			}
 		}
 		return "errorCode not defined ";
 	}
 
-	public int getErrorCode(){
-		return code;
+	public int getStatus(){
+		return status;
 	}
 
-	public String getErrorMsg(){
-		return msg;
+	public String getMessage(){
+		return message;
 	}
 
 }

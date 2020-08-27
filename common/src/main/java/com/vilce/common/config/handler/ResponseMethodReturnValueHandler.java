@@ -1,13 +1,16 @@
 package com.vilce.common.config.handler;
 
-import com.vilce.common.model.vo.BaseResponse;
+import com.vilce.common.model.po.BaseResponse;
+import com.vilce.common.utils.SwaggerUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,14 +41,19 @@ public class ResponseMethodReturnValueHandler implements HandlerMethodReturnValu
     public void handleReturnValue(Object o, MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest) throws Exception {
         //标注该请求已经在当前处理程序处理过
         modelAndViewContainer.setRequestHandled(true);
-        if ((null == o) && (o instanceof BaseResponse)) {
+        HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
+        if (SwaggerUtils.URLS.contains(request.getRequestURI())) {
+            // 包含在路径配置文件里或添加有标签注解的，都不进行处理
+            proxyObject.handleReturnValue(o, methodParameter, modelAndViewContainer, nativeWebRequest);
+        } else if (null != o && (o instanceof BaseResponse)) {
+            // entity不为空但继承BaseResponse，不进行处理
             proxyObject.handleReturnValue(o, methodParameter, modelAndViewContainer, nativeWebRequest);
         } else {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("status", 0);
-            map.put("message", "访问成功");
-            map.put("data", o);
-            proxyObject.handleReturnValue(map, methodParameter, modelAndViewContainer, nativeWebRequest);
+            BaseResponse baseResponse = BaseResponse.buildResponse();
+            if (!methodParameter.getMethod().getReturnType().equals(Void.TYPE)) {
+                baseResponse.setData(o);
+            }
+            proxyObject.handleReturnValue(ResponseEntity.ok(baseResponse), methodParameter, modelAndViewContainer, nativeWebRequest);
         }
     }
 }

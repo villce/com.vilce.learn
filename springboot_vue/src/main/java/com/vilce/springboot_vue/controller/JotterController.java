@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/article")
-@Api(value = "文章相关API")
+@Api(tags = "文章相关API")
 public class JotterController {
 
     @Autowired

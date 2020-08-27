@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/library")
-@Api(value = "图书馆相关API")
+@Api(tags = "图书馆相关API")
 public class LibraryController {
 
     @Autowired

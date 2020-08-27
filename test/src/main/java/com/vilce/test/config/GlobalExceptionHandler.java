@@ -1,7 +1,5 @@
 package com.vilce.test.config;
 
-import com.vilce.common.model.po.BaseRequest;
-import com.vilce.common.model.vo.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -16,9 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Description: 控制器返回值配置处理类
- * @Author: 姚明洋
- * @Date: 2019/5/21 14:21
+ * @Description: 控制器返回值配置
+ * @ProjectName: com.vilce.learn
+ * @Package: com.vilce.annotation.config.advice.ResponseMethodReturnValueConfigurer
+ * @Author: 雷才哲
+ * @Date: 2019/11/13 13:47
  * @Version: 1.0
  */
 @Configuration

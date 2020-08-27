@@ -1,14 +1,14 @@
 package com.vilce.common.config.advice;
 
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.common.model.vo.BaseResponse;
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.common.utils.LoggerUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @Description: controller 增强器
+ * @Description: 异常捕获增强器
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.annotation.config.advice.ControllerHandlers
  * @Author: 雷才哲
@@ -67,6 +67,6 @@ public class ExceptionAdvice {
             message = StringUtils.join(message, "\n", element.toString());
         }
         LoggerUtils.error(ExceptionAdvice.class, message);
-        return BaseResponse.createResponse(e.getStatusCode(), e.getErrorMessage());
+        return BaseResponse.buildResponse(e.getStatusCode(), e.getErrorMessage());
     }
 }

@@ -23,7 +23,7 @@ import org.springframework.web.util.HtmlUtils;
  */
 @RestController
 @RequestMapping("/login")
-@Api(value = "登录相关API")
+@Api(tags = "登录相关API")
 public class LoginController {
 
     @Autowired

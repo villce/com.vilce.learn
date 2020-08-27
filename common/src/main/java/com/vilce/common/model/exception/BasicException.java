@@ -15,13 +15,13 @@ public class BasicException extends RuntimeException{
     private String errorMessage;
 
     public BasicException() {
-        this.statusCode = ResultStatus.FAIL.getErrorCode();
-        this.errorMessage = ResultStatus.FAIL.getErrorMsg();
+        this.statusCode = ResultStatus.FAIL.getStatus();
+        this.errorMessage = ResultStatus.FAIL.getMessage();
     }
 
     public BasicException(ResultStatus status) {
-        this.statusCode = status.getErrorCode();
-        this.errorMessage = status.getErrorMsg();
+        this.statusCode = status.getStatus();
+        this.errorMessage = status.getMessage();
     }
 
     public BasicException(int status, String message) {

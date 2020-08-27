@@ -92,7 +92,7 @@ CREATE TABLE `admin_role_menu` (
   `rid` int(11) DEFAULT NULL,
   `mid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- ----------------------------
 -- Records of admin_role_menu
@@ -232,13 +232,13 @@ DROP TABLE IF EXISTS `jotter_article`;
 CREATE TABLE `jotter_article` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `article_title` varchar(255) DEFAULT NULL,
-  `article_content_html` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `article_content_md` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `article_content_html` longtext CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `article_content_md` longtext CHARACTER SET utf8 COLLATE utf8_general_ci,
   `article_abstract` varchar(255) DEFAULT NULL,
   `article_cover` varchar(255) DEFAULT NULL,
   `article_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- ----------------------------
 -- Records of jotter_article

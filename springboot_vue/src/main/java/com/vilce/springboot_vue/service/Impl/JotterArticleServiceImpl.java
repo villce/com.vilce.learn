@@ -4,6 +4,7 @@ import com.vilce.common.model.po.BaseResponse;
 import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.mapper.JotterArticleMapper;
 import com.vilce.springboot_vue.model.po.JotterArticle;
+import com.vilce.springboot_vue.model.vo.respones.JotterArticleRes;
 import com.vilce.springboot_vue.service.JotterArticleService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,22 +44,14 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @return
      */
     @Override
-    public List<JotterArticle> listArticles(int page, int size) {
-        List<JotterArticle> articleList = new ArrayList<>();
-        String redisKey = StringUtils.join(ARTICLE, "size:", size);
-        // 只缓存第一页
-        if (page == 1) {
-            String redisStr = redisTemplate.opsForValue().get(redisKey);
-            if (StringUtils.isEmpty(redisStr)) {
-                articleList = jotterArticleMapper.findAll(page - 1, size);
-                redisTemplate.opsForValue().set(redisKey, JSONUtils.toJsonPretty(articleList), redisTimeOut, TimeUnit.SECONDS);
-            } else {
-                articleList = JSONUtils.toJavaBean(redisStr, List.class, JotterArticle.class);
-            }
-        } else {
-            articleList = jotterArticleMapper.findAll(page - 1, size);
-        }
-        return articleList;
+    public List<JotterArticleRes> listArticles(int page, int size) {
+        List<JotterArticle> articleList = jotterArticleMapper.findAll(page - 1, size);
+        List<JotterArticleRes> articleResList = new ArrayList<>();
+        articleList.forEach(article -> {
+            JotterArticleRes articleRes = JotterArticleRes.create(article);
+            articleResList.add(articleRes);
+        });
+        return articleResList;
     }
 
     /**
@@ -68,15 +61,18 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @return
      */
     @Override
-    public JotterArticle findArticleById(int id) {
+    public JotterArticleRes findArticleById(int id) {
         String redisKey = StringUtils.join(ARTICLE, "id:", id);
         String redisStr = redisTemplate.opsForValue().get(redisKey);
         if (StringUtils.isNotEmpty(redisStr)) {
-            return JSONUtils.toJavaBean(redisStr, JotterArticle.class);
+            return JSONUtils.toJavaBean(redisStr, JotterArticleRes.class);
         }
         JotterArticle article = jotterArticleMapper.findArticleById(id);
-        redisTemplate.opsForValue().set(redisKey, JSONUtils.toJsonPretty(article), redisTimeOut, TimeUnit.SECONDS);
-        return article;
+        JotterArticleRes articleRes = JotterArticleRes.create(article);
+        if (ObjectUtils.isNotEmpty(articleRes)) {
+            redisTemplate.opsForValue().set(redisKey, JSONUtils.toJsonPretty(articleRes), redisTimeOut, TimeUnit.SECONDS);
+        }
+        return articleRes;
     }
 
     /**
@@ -89,21 +85,21 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     public BaseResponse addOrUpdate(JotterArticle article) {
         BaseResponse baseResponse;
         boolean result = false;
-        if (ObjectUtils.isEmpty(article.getId())) {
-            // 如果文章id为空，此时添加文章
-            result = jotterArticleMapper.addArticle(article);
-            if (result) {
-                baseResponse = BaseResponse.buildResponse(0, "添加文章成功！");
-            } else {
-                baseResponse = BaseResponse.buildResponse(-1, "添加文章失败！");
-            }
-        } else {
+        if (article.getId() != 0) {
             // 文章id不为空，更新文章
             result = jotterArticleMapper.updateArticle(article);
             if (result) {
                 baseResponse = BaseResponse.buildResponse(0, "更新文章成功！");
             } else {
                 baseResponse = BaseResponse.buildResponse(-1, "更新文章失败！");
+            }
+        } else {
+            // 如果文章id为空，此时添加文章
+            result = jotterArticleMapper.addArticle(article);
+            if (result) {
+                baseResponse = BaseResponse.buildResponse(0, "添加文章成功！");
+            } else {
+                baseResponse = BaseResponse.buildResponse(-1, "添加文章失败！");
             }
         }
         // 添加或更新成功后，也同步添加或更新缓存
@@ -122,6 +118,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     @Override
     public BaseResponse deleteArticle(int id) {
         if (jotterArticleMapper.deleteArticleById(id)) {
+            // 删除当前文章缓存
             redisTemplate.opsForValue().decrement(StringUtils.join(ARTICLE, "id:", id));
             return BaseResponse.buildResponse(0, "删除文章成功！");
         } else {

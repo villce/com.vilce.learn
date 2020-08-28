@@ -2,6 +2,7 @@ package com.vilce.springboot_vue.controller;
 
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.JotterArticle;
+import com.vilce.springboot_vue.model.vo.respones.JotterArticleRes;
 import com.vilce.springboot_vue.service.JotterArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,19 +38,19 @@ public class JotterController {
     //    @GetMapping("/api/article/{size}/{page}")
     @GetMapping("listArticles")
     @ApiOperation(value = "分页展示文章信息")
-    public List<JotterArticle> listArticles(int page, int size) {
+    public List<JotterArticleRes> listArticles(int page, int size) {
         return jotterArticleService.listArticles(page, size);
     }
 
     //    @GetMapping("/api/article/{id}")
     @GetMapping("getOneArticle")
     @ApiOperation(value = "根据id获取文章")
-    public JotterArticle getOneArticle(int id) {
+    public JotterArticleRes getOneArticle(int id) {
         return jotterArticleService.findArticleById(id);
     }
 
     //    @DeleteMapping("/api/admin/content/article/{id}")
-    @GetMapping("deleteArticle")
+    @DeleteMapping("deleteArticle")
     @ApiOperation(value = "根据id删除文章")
     public BaseResponse deleteArticle(int id) {
         return jotterArticleService.deleteArticle(id);

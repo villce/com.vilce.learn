@@ -59,11 +59,11 @@ public class BookServiceImpl implements BookService {
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse addOrUpdateBooks(Book book) {
         BaseResponse baseResponse;
-        if (ObjectUtils.isNotEmpty(book.getId())) {
+        if (book.getId() != 0) {
             // 当id不为空时，更新书信息
             if (bookMapper.updateBook(book)) {
                 baseResponse = BaseResponse.buildResponse(0, "更新图书信息成功！");
-            }else {
+            } else {
                 baseResponse = BaseResponse.buildResponse(-1, "更新图书信息失败！");
             }
         } else {
@@ -72,12 +72,12 @@ public class BookServiceImpl implements BookService {
             if (ObjectUtils.isNotEmpty(result)) {
                 // 当eid为空，但书名、作者相同时，不能添加
                 baseResponse = BaseResponse.buildResponse(-1, "添加图书失败，存在相同的书名和作者名");
-            }else {
+            } else {
                 // 当eid为空，但书名、作者不相同时，能添加
                 if (bookMapper.addBook(book)) {
                     baseResponse = BaseResponse.buildResponse(0, "添加图书成功！");
-                }else {
-                    baseResponse = BaseResponse.buildResponse(-1 , "添加图书失败！");
+                } else {
+                    baseResponse = BaseResponse.buildResponse(-1, "添加图书失败！");
                 }
             }
         }
@@ -94,7 +94,7 @@ public class BookServiceImpl implements BookService {
     public BaseResponse deleteBookById(int id) {
         if (bookMapper.deleteBookById(id)) {
             return BaseResponse.buildResponse(0, "删除图书成功！");
-        }else {
+        } else {
             return BaseResponse.buildResponse(-1, "删除图书失败！");
         }
     }

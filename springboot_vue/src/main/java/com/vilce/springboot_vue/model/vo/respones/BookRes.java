@@ -5,6 +5,7 @@ import com.vilce.springboot_vue.model.po.Category;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.cglib.beans.BeanCopier;
 
 /**
@@ -36,6 +37,9 @@ public class BookRes {
     private Category category;
 
     public static BookRes create(Book book, Category category){
+        if (ObjectUtils.isEmpty(book)) {
+            return null;
+        }
         //将属性和名称相似的值进行拷贝
         BeanCopier beanCopier = BeanCopier.create(Book.class, BookRes.class, false);
         BookRes bookRes = new BookRes();

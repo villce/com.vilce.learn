@@ -57,12 +57,10 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     public List<AdminMenu> getMenusByCurrentUser() {
         // 获取当前用户
         String username = SecurityUtils.getSubject().getPrincipal().toString();
-        System.out.println(username);
         User user = userService.getUserByUsername(username);
 
         // 获取用户角色
         List<AdminUserRole> userRoleList = adminUserRoleService.getUserRoleByUid(user.getId());
-        System.out.println(JSONUtils.toJsonPretty(userRoleList));
 
         // 获取角色菜单
         List<AdminRoleMenu> roleMenuList = adminRoleMenuService.getRoleMenuByUserRole(userRoleList);

@@ -2,6 +2,7 @@ package com.vilce.springboot_vue.service;
 
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.JotterArticle;
+import com.vilce.springboot_vue.model.vo.respones.JotterArticleRes;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface JotterArticleService {
      * @param size
      * @return
      */
-    List<JotterArticle> listArticles(int page, int size);
+    List<JotterArticleRes> listArticles(int page, int size);
 
     /**
      * 根据id获取文章信息
@@ -37,7 +38,7 @@ public interface JotterArticleService {
      * @param id
      * @return
      */
-    JotterArticle findArticleById(int id);
+    JotterArticleRes findArticleById(int id);
 
     /**
      * 根据id删除文章

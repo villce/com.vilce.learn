@@ -12,7 +12,6 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.aop.support.NameMatchMethodPointcutAdvisor;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cglib.proxy.Proxy;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.test.context.junit4.SpringRunner;

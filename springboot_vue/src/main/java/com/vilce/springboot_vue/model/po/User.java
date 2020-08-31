@@ -40,6 +40,6 @@ public class User {
     private String email;
     @ApiModelProperty(value = "用户状态",example = "true")
     private boolean enabled;
-    @ApiModelProperty(value = "用户角色",example = "{}")
+    @ApiModelProperty(value = "用户角色",example = "[]")
     private List<AdminRole> roles;
 }

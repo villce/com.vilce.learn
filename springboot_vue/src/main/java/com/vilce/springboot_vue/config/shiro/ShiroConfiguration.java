@@ -44,11 +44,10 @@ public class ShiroConfiguration {
         // 自定义过滤器设置 2，命名，需在设置过滤路径前
         customizedFilter.put("url", getURLPathMatchingFilter());
         // 防鸡贼登录
-        filterChainDefinitionMap.put("/api/authentication", "authc");
-        filterChainDefinitionMap.put("/api/menu", "authc");
-        filterChainDefinitionMap.put("/api/admin/**", "authc");
+        filterChainDefinitionMap.put("/login/authentication", "authc");
+        filterChainDefinitionMap.put("/menu/getUserMenu", "authc");
         // 自定义过滤器设置 3，设置过滤路径
-        filterChainDefinitionMap.put("/api/admin/**", "url");
+        filterChainDefinitionMap.put("/admin/**", "url");
         // 自定义过滤器设置 4，启用
         shiroFilterFactoryBean.setFilters(customizedFilter);
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

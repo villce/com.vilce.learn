@@ -15,6 +15,6 @@ import lombok.Data;
 public class Man extends User {
     private int flag;
     private Man() {
-        super("lcz");
+        super("lcz","123");
     }
 }

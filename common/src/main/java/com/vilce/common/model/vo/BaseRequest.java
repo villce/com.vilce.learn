@@ -1,9 +1,9 @@
-package com.vilce.common.model.po;
+package com.vilce.common.model.vo;
 
 /**
  * @Description: Description
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.common.model.po.BaseRequest
+ * @Package: com.vilce.common.model.vo.BaseRequest
  * @Author: 雷才哲
  * @Date: 2020/7/1 16:31
  * @Version: 1.0

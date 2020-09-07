@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.controller;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.User;
 import com.vilce.springboot_vue.service.UserService;
@@ -30,7 +32,6 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-//    @PostMapping("/api/login")
     @PostMapping("in")
     @ApiOperation(value = "用户登录")
     public BaseResponse login(@RequestBody User requestUser) {
@@ -45,26 +46,28 @@ public class LoginController {
             subject.login(usernamePasswordToken);
             User user = userService.getUserByUsername(username);
             if (!user.isEnabled()) {
-                baseResponse = BaseResponse.buildResponse(-1, "该用户已被禁用");
-            }else {
-                baseResponse = BaseResponse.buildResponse(0, username);
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "该用户已被禁用");
+            } else {
+                return BaseResponse.buildResponse(0, username);
             }
         } catch (IncorrectCredentialsException e) {
-            baseResponse = BaseResponse.buildResponse(-1, "密码错误");
+            throw new BasicException(ResultStatus.userpwd_not_exist.getStatus(), "密码错误");
         } catch (UnknownAccountException e) {
-            baseResponse = BaseResponse.buildResponse(-1, "账户不存在");
+            throw new BasicException(ResultStatus.userpwd_not_exist.getStatus(), "账户不存在");
         }
-        return baseResponse;
     }
 
-//    @PostMapping("/api/register")
     @PostMapping("register")
     @ApiOperation(value = "用户注册")
     public BaseResponse register(@RequestBody User user) {
         return userService.addUser(user);
     }
 
-//    @GetMapping("/api/logout")
+    @GetMapping("test")
+    public String test() {
+        return "test";
+    }
+
     @GetMapping("out")
     @ApiOperation(value = "退出登录")
     public BaseResponse logout() {
@@ -73,7 +76,6 @@ public class LoginController {
         return BaseResponse.buildResponse(0, "成功登出！");
     }
 
-//    @GetMapping("/api/authentication")
     @GetMapping("authentication")
     @ApiOperation("身份验证")
     public String authentication() {

@@ -27,28 +27,24 @@ public class UserController {
     @Autowired
     UserService userService;
 
-//    @GetMapping("/api/admin/user")
     @GetMapping("getAllUsers")
     @ApiOperation(value = "列出所有用户信息")
     public List<User> listAllUsers() {
         return userService.listAllUsers();
     }
 
-//    @PutMapping("/api/admin/user/status")
     @PutMapping("updateUserStatus")
     @ApiOperation(value = "更新用户状态信息")
     public BaseResponse updateUserStatus(@RequestBody @Valid User requestUser) {
         return  userService.updateUserStatus(requestUser);
     }
 
-//    @PutMapping("/api/admin/user/password")
     @PutMapping("resetPassword")
     @ApiOperation(value = "重置密码")
     public BaseResponse resetPassword(@RequestBody @Valid User requestUser) {
         return userService.updatePassword(requestUser);
     }
 
-//    @PutMapping("/api/admin/user")
     @PutMapping("editUser")
     @ApiOperation(value = "更新用户基础信息")
     public BaseResponse editUser(@RequestBody @Valid User requestUser) {

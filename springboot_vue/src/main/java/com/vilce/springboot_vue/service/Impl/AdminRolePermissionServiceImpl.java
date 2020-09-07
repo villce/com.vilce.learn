@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.AdminRolePermissionMapper;
 import com.vilce.springboot_vue.model.po.AdminPermission;
@@ -49,13 +51,13 @@ public class AdminRolePermissionServiceImpl implements AdminRolePermissionServic
         List<AdminRolePermission> rolePermissionList = adminRolePermissionMapper.getRolePermissionByRid(rid);
         if (ObjectUtils.isNotEmpty(rolePermissionList)) {
             if (!adminRolePermissionMapper.deleteRolePermissionByRid(rid)) {
-                return BaseResponse.buildResponse(-1, "删除角色权限信息失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "删除角色权限信息失败!");
             }
         }
         // 保存需要修改更新的角色权限信息
         for (AdminPermission permission : perms) {
             if (!adminRolePermissionMapper.addRolePermission(rid, permission.getId())) {
-                return BaseResponse.buildResponse(-1, "添加角色权限信息失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加角色权限信息失败!");
             }
         }
         return BaseResponse.buildResponse(0, "更新角色权限信息成功！");

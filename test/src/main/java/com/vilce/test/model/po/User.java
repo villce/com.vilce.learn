@@ -15,9 +15,10 @@ public class User {
     private String name;
     private Integer age;
     private String phoneNumber;
+    private String password;
 
-    private User(){};
-    public User(String name) {
+    public User(String name,String password) {
         this.name = name;
+        this.password = password;
     }
 }

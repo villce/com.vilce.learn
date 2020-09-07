@@ -30,28 +30,24 @@ public class LibraryController {
     @Autowired
     private BookService bookService;
 
-//    @GetMapping("/api/books")
     @GetMapping("listBooks")
     @ApiOperation(value = "获取所有图书信息")
     public List<BookRes> listBooks() {
         return bookService.getAllBooks();
     }
 
-//    @PostMapping("/api/admin/content/books")
     @PostMapping("addOrUpdateBooks")
     @ApiOperation(value = "添加或更新图书信息")
     public BaseResponse addOrUpdateBooks(@RequestBody @Valid Book book) {
         return bookService.addOrUpdateBooks(book);
     }
 
-//    @PostMapping("/api/admin/content/books/delete")
     @PostMapping("deleteBook")
     @ApiOperation(value = "根据id删除图书信息")
     public BaseResponse deleteBook(@RequestBody @Valid Book book) {
         return  bookService.deleteBookById(book.getId());
     }
 
-//    @GetMapping("/api/search")
     @GetMapping("searchBooks")
     @ApiOperation(value = "条件搜索图书信息")
     public List<BookRes> searchBooks(String keywords) {
@@ -62,7 +58,6 @@ public class LibraryController {
         }
     }
 
-//    @GetMapping("/api/categories/{cid}/books")
     @GetMapping("listBooksByCategory")
     @ApiOperation(value = "根据分类获取图书信息")
     public List<BookRes> listBooksByCategory(int cid) {
@@ -73,7 +68,6 @@ public class LibraryController {
         }
     }
 
-//    @PostMapping("/api/admin/content/books/covers")
     @PostMapping("coversUpload")
     @ApiOperation(value = "上传封面图片")
     public String coversUpload(MultipartFile file) {

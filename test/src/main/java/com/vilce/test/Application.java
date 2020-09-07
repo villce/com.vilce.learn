@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * @Date: 2019/12/5 16:54
  * @Version: 1.0
  */
-@SpringBootApplication(scanBasePackages = "com.vilce")
+@SpringBootApplication
 @EnableAsync
 public class Application {
     public static void main(String[] args) {

@@ -27,14 +27,12 @@ public class MenuController {
     @Autowired
     private AdminMenuService adminMenuService;
 
-//    @GetMapping("/api/menu")
     @GetMapping("getUserMenu")
     @ApiOperation(value = "获取当前用户下的菜单栏")
     public List<AdminMenu> getMenusByCurrentUser() {
         return adminMenuService.getMenusByCurrentUser();
     }
 
-//    @GetMapping("/api/admin/role/menu")
     @GetMapping("get1RoleMenu")
     @ApiOperation(value = "获取角色id为1时的菜单栏")
     public List<AdminMenu> get1RoleMenu() {

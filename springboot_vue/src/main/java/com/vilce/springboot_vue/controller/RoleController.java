@@ -33,35 +33,30 @@ public class RoleController {
     @Autowired
     private AdminRoleMenuService adminRoleMenuService;
 
-    //    @GetMapping("/api/admin/role")
     @GetMapping("listAllRolesInfo")
     @ApiOperation(value = "列举所有角色权限菜单栏")
     public List<AdminRole> listAllRolesWithPermsAndMenus() {
         return adminRoleService.listAllRolesWithPermsAndMenus();
     }
 
-    //    @PutMapping("/api/admin/role/status")
     @PutMapping("updateRoleStatus")
     @ApiOperation(value = "更改角色状态信息")
     public BaseResponse updateRoleStatus(@RequestBody AdminRole role) {
         return adminRoleService.updateRoleStatus(role);
     }
 
-    //    @PutMapping("/api/admin/role")
     @PutMapping("addOrUpdateRole")
     @ApiOperation(value = "添加角色或更新角色及角色权限信息")
     public BaseResponse addOrUpdateRole(@RequestBody AdminRole role) {
         return adminRoleService.addOrUpdateRole(role);
     }
 
-//    @GetMapping("/api/admin/role/perm")
     @GetMapping("getAllPermissions")
     @ApiOperation(value = "获取所有权限信息")
     public List<AdminPermission> listAllPerms() {
         return adminPermissionService.getAllPermissions();
     }
 
-//    @PutMapping("/api/admin/role/menu")
     @PutMapping("updateRoleMenu")
     @ApiOperation(value = "更新角色菜单信息")
     public BaseResponse updateRoleMenu(@RequestParam int rid, @RequestBody Map<String, List<Integer>> menusIds) {

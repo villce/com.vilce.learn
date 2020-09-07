@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.AdminRoleMenuMapper;
 import com.vilce.springboot_vue.model.po.AdminRoleMenu;
@@ -69,12 +71,12 @@ public class AdminRoleMenuServiceImpl implements AdminRoleMenuService {
         if (ObjectUtils.isNotEmpty(roleMenuList)) {
             // 删除之前角色菜单信息
             if (!adminRoleMenuMapper.deleteRoleMenuByRid(rid)) {
-                return BaseResponse.buildResponse(-1, "删除角色菜单信息失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "删除角色菜单信息失败!");
             }
         }
         for (Integer mid : menusIds.get("menusIds")) {
             if (!adminRoleMenuMapper.addRoleMenu(rid, mid)) {
-                return BaseResponse.buildResponse(-1, "保存角色菜单信息失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "保存角色菜单信息失败!");
             }
         }
         return BaseResponse.buildResponse(0, "更新角色菜单信息成功！");

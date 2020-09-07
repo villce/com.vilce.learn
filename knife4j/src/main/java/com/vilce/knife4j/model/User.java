@@ -1,6 +1,6 @@
 package com.vilce.knife4j.model;
 
-import com.vilce.common.model.po.BaseRequest;
+import com.vilce.common.model.vo.BaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.BookMapper;
 import com.vilce.springboot_vue.model.po.Book;
@@ -58,30 +60,28 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse addOrUpdateBooks(Book book) {
-        BaseResponse baseResponse;
         if (book.getId() != 0) {
             // 当id不为空时，更新书信息
             if (bookMapper.updateBook(book)) {
-                baseResponse = BaseResponse.buildResponse(0, "更新图书信息成功！");
+                return BaseResponse.buildResponse(0, "更新图书信息成功！");
             } else {
-                baseResponse = BaseResponse.buildResponse(-1, "更新图书信息失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新图书信息失败");
             }
         } else {
             // 根据书名和作者获取图书信息
             Book result = bookMapper.getBookByNameAndAuthor(book);
             if (ObjectUtils.isNotEmpty(result)) {
                 // 当eid为空，但书名、作者相同时，不能添加
-                baseResponse = BaseResponse.buildResponse(-1, "添加图书失败，存在相同的书名和作者名");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加图书失败，存在相同的书名和作者名!");
             } else {
                 // 当eid为空，但书名、作者不相同时，能添加
                 if (bookMapper.addBook(book)) {
-                    baseResponse = BaseResponse.buildResponse(0, "添加图书成功！");
+                    return BaseResponse.buildResponse(0, "添加图书成功！");
                 } else {
-                    baseResponse = BaseResponse.buildResponse(-1, "添加图书失败！");
+                    throw new BasicException(ResultStatus.FAIL.getStatus(), "添加图书失败!");
                 }
             }
         }
-        return baseResponse;
     }
 
     /**
@@ -95,7 +95,7 @@ public class BookServiceImpl implements BookService {
         if (bookMapper.deleteBookById(id)) {
             return BaseResponse.buildResponse(0, "删除图书成功！");
         } else {
-            return BaseResponse.buildResponse(-1, "删除图书失败！");
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "删除图书失败!");
         }
     }
 
@@ -141,7 +141,7 @@ public class BookServiceImpl implements BookService {
         }
         try {
             file.transferTo(f);
-            String imgURL = "http://localhost:8006/image/file/" + f.getName();
+            String imgURL = "http://120.55.169.142:8006/image/file/" + f.getName();
             return imgURL;
         } catch (IOException e) {
             e.printStackTrace();

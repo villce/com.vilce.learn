@@ -28,28 +28,24 @@ public class JotterController {
     @Autowired
     private JotterArticleService jotterArticleService;
 
-    //    @PostMapping("api/admin/content/article")
     @ApiOperation(value = "添加或更新文章信息")
     @PostMapping("saveArticle")
     public BaseResponse saveArticle(@RequestBody @Valid JotterArticle article) {
         return jotterArticleService.addOrUpdate(article);
     }
 
-    //    @GetMapping("/api/article/{size}/{page}")
     @GetMapping("listArticles")
     @ApiOperation(value = "分页展示文章信息")
-    public List<JotterArticleRes> listArticles(int page, int size) {
+    public List<JotterArticleRes> listArticles(@RequestParam("page") int page,@RequestParam("size") int size) {
         return jotterArticleService.listArticles(page, size);
     }
 
-    //    @GetMapping("/api/article/{id}")
     @GetMapping("getOneArticle")
     @ApiOperation(value = "根据id获取文章")
     public JotterArticleRes getOneArticle(int id) {
         return jotterArticleService.findArticleById(id);
     }
 
-    //    @DeleteMapping("/api/admin/content/article/{id}")
     @DeleteMapping("deleteArticle")
     @ApiOperation(value = "根据id删除文章")
     public BaseResponse deleteArticle(int id) {

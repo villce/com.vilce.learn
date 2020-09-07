@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.AdminUserRoleMapper;
 import com.vilce.springboot_vue.model.po.AdminRole;
@@ -50,12 +52,12 @@ public class AdminUserRoleServiceImpl implements AdminUserRoleService {
         if (ObjectUtils.isNotEmpty(userRoleList)) {
             // 删除旧的用户角色信息
             if (!adminUserRoleMapper.deleteUserRoleByUid(uid)) {
-                return BaseResponse.buildResponse(-1, "删除用户角色信息失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "删除用户角色信息失败!");
             }
         }
         for (AdminRole role : roles) {
             if (!adminUserRoleMapper.addUserRole(uid, role.getId())) {
-                return BaseResponse.buildResponse(-1, "添加用户角色信息失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加用户角色信息失败!");
             }
         }
         return BaseResponse.buildResponse(0, "更新用户角色信息成功！");

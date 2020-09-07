@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.UserMapper;
 import com.vilce.springboot_vue.model.po.AdminRole;
@@ -87,11 +89,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setEnabled(true);
         if (username.equals("") || password.equals("")) {
-            return BaseResponse.buildResponse(-1, "用户名和密码不能为空");
+            throw new BasicException(ResultStatus.error_invalid_argument.getStatus(), "用户名和密码不能为空!");
         }
         User userFind = userMapper.getUserByUsername(username);
         if (ObjectUtils.isNotEmpty(userFind)) {
-            return BaseResponse.buildResponse(-1, "用户已存在");
+            throw new BasicException(ResultStatus.user_exist.getStatus(), "用户已存在!");
         }
         // 默认生成 16 位盐
         String salt = new SecureRandomNumberGenerator().nextBytes().toString();
@@ -101,11 +103,10 @@ public class UserServiceImpl implements UserService {
         user.setSalt(salt);
         user.setPassword(encodedPassword);
 
-        boolean result = userMapper.addUser(user);
-        if (result) {
+        if (userMapper.addUser(user)) {
             return BaseResponse.buildResponse(0, "注册成功！");
         } else {
-            return BaseResponse.buildResponse(0, "注册失败，未知错误！");
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "注册失败，未知错误！");
         }
     }
 
@@ -119,7 +120,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.updateUserStatus(user)) {
             return BaseResponse.buildResponse(0, "更新用户状态成功！");
         } else {
-            return BaseResponse.buildResponse(-1, "更新用户状态失败！");
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "更新用户状态失败!");
         }
     }
 
@@ -139,7 +140,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.updatePassword(requestUser)) {
             return BaseResponse.buildResponse(0, "更新用户密码成功！");
         } else {
-            return BaseResponse.buildResponse(-1, "更新用户密码失败！");
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "更新用户密码失败!");
         }
     }
 
@@ -157,10 +158,10 @@ public class UserServiceImpl implements UserService {
             if (baseResponse.getStatus() == 0) {
                 return BaseResponse.buildResponse(0, "更新用户信息成功！");
             } else {
-                return BaseResponse.buildResponse(-1, baseResponse.getMessage());
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新用户信息失败！");
             }
         } else {
-            return BaseResponse.buildResponse(-1, "更新用户基础信息失败！");
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "更新用户基础信息失败！");
         }
     }
 }

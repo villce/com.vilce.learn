@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.mapper.JotterArticleMapper;
@@ -84,29 +86,24 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse addOrUpdate(JotterArticle article) {
         BaseResponse baseResponse;
-        boolean result = false;
         if (article.getId() != 0) {
             // 文章id不为空，更新文章
-            result = jotterArticleMapper.updateArticle(article);
-            if (result) {
+            if (jotterArticleMapper.updateArticle(article)) {
                 baseResponse = BaseResponse.buildResponse(0, "更新文章成功！");
             } else {
-                baseResponse = BaseResponse.buildResponse(-1, "更新文章失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新文章失败!");
             }
         } else {
             // 如果文章id为空，此时添加文章
-            result = jotterArticleMapper.addArticle(article);
-            if (result) {
+            if (jotterArticleMapper.addArticle(article)) {
                 baseResponse = BaseResponse.buildResponse(0, "添加文章成功！");
             } else {
-                baseResponse = BaseResponse.buildResponse(-1, "添加文章失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加文章失败!");
             }
         }
         // 添加或更新成功后，也同步添加或更新缓存
-        if (result) {
-            String redisKey = StringUtils.join(ARTICLE, article.getId());
-            redisTemplate.opsForValue().set(redisKey, JSONUtils.toJsonPretty(article), redisTimeOut, TimeUnit.SECONDS);
-        }
+        String redisKey = StringUtils.join(ARTICLE, article.getId());
+        redisTemplate.opsForValue().set(redisKey, JSONUtils.toJsonPretty(article), redisTimeOut, TimeUnit.SECONDS);
         return baseResponse;
     }
 
@@ -122,7 +119,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
             redisTemplate.opsForValue().decrement(StringUtils.join(ARTICLE, "id:", id));
             return BaseResponse.buildResponse(0, "删除文章成功！");
         } else {
-            return BaseResponse.buildResponse(-1, "删除文章失败！");
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "删除文章失败!");
         }
     }
 

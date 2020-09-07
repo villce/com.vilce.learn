@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.service.Impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.mapper.AdminRoleMapper;
 import com.vilce.springboot_vue.model.po.*;
@@ -86,7 +88,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         if (adminRoleMapper.updateRoleStatus(role)) {
             return BaseResponse.buildResponse(0, "状态更新成功！");
         }else {
-            return BaseResponse.buildResponse(-1 , "状态更新失败！");
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "状态更新失败!");
         }
     }
 
@@ -98,27 +100,25 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse addOrUpdateRole(@RequestBody AdminRole role) {
-        BaseResponse baseResponse;
         if (ObjectUtils.isEmpty(role.getId())) {
             // 当角色id为空时，添加角色
             if (adminRoleMapper.addRole(role)) {
-                baseResponse = BaseResponse.buildResponse(0, "添加角色成功！");
+                return BaseResponse.buildResponse(0, "添加角色成功！");
             }else {
-                baseResponse = BaseResponse.buildResponse(-1, "添加角色失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加角色失败!");
             }
         }else {
             // 当角色id不为空时，更新角色，更新角色对应权限信息
             if (adminRoleMapper.updateRole(role)) {
                 BaseResponse response = adminRolePermissionService.updateRolePermission(role.getId(), role.getPerms());
                 if (response.getStatus() == 0) {
-                    baseResponse = BaseResponse.buildResponse(0, "更新角色信息成功！");
+                    return BaseResponse.buildResponse(0, "更新角色信息成功！");
                 }else {
-                    baseResponse = BaseResponse.buildResponse(-1, response.getMessage());
+                    throw new BasicException(ResultStatus.FAIL.getStatus(), "更新角色信息失败!");
                 }
             }else {
-                baseResponse = BaseResponse.buildResponse(-1, "更新角色基础信息失败！");
+                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新角色基础信息失败!");
             }
         }
-        return baseResponse;
     }
 }

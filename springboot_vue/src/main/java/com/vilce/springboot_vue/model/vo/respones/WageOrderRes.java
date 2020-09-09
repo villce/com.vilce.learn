@@ -21,11 +21,13 @@ import org.springframework.cglib.beans.BeanCopier;
 @ApiModel(value = "工资单返参")
 public class WageOrderRes {
     @ApiModelProperty(value = "系统物理主键")
-    private Long eid;
+    private int id;
+    @ApiModelProperty(value = "用户id")
+    private int uid;
+    @ApiModelProperty(value = "用户名")
+    private String username;
     @ApiModelProperty(value = "工号")
     private String code;
-    @ApiModelProperty(value = "姓名")
-    private String name;
     @ApiModelProperty(value = "单号时间")
     private String order_time;
     @ApiModelProperty(value = "基本工资")
@@ -96,6 +98,8 @@ public class WageOrderRes {
     private Double tax;
     @ApiModelProperty(value = "实发工资")
     private Double paid_wages;
+    @ApiModelProperty(value = "图片地址")
+    private String url;
 
     public static WageOrderRes create(WageOrder wageOrder){
         if (ObjectUtils.isEmpty(wageOrder)) {
@@ -105,7 +109,7 @@ public class WageOrderRes {
         BeanCopier beanCopier = BeanCopier.create(WageOrder.class, WageOrderRes.class, false);
         WageOrderRes wageOrderRes = new WageOrderRes();
         beanCopier.copy(wageOrder, wageOrderRes, null);
-        wageOrderRes.setOrder_time(TimeUtils.dateToYMDayCN(wageOrder.getOrder_time()));
+        wageOrderRes.setOrder_time(TimeUtils.dateToYMD(wageOrder.getOrder_time()));
         return wageOrderRes;
     }
 }

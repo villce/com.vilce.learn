@@ -37,6 +37,8 @@ public class BookServiceImpl implements BookService {
     private BookMapper bookMapper;
     @Value("${covers.url}")
     private String coversUrl;
+    @Value("${image.url}")
+    private String imageUrl;
 
     /**
      * 获取所有的图书
@@ -141,7 +143,7 @@ public class BookServiceImpl implements BookService {
         }
         try {
             file.transferTo(f);
-            String imgURL = "http://120.55.169.142:8006/image/file/" + f.getName();
+            String imgURL = StringUtils.join(imageUrl, "/image/file/", f.getName());
             return imgURL;
         } catch (IOException e) {
             e.printStackTrace();

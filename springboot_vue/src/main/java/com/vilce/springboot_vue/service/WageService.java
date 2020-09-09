@@ -1,12 +1,13 @@
 package com.vilce.springboot_vue.service;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.WageOrder;
 import com.vilce.springboot_vue.model.vo.respones.WageOrderRes;
 
 import java.util.List;
 
 /**
- * @Description: Description
+ * @Description: 工资相关服务
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.springboot_vue.service.WageService
  * @Author: 雷才哲
@@ -15,11 +16,26 @@ import java.util.List;
  */
 public interface WageService {
 
+    /**
+     * 获取所有工资条信息
+     *
+     * @return
+     */
     List<WageOrderRes> getAllWageOrder();
 
-    boolean addWageOrder(WageOrder wageOrder);
+    /**
+     * 添加或更新工资条信息
+     *
+     * @param wageOrder
+     * @return
+     */
+    BaseResponse addOrUpdateWageOrder(WageOrder wageOrder);
 
-    boolean updateWageOrder(WageOrder wageOrder);
-
-    boolean deleteWageOrder(Long eid);
+    /**
+     * 删除工资条信息
+     *
+     * @param id
+     * @return
+     */
+    BaseResponse deleteWageOrder(int id);
 }

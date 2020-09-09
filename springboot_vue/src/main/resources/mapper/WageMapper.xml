@@ -1,76 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vilce.springboot_vue.mapper.WageMapper">
-    <resultMap id="wageOrderMap" type="com.vilce.springboot_vue.model.po.WageOrder">
-        <id column="EID" property="eid"/>
-        <result column="CODE" property="code"/>
-        <result column="NAME" property="name"/>
-        <result column="ORDER_TIME" property="order_time"/>
-        <result column="BASIC_WAGE" property="basic_wage"/>
-        <result column="JOB_WAGE" property="job_wage"/>
-        <result column="BENCHMARK_PERFORMANCE" property="benchmark_performance"/>
-        <result column="STANDARD_SALARY" property="standard_salary"/>
-        <result column="FIXED_ALLOWANCE" property="fixed_allowance"/>
-        <result column="TECHNICAL_EXPERT_ALLOWANCE" property="technical_expert_allowance"/>
-        <result column="RANK_ALLOWANCE" property="rank_allowance"/>
-        <result column="FIXED_BONUS" property="fixed_bonus"/>
-        <result column="FLOATING_BONUS" property="floating_bonus"/>
-        <result column="TOTAL_WAGES" property="total_wages"/>
-        <result column="EXAMINATION_ALLOWANCE" property="examination_allowance"/>
-        <result column="ON_OFF_AFTER_LEAVE_PAY" property="on_off_after_leave_pay"/>
-        <result column="PERFORMANCE_ADJUSTMENT" property="performance_adjustment"/>
-        <result column="FLOATING_ALLOWANCE" property="floating_allowance"/>
-        <result column="DAILY_OVERTIME" property="daily_overtime"/>
-        <result column="SICK_LEAVE_DEDUCTION" property="sick_leave_deduction"/>
-        <result column="LATE_ABSENTEE_DEDUCTIONS" property="late_absentee_deductions"/>
-        <result column="OTHER_INCREASE_OR_DECREASE" property="other_increase_or_decrease"/>
-        <result column="MATERNITY_LEAVE_DEDUCTIONS" property="maternity_leave_deductions"/>
-        <result column="FLOATING_BONUS2" property="floating_bonus2"/>
-        <result column="RECOMMENDATION_AWARD" property="recommendation_award"/>
-        <result column="PRODUCT_EXPERIENCE_BONUS" property="product_experience_bonus"/>
-        <result column="PAYABLE" property="payable"/>
-        <result column="SOCIAL_SECURITY" property="social_security"/>
-        <result column="PROVIDENT_FUND" property="provident_fund"/>
-        <result column="POST_INSURANCE_PAY" property="post_insurance_pay"/>
-        <result column="EDUCATION_FOR_CHILDREN" property="education_for_children"/>
-        <result column="HOME_LOAN" property="home_loan"/>
-        <result column="HOUSING_RENT" property="housing_rent"/>
-        <result column="SUPPORT_FOR_THE_ELDERLY" property="support_for_the_elderly"/>
-        <result column="CONTINUING_EDUCATION" property="continuing_education"/>
-        <result column="DEFERRED_INSURANCE" property="deferred_insurance"/>
-        <result column="TAX" property="tax"/>
-        <result column="PAID_WAGES" property="paid_wages"/>
-    </resultMap>
 
-    <select id="getAllWageOrder" resultMap="wageOrderMap" >
+    <select id="getAllWageOrder" resultType="com.vilce.springboot_vue.model.po.WageOrder">
 		SELECT *
-		FROM vilce.wage_order
+		FROM wage
 		ORDER BY order_time DESC
     </select>
 
     <insert id="addWageOrder" parameterType="com.vilce.springboot_vue.model.po.WageOrder">
-        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="eid">
-            SELECT vilce.eid.nextval AS eid FROM dual
-        </selectKey>
-        INSERT INTO vilce.wage_order
-        (EID,CODE,NAME,ORDER_TIME,BASIC_WAGE,JOB_WAGE,BENCHMARK_PERFORMANCE,STANDARD_SALARY,FIXED_ALLOWANCE,TECHNICAL_EXPERT_ALLOWANCE,
-        RANK_ALLOWANCE,FIXED_BONUS,FLOATING_BONUS,TOTAL_WAGES,EXAMINATION_ALLOWANCE,ON_OFF_AFTER_LEAVE_PAY,PERFORMANCE_ADJUSTMENT,
-        FLOATING_ALLOWANCE,DAILY_OVERTIME,SICK_LEAVE_DEDUCTION,LATE_ABSENTEE_DEDUCTIONS,OTHER_INCREASE_OR_DECREASE,
-        MATERNITY_LEAVE_DEDUCTIONS,FLOATING_BONUS2,RECOMMENDATION_AWARD,PRODUCT_EXPERIENCE_BONUS,PAYABLE,SOCIAL_SECURITY,PROVIDENT_FUND,
-        POST_INSURANCE_PAY,EDUCATION_FOR_CHILDREN,HOME_LOAN,HOUSING_RENT,SUPPORT_FOR_THE_ELDERLY,CONTINUING_EDUCATION,DEFERRED_INSURANCE,
-        TAX,PAID_WAGES)
-        VALUES (#{eid},#{code},#{name},#{order_time},#{basic_wage},#{job_wage},#{benchmark_performance},#{standard_salary},#{fixed_allowance},
-        #{technical_expert_allowance},#{rank_allowance},#{fixed_bonus},#{floating_bonus},#{total_wages},#{examination_allowance},
-        #{on_off_after_leave_pay},#{performance_adjustment},#{floating_allowance},#{daily_overtime},#{sick_leave_deduction},
-        #{late_absentee_deductions},#{other_increase_or_decrease},#{maternity_leave_deductions},#{floating_bonus2},#{recommendation_award},
-        #{product_experience_bonus},#{payable},#{social_security},#{provident_fund},#{post_insurance_pay},#{education_for_children},
-        #{home_loan},#{housing_rent},#{support_for_the_elderly},#{continuing_education},#{deferred_insurance},#{tax},#{paid_wages})
+        INSERT INTO wage
+        (uid, username, code, order_time, basic_wage, job_wage, benchmark_performance, standard_salary,fixed_allowance,
+         technical_expert_allowance,rank_allowance,fixed_bonus,floating_bonus,total_wages,examination_allowance,
+         on_off_after_leave_pay,performance_adjustment,floating_allowance,daily_overtime,sick_leave_deduction,
+         late_absentee_deductions,other_increase_or_decrease,maternity_leave_deductions,
+         floating_bonus2,recommendation_award,product_experience_bonus,payable,social_security,provident_fund,
+         post_insurance_pay,education_for_children,home_loan,housing_rent,support_for_the_elderly,continuing_education,
+         deferred_insurance,tax, paid_wages,url)
+        VALUES (#{uid},#{username},#{code},#{order_time},#{basic_wage},#{job_wage},#{benchmark_performance},#{standard_salary},
+        #{fixed_allowance},#{technical_expert_allowance},#{rank_allowance},#{fixed_bonus},#{floating_bonus},#{total_wages},
+        #{examination_allowance},#{on_off_after_leave_pay},#{performance_adjustment},#{floating_allowance},#{daily_overtime},
+        #{sick_leave_deduction},#{late_absentee_deductions},#{other_increase_or_decrease},#{maternity_leave_deductions},
+        #{floating_bonus2},#{recommendation_award},#{product_experience_bonus},#{payable},#{social_security},#{provident_fund},
+        #{post_insurance_pay},#{education_for_children},#{home_loan},#{housing_rent},#{support_for_the_elderly},
+        #{continuing_education},#{deferred_insurance},#{tax},#{paid_wages},#{url})
     </insert>
 
     <update id="updateWageOrder" parameterType="com.vilce.springboot_vue.model.po.WageOrder">
-        UPDATE vilce.wage_order
-        SET code=#{code},
-            name=#{name},
+        UPDATE wage
+        SET uid=#{uid},
+            username=#{username},
+            code=#{code},
             order_time=#{order_time},
             basic_wage=#{basic_wage},
             job_wage=#{job_wage},
@@ -105,13 +65,14 @@
             continuing_education=#{continuing_education},
             deferred_insurance=#{deferred_insurance},
             tax=#{tax},
-            paid_wages=#{paid_wages}
-        WHERE eid=#{eid}
+            paid_wages=#{paid_wages},
+            url=#{url}
+        WHERE id=#{id}
     </update>
 
-    <delete id="deleteWageOrder" >
+    <delete id="deleteWageOrder">
         DELETE
-        FROM wage_order
-        WHERE EID=#{eid}
+        FROM wage
+        WHERE id=#{id}
     </delete>
 </mapper>

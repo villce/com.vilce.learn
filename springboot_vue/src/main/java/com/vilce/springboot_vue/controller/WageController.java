@@ -1,16 +1,18 @@
 package com.vilce.springboot_vue.controller;
 
+import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.model.po.WageOrder;
 import com.vilce.springboot_vue.model.vo.respones.WageOrderRes;
 import com.vilce.springboot_vue.service.WageService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * @Description: Description
+ * @Description: 工资相关API
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.springboot_vue.controller.WageController
  * @Author: 雷才哲
@@ -25,27 +27,21 @@ public class WageController {
     @Autowired
     private WageService wageService;
 
-    @CrossOrigin
     @GetMapping("getAllWageOrder")
+    @ApiOperation(value = "获取所有工资条信息")
     public List<WageOrderRes> getAllWageOrder(){
         return wageService.getAllWageOrder();
     }
 
-    @CrossOrigin
-    @PostMapping("addWageOrder")
-    public boolean addWageOrder(WageOrder wageOrder){
-        return wageService.addWageOrder(wageOrder);
+    @PostMapping("addOrUpdateWageOrder")
+    @ApiOperation(value = "添加或更新工资条信息")
+    public BaseResponse addOrUpdateWageOrder(@RequestBody WageOrder wageOrder){
+        return wageService.addOrUpdateWageOrder(wageOrder);
     }
 
-    @CrossOrigin
-    @PostMapping("updateWageOrder")
-    public boolean updateWageOrder(WageOrder wageOrder){
-        return wageService.updateWageOrder(wageOrder);
-    }
-
-    @CrossOrigin
-    @PostMapping("deleteWageOrder")
-    public boolean deleteWageOrder(Long eid){
-        return wageService.deleteWageOrder(eid);
+    @GetMapping("deleteWageOrder")
+    @ApiOperation(value = "删除工资条信息")
+    public BaseResponse deleteWageOrder(int id){
+        return wageService.deleteWageOrder(id);
     }
 }

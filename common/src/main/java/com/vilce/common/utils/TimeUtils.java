@@ -97,6 +97,22 @@ public class TimeUtils {
     }
 
     /**
+     * Date类型数据转换为yyyy-MM-dd格式
+     * @param date
+     * @return
+     */
+    public static String dateToYMD(Date date){
+        try {
+            String time = DateFormatUtils.format(date,DateEnum.YYYY_MM_DD.getFormat());
+            return time;
+        }catch (Exception e){
+            e.printStackTrace();
+            LoggerUtils.error(TimeUtils.class,date+"转换失败");
+            return "--";
+        }
+    }
+
+    /**
      * Date类型数据转换为yyyy-MM-dd HH:mm:ss格式
      * @param date
      * @return

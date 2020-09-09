@@ -42,8 +42,8 @@ public interface WageMapper {
     /**
      * 删除工资信息
      *
-     * @param eid
+     * @param id
      * @return
      */
-    boolean deleteWageOrder(Long eid);
+    boolean deleteWageOrder(int id);
 }

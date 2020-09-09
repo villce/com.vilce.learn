@@ -51,8 +51,6 @@ public class JotterArticleRes {
         BeanCopier beanCopier = BeanCopier.create(JotterArticle.class, JotterArticleRes.class, false);
         JotterArticleRes articleRes = new JotterArticleRes();
         beanCopier.copy(article, articleRes, null);
-        //将日期进行转换
-        articleRes.setArticle_date(TimeUtils.dateToYMDHMS(article.getArticle_date()));
         return articleRes;
     }
 }

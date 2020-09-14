@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.config.swagger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -26,11 +27,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfiguration {
 
+    @Value(value = "${swagger.enabled}")
+    Boolean swaggerEnabled;
 
     @Bean(value = "defaultApi2")
     public Docket defaultApi2() {
         Docket docket=new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .enable(swaggerEnabled)
                 //分组名称
                 .groupName("2.X版本")
                 .select()

@@ -21,10 +21,6 @@
         <module>security</module>
         <module>security_oauth</module>
         <module>springboot_vue</module>
-        <module>actuator_client</module>
-        <module>actuator_server</module>
-        <module>knife4j</module>
-        <module>actuator_security</module>
     </modules>
     <dependencies>
         <dependency>

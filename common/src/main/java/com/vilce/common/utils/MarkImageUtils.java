@@ -1,10 +1,10 @@
 package com.vilce.common.utils;
 
-import com.vilce.common.model.enums.ColorEnum;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.Mark;
 import com.vilce.common.model.po.Text;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
@@ -55,20 +55,31 @@ public class MarkImageUtils {
 
             g2d.setFont(font);
             // 设置字体颜色
-            g2d.setColor(ColorEnum.getColor(text.getColor()));
+            g2d.setColor(Color.decode(text.getColor()));
             int x = 0;
+            String first = text.getWord();
+            String second = null;
             int space = height / text.getWordSize();
             int len = width / text.getWordSize() * text.getWord().length();
             if (null != text.getDegree()) {
                 //设置水印旋转
                 g2d.rotate(Math.toRadians(text.getDegree()), (double) image.getWidth() / 2, (double) image.getHeight() / 2);
             }
+            if (first.length() > 20) {
+                first = text.getWord().substring(0, 20);
+                second = text.getWord().substring(20);
+                len = width / text.getWordSize() * text.getWord().length() * 2;
+            }
             for (int j = 0; j < len; j++) {
                 int y = text.getWordSize();
                 for (int i = 0; i < space; i++) {
                     g2d.setFont(font);
                     //水印位置
-                    g2d.drawString(text.getWord(), x, y);
+                    g2d.drawString(first, x, y);
+                    if (StringUtils.isNotEmpty(second)) {
+                        float move = 10 - second.length() / 2;
+                        g2d.drawString(second, x + move * text.getWordSize(), y + text.getWordSize());
+                    }
                     y += (4 * text.getWordSize());
                 }
                 x += (2 * text.getWordSize() * text.getWord().length());
@@ -84,10 +95,9 @@ public class MarkImageUtils {
             }
             // 保存文件
             ImageIO.write(image, "PNG", sf);
-            return "生成一个新空白水印图片成功！";
+            return sf.getAbsolutePath();
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "生成一个新空白水印图片失败！");
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "生成一个新空白水印图片失败：" + e.getMessage());
         }
     }
 
@@ -100,7 +110,6 @@ public class MarkImageUtils {
      * @return
      */
     public static String markImageByMoreText(MultipartFile file, Text text, String imageType) {
-        String result = "添加文字水印出错";
         try {
             Image img = ImageIO.read(file.getInputStream());
             //图片宽
@@ -111,10 +120,16 @@ public class MarkImageUtils {
             BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = bi.createGraphics();
             g.drawImage(img, 0, 0, width, height, null);
+
+            //抗锯齿 让图片看起来更清晰
+            RenderingHints rh = g.getRenderingHints();
+            rh.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHints(rh);
+
             //设置水印字体样式
             Font font = new Font("宋体", Font.PLAIN, text.getWordSize());
             //根据图片的背景设置水印颜色
-            g.setColor(ColorEnum.getColor(text.getColor()));
+            g.setColor(Color.decode(text.getColor()));
             int x = 0;
             int space = height / text.getWordSize();
             int len = width / text.getWordSize() * text.getWord().length();
@@ -141,11 +156,10 @@ public class MarkImageUtils {
             }
             // 保存图片
             ImageIO.write(bi, imageType, sf);
-            result = "图片完成添加Word水印";
+            return sf.getAbsolutePath();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }
-        return result;
     }
 
     /**
@@ -156,7 +170,6 @@ public class MarkImageUtils {
      * @param mark   水印参数
      */
     public static String markImageByMoreIcon(MultipartFile icon, MultipartFile source, Mark mark, String imageType) {
-        String result = "添加图片水印出错";
         try {
             //将icon加载到内存中
             Image ic = ImageIO.read(icon.getInputStream());
@@ -215,11 +228,10 @@ public class MarkImageUtils {
             }
             // 保存图片
             ImageIO.write(bi, imageType, sf);
-            result = "图片完成添加Icon水印";
+            return sf.getAbsolutePath();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }
-        return result;
     }
 
     /**
@@ -233,7 +245,6 @@ public class MarkImageUtils {
      * @param degree    水印图片旋转角度，为null表示不旋转
      */
     public static String markImageBySingleIcon(String icon, String source, String output, String imageName, String imageType, Integer degree) {
-        String result = "添加图片水印出错";
         try {
             File file = new File(source);
             File ficon = new File(icon);
@@ -272,7 +283,6 @@ public class MarkImageUtils {
             float clarity = 0.6f;
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, clarity));
             //表示水印图片的坐标位置(x,y)
-            //g.drawImage(con, 300, 220, null);
             g.drawImage(con, x, y, null);
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             g.dispose();
@@ -281,12 +291,12 @@ public class MarkImageUtils {
                 //不存在时创建文件
                 sf.getParentFile().mkdirs();
             }
-            ImageIO.write(bi, imageType, sf); // 保存图片
-            result = "图片完成添加Icon水印";
+            // 保存图片
+            ImageIO.write(bi, imageType, sf);
+            return sf.getAbsolutePath();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }
-        return result;
     }
 
     /**
@@ -301,7 +311,6 @@ public class MarkImageUtils {
      * @param degree    水印文字旋转角度，为null表示不旋转
      */
     public static String markImageBySingleText(String source, String output, String imageName, String imageType, Color color, String word, Integer degree) {
-        String result = "添加文字水印出错";
         try {
             //读取原图片信息
             File file = new File(source);
@@ -335,12 +344,12 @@ public class MarkImageUtils {
                 //不存在时创建文件
                 sf.getParentFile().mkdirs();
             }
-            ImageIO.write(bi, imageType, sf); // 保存图片
-            result = "图片完成添加Word水印";
+            // 保存图片
+            ImageIO.write(bi, imageType, sf);
+            return sf.getAbsolutePath();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }
-        return result;
     }
 
     /**
@@ -354,7 +363,6 @@ public class MarkImageUtils {
      * @return
      */
     public static String markImageByMosaic(String source, String output, String imageName, String imageType, int size) {
-        String result = "图片打马赛克出错";
         try {
             File file = new File(source);
             if (!file.isFile()) {
@@ -426,11 +434,11 @@ public class MarkImageUtils {
                 //不存在时创建文件
                 sf.getParentFile().mkdirs();
             }
-            ImageIO.write(bi, imageType, sf); // 保存图片
-            result = "打马赛克成功";
+            // 保存图片
+            ImageIO.write(bi, imageType, sf);
+            return sf.getAbsolutePath();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }
-        return result;
     }
 }

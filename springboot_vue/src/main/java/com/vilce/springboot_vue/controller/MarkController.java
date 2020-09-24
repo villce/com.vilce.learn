@@ -7,9 +7,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 /**
  * @Description: 水印相关控制器
@@ -29,19 +32,19 @@ public class MarkController {
 
     @PostMapping("new")
     @ApiOperation(value = "生成透明水印图片")
-    public String markNew(Text text) {
+    public String markNew(@RequestBody Text text) {
         return markService.markNew(text);
     }
 
     @PostMapping("wordToImage")
     @ApiOperation(value = "给图片添加文字水印")
-    public String markWordToImage(MultipartFile multipartFile, Text text, String imageType) {
+    public String markWordToImage(@RequestBody MultipartFile multipartFile,@RequestBody Text text,@RequestBody String imageType) {
         return markService.markWordToImage(multipartFile, text, imageType);
     }
 
     @PostMapping("imageToImage")
     @ApiOperation(value = "给图片加图片水印")
-    public String markImageToImage(MultipartFile icon, MultipartFile source, Mark mark, String imageType) {
+    public String markImageToImage(@RequestBody MultipartFile icon,@RequestBody MultipartFile source,@RequestBody Mark mark,@RequestBody String imageType) {
         return markService.markImageToImage(icon, source, mark, imageType);
     }
 }

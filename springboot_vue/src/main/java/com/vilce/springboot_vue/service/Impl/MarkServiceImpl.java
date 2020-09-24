@@ -5,9 +5,12 @@ import com.vilce.common.utils.MarkImageUtils;
 import com.vilce.common.model.po.Mark;
 import com.vilce.springboot_vue.service.MarkService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Date;
 
 /**
  * @Description: 图片相关服务实现
@@ -24,6 +27,8 @@ public class MarkServiceImpl implements MarkService {
     private String DEFAULT_OUTPUT;
     @Value("${image.type}")
     private final String DEFAULT_TYPE = "png";
+    @Value("${image.url}")
+    private String imageUrl;
 
     private final int DEFAULT_WIDTH = 2040;
     private final int DEFAULT_HEIGHT = 1020;
@@ -39,7 +44,11 @@ public class MarkServiceImpl implements MarkService {
         if (StringUtils.isEmpty(text.getOutput())) {
             text.setOutput(DEFAULT_OUTPUT);
         }
-        return MarkImageUtils.markNewImage(text, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        if (StringUtils.isEmpty(text.getFileName())) {
+            text.setFileName(DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss"));
+        }
+        String source = MarkImageUtils.markNewImage(text, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        return StringUtils.join(imageUrl, "/image/file/", source);
     }
 
     /**

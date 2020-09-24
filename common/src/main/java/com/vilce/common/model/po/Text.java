@@ -19,6 +19,6 @@ public class Text extends Mark {
     private String word;
     @ApiModelProperty("文字大小")
     private int wordSize;
-    @ApiModelProperty("文字颜色：0-白，1-黑，2-灰，3-9为彩虹色")
-    private int color;
+    @ApiModelProperty("文字颜色")
+    private String color;
 }

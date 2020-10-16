@@ -47,8 +47,13 @@ public class MarkServiceImpl implements MarkService {
         if (StringUtils.isEmpty(text.getFileName())) {
             text.setFileName(DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss"));
         }
-        String source = MarkImageUtils.markNewImage(text, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        return StringUtils.join(imageUrl, "/image/file/", source);
+        if (text.isSingle()) {
+            return StringUtils.join(imageUrl, "/image/file/",
+                    MarkImageUtils.markNewImageSingle(text, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        }else {
+            return StringUtils.join(imageUrl, "/image/file/",
+                    MarkImageUtils.markNewImageMore(text, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        }
     }
 
     /**

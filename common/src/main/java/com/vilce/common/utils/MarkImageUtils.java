@@ -25,26 +25,24 @@ import javax.swing.ImageIcon;
 public class MarkImageUtils {
 
     /**
-     * 生成一个新空白水印图片
+     * 生成一个新空白水印图片，水印铺满
      *
      * @param text   文字水印参数
      * @param width  图片宽度
      * @param height 图片高度
      * @return
      */
-    public static String markNewImage(Text text, int width, int height) {
+    public static String markNewImageMore(Text text, int width, int height) {
         try {
             // 创建BufferedImage对象
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             // 获取Graphics2D
             Graphics2D g2d = image.createGraphics();
-
             // ---------- 增加下面的代码使得背景透明 -----------------
             image = g2d.getDeviceConfiguration().createCompatibleImage(width, height);
             g2d.dispose();
             g2d = image.createGraphics();
             // ---------- 背景透明代码结束 -----------------
-
             //抗锯齿 让图片看起来更清晰
             RenderingHints rh = g2d.getRenderingHints();
             rh.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -52,7 +50,6 @@ public class MarkImageUtils {
             // 画图 Start
             // 设置字体 名称、样式、磅值大小（同时使用斜体和粗体）
             Font font = new Font("宋体", Font.PLAIN, text.getWordSize());
-
             g2d.setFont(font);
             // 设置字体颜色
             g2d.setColor(Color.decode(text.getColor()));
@@ -95,8 +92,70 @@ public class MarkImageUtils {
             }
             // 保存文件
             ImageIO.write(image, "PNG", sf);
-            return sf.getAbsolutePath();
+            return StringUtils.join(text.getFileName() + ".png");
         } catch (IOException e) {
+            e.printStackTrace();
+            throw new BasicException(ResultStatus.FAIL.getStatus(), "生成一个新空白水印图片失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 生成一个新空白水印图片，单个水印
+     *
+     * @param text   文字水印参数
+     * @param width  图片宽度
+     * @param height 图片高度
+     * @return
+     */
+    public static String markNewImageSingle(Text text, int width, int height) {
+        try {
+            // 创建BufferedImage对象
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            // 获取Graphics2D
+            Graphics2D g2d = image.createGraphics();
+            // ---------- 增加下面的代码使得背景透明 -----------------
+            image = g2d.getDeviceConfiguration().createCompatibleImage(width, height);
+            g2d.dispose();
+            g2d = image.createGraphics();
+            // ---------- 背景透明代码结束 -----------------
+            //抗锯齿 让图片看起来更清晰
+            RenderingHints rh = g2d.getRenderingHints();
+            rh.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHints(rh);
+            // 画图 Start
+            // 设置字体 名称、样式、磅值大小（同时使用斜体和粗体）
+            Font font = new Font("宋体", Font.PLAIN, text.getWordSize());
+            g2d.setFont(font);
+            // 设置字体颜色
+            g2d.setColor(Color.decode(text.getColor()));
+            //设置水印旋转
+            g2d.rotate(Math.toRadians(text.getAngle(text.getDegree())), (double) image.getWidth() / 2, (double) image.getHeight() / 2);
+            // 获取水印文字，判断是否为多行
+            String textString = text.getWord();
+            String[] texts = textString.split("\n");
+            int x = getAngleX(text.getDegree(), text.getPosition());
+            int y = getAngleY(text.getDegree(), text.getPosition());
+            //根据行数调整水印位置
+            int len = texts.length;
+            for (int i = 0; i < len; i++) {
+                g2d.drawString(texts[i],
+                        (float) (x - (text.getWordSize() * ((double) (texts[i].length()) / 2) * Math.cos((double) text.getAngle(text.getAngle(text.getDegree()))))),
+                        (float) (y + ((i + 1) * text.getWordSize()) * Math.cos((double) text.getAngle(text.getAngle(text.getDegree())))));
+            }
+            // 画图 End
+            // 释放对象
+            g2d.dispose();
+            //输出图片
+            File sf = new File(text.getOutput(), text.getFileName() + ".png");
+            if (!sf.exists()) {
+                //不存在时创建文件
+                sf.getParentFile().mkdirs();
+            }
+            // 保存文件
+            ImageIO.write(image, "PNG", sf);
+            return StringUtils.join(text.getFileName() + ".png");
+        } catch (IOException e) {
+            e.printStackTrace();
             throw new BasicException(ResultStatus.FAIL.getStatus(), "生成一个新空白水印图片失败：" + e.getMessage());
         }
     }
@@ -440,5 +499,163 @@ public class MarkImageUtils {
         } catch (Exception e) {
             throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }
+    }
+
+    public static int getAngleX(int degree, int position) {
+        int x = 1020;
+        switch (degree) {
+            case 0:
+                switch (position) {
+                    case 0:
+                    case 2:
+                        x = 350;
+                        break;
+                    case 1:
+                    case 3:
+                        x = 1590;
+                        break;
+                }
+                break;
+            case 1:
+                switch (position) {
+                    case 0:
+                        x = 400;
+                        break;
+                    case 1:
+                        x = 1290;
+                        break;
+                    case 2:
+                        x = 650;
+                        break;
+                    case 3:
+                        x = 1490;
+                        break;
+                }
+                break;
+            case 2:
+                switch (position) {
+                    case 0:
+                        x = 650;
+                        break;
+                    case 1:
+                        x = 1490;
+                        break;
+                    case 2:
+                        x = 400;
+                        break;
+                    case 3:
+                        x = 1290;
+                        break;
+                }
+                break;
+            case 3:
+                switch (position) {
+                    case 0:
+                    case 1:
+                        x = 900;
+                        break;
+                    case 2:
+                    case 3:
+                        x = 1040;
+                        break;
+                }
+                break;
+            case 4:
+                switch (position) {
+                    case 0:
+                        x = 1100;
+                        break;
+                    case 1:
+                        x = 1140;
+                        break;
+                    case 2:
+                        x = 900;
+                        break;
+                    case 3:
+                        x = 940;
+                        break;
+                }
+                break;
+        }
+        return x;
+    }
+
+    public static int getAngleY(int degree, int position) {
+        int y = 510;
+        switch (degree) {
+            case 0:
+                switch (position) {
+                    case 0:
+                    case 1:
+                        y = 200;
+                        break;
+                    case 2:
+                    case 3:
+                        y = 820;
+                        break;
+                }
+                break;
+            case 1:
+                switch (position) {
+                    case 0:
+                        y = 800;
+                        break;
+                    case 1:
+                        y = -100;
+                        break;
+                    case 2:
+                        y = 1020;
+                        break;
+                    case 3:
+                        y = 120;
+                        break;
+                }
+                break;
+            case 2:
+                switch (position) {
+                    case 0:
+                        y = -100;
+                        break;
+                    case 1:
+                        y = 800;
+                        break;
+                    case 2:
+                        y = 170;
+                        break;
+                    case 3:
+                        y = 1020;
+                        break;
+                }
+                break;
+            case 3:
+                switch (position) {
+                    case 0:
+                    case 2:
+                        y = 1220;
+                        break;
+                    case 1:
+                    case 3:
+                        y = -330;
+                        break;
+                }
+                break;
+            case 4:
+                switch (position) {
+                    case 0:
+                        y = -300;
+                        break;
+                    case 1:
+                        y = 1200;
+                        break;
+                    case 2:
+                        y = -280;
+                        break;
+                    case 3:
+                        y = 1220;
+                        break;
+                }
+                break;
+        }
+        return y;
     }
 }

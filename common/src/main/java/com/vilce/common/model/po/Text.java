@@ -15,7 +15,7 @@ import lombok.Data;
 @ApiModel(value = "文字")
 @Data
 public class Text extends Mark {
-    @ApiModelProperty("水印文字")
+    @ApiModelProperty("水印文字，多行请换行输入")
     private String word;
     @ApiModelProperty("文字大小")
     private int wordSize;

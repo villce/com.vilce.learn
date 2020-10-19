@@ -32,19 +32,19 @@ public class MarkController {
 
     @PostMapping("new")
     @ApiOperation(value = "生成透明水印图片")
-    public String markNew(@RequestBody Text text) {
+    public String markNew(Text text) {
         return markService.markNew(text);
     }
 
     @PostMapping("wordToImage")
     @ApiOperation(value = "给图片添加文字水印")
-    public String markWordToImage(@RequestBody MultipartFile multipartFile,@RequestBody Text text,@RequestBody String imageType) {
-        return markService.markWordToImage(multipartFile, text, imageType);
+    public String markWordToImage(MultipartFile multipartFile, Text text) {
+        return markService.markWordToImage(multipartFile, text);
     }
 
     @PostMapping("imageToImage")
     @ApiOperation(value = "给图片加图片水印")
-    public String markImageToImage(@RequestBody MultipartFile icon,@RequestBody MultipartFile source,@RequestBody Mark mark,@RequestBody String imageType) {
-        return markService.markImageToImage(icon, source, mark, imageType);
+    public String markImageToImage(MultipartFile icon, MultipartFile source, Mark mark) {
+        return markService.markImageToImage(icon, source, mark);
     }
 }

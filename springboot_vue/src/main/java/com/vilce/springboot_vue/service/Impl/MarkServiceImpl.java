@@ -61,18 +61,17 @@ public class MarkServiceImpl implements MarkService {
      *
      * @param multipartFile 图片
      * @param text          文字水印参数
-     * @param imageType     图片类型
      * @return
      */
     @Override
-    public String markWordToImage(MultipartFile multipartFile, Text text, String imageType) {
+    public String markWordToImage(MultipartFile multipartFile, Text text) {
         if (StringUtils.isEmpty(text.getOutput())) {
             text.setOutput(DEFAULT_OUTPUT);
         }
-        if (StringUtils.isEmpty(imageType)) {
-            imageType = DEFAULT_TYPE;
+        if (StringUtils.isEmpty(text.getFileName())) {
+            text.setFileName(DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss"));
         }
-        String result = MarkImageUtils.markImageByMoreText(multipartFile, text, imageType);
+        String result = MarkImageUtils.markImageByMoreText(multipartFile, text);
         return result;
     }
 
@@ -82,17 +81,13 @@ public class MarkServiceImpl implements MarkService {
      * @param icon      背景图片
      * @param source    水印图片
      * @param mark      水印参数
-     * @param imageType 图片类型
      * @return
      */
     @Override
-    public String markImageToImage(MultipartFile icon, MultipartFile source, Mark mark, String imageType) {
+    public String markImageToImage(MultipartFile icon, MultipartFile source, Mark mark) {
         if (StringUtils.isEmpty(mark.getOutput())) {
             mark.setOutput(DEFAULT_OUTPUT);
         }
-        if (StringUtils.isEmpty(imageType)) {
-            imageType = DEFAULT_TYPE;
-        }
-        return MarkImageUtils.markImageByMoreIcon(icon, source, mark, imageType);
+        return MarkImageUtils.markImageByMoreIcon(icon, source, mark);
     }
 }

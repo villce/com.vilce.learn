@@ -21,4 +21,8 @@ public class Text extends Mark {
     private int wordSize;
     @ApiModelProperty("文字颜色")
     private String color;
+    @ApiModelProperty("x轴偏移量")
+    private double changeX;
+    @ApiModelProperty("y轴偏移量")
+    private double changeY;
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -47,13 +48,15 @@ public class MarkServiceImpl implements MarkService {
         if (StringUtils.isEmpty(text.getFileName())) {
             text.setFileName(DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss"));
         }
-        if (text.isSingle()) {
-            return StringUtils.join(imageUrl, "/image/file/",
-                    MarkImageUtils.markNewImageSingle(text, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-        }else {
-            return StringUtils.join(imageUrl, "/image/file/",
-                    MarkImageUtils.markNewImageMore(text, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        byte[] image = null;
+        if (text.isPaved()) {
+            image = MarkImageUtils.markNewImageMore(text, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        } else {
+            image = MarkImageUtils.markNewImageSingle(text, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         }
+        Base64.Encoder encoder = Base64.getEncoder();
+        String data = encoder.encodeToString(image);
+        return data;
     }
 
     /**
@@ -78,9 +81,9 @@ public class MarkServiceImpl implements MarkService {
     /**
      * 给图片加图片水印
      *
-     * @param icon      背景图片
-     * @param source    水印图片
-     * @param mark      水印参数
+     * @param icon   背景图片
+     * @param source 水印图片
+     * @param mark   水印参数
      * @return
      */
     @Override

@@ -32,7 +32,7 @@ public class MarkController {
 
     @PostMapping("new")
     @ApiOperation(value = "生成透明水印图片")
-    public String markNew(Text text) {
+    public String markNew(@RequestBody Text text) {
         return markService.markNew(text);
     }
 

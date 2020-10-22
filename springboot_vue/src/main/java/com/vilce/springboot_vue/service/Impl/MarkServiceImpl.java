@@ -62,20 +62,27 @@ public class MarkServiceImpl implements MarkService {
     /**
      * 给图片添加文字水印
      *
-     * @param multipartFile 图片
-     * @param text          文字水印参数
+     * @param sourceFile 图片
+     * @param text       文字水印参数
      * @return
      */
     @Override
-    public String markWordToImage(MultipartFile multipartFile, Text text) {
+    public String markWordToImage(MultipartFile sourceFile, Text text) {
         if (StringUtils.isEmpty(text.getOutput())) {
             text.setOutput(DEFAULT_OUTPUT);
         }
         if (StringUtils.isEmpty(text.getFileName())) {
             text.setFileName(DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss"));
         }
-        String result = MarkImageUtils.markImageByMoreText(multipartFile, text);
-        return result;
+        byte[] image = null;
+        if (text.isPaved()) {
+            image = MarkImageUtils.markImageByMoreText(sourceFile, text);
+        } else {
+            image = MarkImageUtils.markImageBySingleText(sourceFile, text);
+        }
+        Base64.Encoder encoder = Base64.getEncoder();
+        String data = encoder.encodeToString(image);
+        return data;
     }
 
     /**

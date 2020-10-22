@@ -26,18 +26,18 @@ public interface MarkService {
     /**
      * 给图片添加文字水印
      *
-     * @param multipartFile 图片
-     * @param text          文字水印参数
+     * @param sourceFile 图片
+     * @param text       文字水印参数
      * @return
      */
-    String markWordToImage(MultipartFile multipartFile, Text text);
+    String markWordToImage(MultipartFile sourceFile, Text text);
 
     /**
      * 给图片加图片水印
      *
-     * @param icon      背景图片
-     * @param source    水印图片
-     * @param mark      水印参数
+     * @param icon   背景图片
+     * @param source 水印图片
+     * @param mark   水印参数
      * @return
      */
     String markImageToImage(MultipartFile icon, MultipartFile source, Mark mark);

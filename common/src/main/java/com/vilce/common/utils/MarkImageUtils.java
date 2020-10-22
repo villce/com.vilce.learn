@@ -155,13 +155,13 @@ public class MarkImageUtils {
     /**
      * 为图片添加文字水印
      *
-     * @param file 图片
-     * @param text 文字水印参数
+     * @param sourceFile 源图片
+     * @param text       文字水印参数
      * @return
      */
-    public static String markImageByMoreText(MultipartFile file, Text text) {
+    public static byte[] markImageByMoreText(MultipartFile sourceFile, Text text) {
         try {
-            Image img = ImageIO.read(file.getInputStream());
+            Image img = ImageIO.read(sourceFile.getInputStream());
             //图片宽
             int width = img.getWidth(null);
             //图片高
@@ -197,14 +197,10 @@ public class MarkImageUtils {
             }
             g.dispose();
             //输出图片
-            File sf = new File(text.getOutput(), text.getFileName() + ".png");
-            if (!sf.exists()) {
-                //不存在时创建文件
-                sf.getParentFile().mkdirs();
-            }
-            // 保存图片
-            ImageIO.write(bi, "PNG", sf);
-            return StringUtils.join(text.getFileName() + ".png");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // 保存文件
+            ImageIO.write(bi, "PNG", baos);
+            return baos.toByteArray();
         } catch (Exception e) {
             throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }
@@ -213,39 +209,43 @@ public class MarkImageUtils {
     /**
      * 给图片添加单个文字水印、可设置水印文字旋转角度
      *
-     * @param file 图片
-     * @param text 文字水印参数
+     * @param sourceFile 源图片
+     * @param text       文字水印参数
      */
-    public static String markImageBySingleText(MultipartFile file, Text text) {
+    public static byte[] markImageBySingleText(MultipartFile sourceFile, Text text) {
         try {
-            Image img = ImageIO.read(file.getInputStream());
+            Image img = ImageIO.read(sourceFile.getInputStream());
             int width = img.getWidth(null);
             int height = img.getHeight(null);
             //加水印
             BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = bi.createGraphics();
             g.drawImage(img, 0, 0, width, height, null);
-            //设置水印字体样式
-            Font font = new Font("宋体", Font.PLAIN, 50);
-            //根据图片的背景设置水印颜色
+            // 画图 Start
+            // 设置字体 名称、样式、磅值大小（同时使用斜体和粗体）
+            Font font = new Font("宋体", Font.PLAIN, text.getWordSize());
+            g.setFont(font);
+            // 设置字体颜色
             g.setColor(Color.decode(text.getColor()));
             //设置水印旋转
             g.rotate(Math.toRadians(text.getDegree()), (double) bi.getWidth() / 2, (double) bi.getHeight() / 2);
-            g.setFont(font);
-            int x = width / 3;
+            // 获取水印文字，判断是否为多行
+            String textString = text.getWord();
+            String[] texts = textString.split("\n");
+            int x = width / 2;
             int y = height / 2;
-            //水印位置
-            g.drawString(text.getWord(), x, y);
+            //根据行数调整水印位置
+            int len = texts.length;
+            for (int i = 0; i < len; i++) {
+                g.drawString(texts[i], (float) (x - text.getWordSize() * (texts[i].length() / 2) + text.getChangeX()),
+                        (float) (y + (i + 1) * text.getWordSize() + text.getChangeY()));
+            }
             g.dispose();
             //输出图片
-            File sf = new File(text.getOutput(), text.getFileName() + ".png");
-            if (!sf.exists()) {
-                //不存在时创建文件
-                sf.getParentFile().mkdirs();
-            }
-            // 保存图片
-            ImageIO.write(bi, "PNG", sf);
-            return StringUtils.join(text.getFileName() + ".png");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // 保存文件
+            ImageIO.write(bi, "PNG", baos);
+            return baos.toByteArray();
         } catch (Exception e) {
             throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }

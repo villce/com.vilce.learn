@@ -35,10 +35,10 @@ public interface MarkService {
     /**
      * 给图片加图片水印
      *
-     * @param icon   背景图片
-     * @param source 水印图片
-     * @param mark   水印参数
+     * @param iconFile   背景图片
+     * @param sourceFile 水印图片
+     * @param mark       水印参数
      * @return
      */
-    String markImageToImage(MultipartFile icon, MultipartFile source, Mark mark);
+    String markImageToImage(MultipartFile iconFile, MultipartFile sourceFile, Mark mark);
 }

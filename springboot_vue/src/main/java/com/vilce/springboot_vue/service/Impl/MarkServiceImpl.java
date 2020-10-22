@@ -88,16 +88,27 @@ public class MarkServiceImpl implements MarkService {
     /**
      * 给图片加图片水印
      *
-     * @param icon   背景图片
-     * @param source 水印图片
-     * @param mark   水印参数
+     * @param iconFile   背景图片
+     * @param sourceFile 水印图片
+     * @param mark       水印参数
      * @return
      */
     @Override
-    public String markImageToImage(MultipartFile icon, MultipartFile source, Mark mark) {
+    public String markImageToImage(MultipartFile iconFile, MultipartFile sourceFile, Mark mark) {
         if (StringUtils.isEmpty(mark.getOutput())) {
             mark.setOutput(DEFAULT_OUTPUT);
         }
-        return MarkImageUtils.markImageByMoreIcon(icon, source, mark);
+        if (StringUtils.isEmpty(mark.getFileName())) {
+            mark.setFileName(DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss"));
+        }
+        byte[] image = null;
+        if (mark.isPaved()) {
+            image = MarkImageUtils.markImageByMoreIcon(iconFile, sourceFile, mark);
+        } else {
+            image = MarkImageUtils.markImageBySingleIcon(iconFile, sourceFile, mark);
+        }
+        Base64.Encoder encoder = Base64.getEncoder();
+        String data = encoder.encodeToString(image);
+        return data;
     }
 }

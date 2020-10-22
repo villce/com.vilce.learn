@@ -15,7 +15,7 @@ import lombok.Data;
 @ApiModel(value = "水印参数")
 @Data
 public class Mark {
-    @ApiModelProperty("文字旋转角度")
+    @ApiModelProperty("水印旋转角度")
     private Integer degree;
     @ApiModelProperty("最终水印文件地址，默认为D:/img")
     private String output;

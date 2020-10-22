@@ -258,7 +258,7 @@ public class MarkImageUtils {
      * @param source 没有加水印的图片路径（如：F:/images/6.jpg）
      * @param mark   水印参数
      */
-    public static String markImageByMoreIcon(MultipartFile icon, MultipartFile source, Mark mark) {
+    public static byte[] markImageByMoreIcon(MultipartFile icon, MultipartFile source, Mark mark) {
         try {
             //将icon加载到内存中
             Image ic = ImageIO.read(icon.getInputStream());
@@ -310,14 +310,11 @@ public class MarkImageUtils {
                 y += (icheight + temp);
             }
             g.dispose();
-            File sf = new File(mark.getOutput(), mark.getFileName() + ".png");
-            if (!sf.exists()) {
-                //不存在时创建文件
-                sf.getParentFile().mkdirs();
-            }
-            // 保存图片
-            ImageIO.write(bi, "PNG", sf);
-            return StringUtils.join(mark.getFileName() + ".png");
+            //输出图片
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // 保存文件
+            ImageIO.write(bi, "PNG", baos);
+            return baos.toByteArray();
         } catch (Exception e) {
             throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }
@@ -326,26 +323,18 @@ public class MarkImageUtils {
     /**
      * 给图片添加单个图片水印、可设置水印图片旋转角度
      *
-     * @param icon      水印图片路径（如：F:/images/icon.png）
-     * @param source    没有加水印的图片路径（如：F:/images/6.jpg）
-     * @param output    加水印后的图片路径（如：F:/images/）
-     * @param imageName 图片名称（如：11111）
-     * @param imageType 图片类型（如：jpg）
-     * @param degree    水印图片旋转角度，为null表示不旋转
+     * @param icon   水印图片路径（如：F:/images/icon.png）
+     * @param source 没有加水印的图片路径（如：F:/images/6.jpg）
+     * @param mark   水印参数
      */
-    public static String markImageBySingleIcon(String icon, String source, String output, String imageName, String imageType, Integer degree) {
+    public static byte[] markImageBySingleIcon(MultipartFile icon, MultipartFile source, Mark mark) {
         try {
-            File file = new File(source);
-            File ficon = new File(icon);
-            if (!file.isFile()) {
-                return source + " 不是一个图片文件!";
-            }
             //将icon加载到内存中
-            Image ic = ImageIO.read(ficon);
+            Image ic = ImageIO.read(icon.getInputStream());
             //icon高度
             int icheight = ic.getHeight(null);
             //将源图片读到内存中
-            Image img = ImageIO.read(file);
+            Image img = ImageIO.read(source.getInputStream());
             //图片宽
             int width = img.getWidth(null);
             //图片高
@@ -360,29 +349,22 @@ public class MarkImageUtils {
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             //呈现一个图像，在绘制前进行从图像空间到用户空间的转换
             g.drawImage(img.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0, null);
-            if (null != degree) {
+            if (null != mark.getDegree()) {
                 //设置水印旋转
-                g.rotate(Math.toRadians(degree), (double) bi.getWidth() / 2, (double) bi.getHeight() / 2);
+                g.rotate(Math.toRadians(mark.getDegree()), (double) bi.getWidth() / 2, (double) bi.getHeight() / 2);
             }
-            //水印图象的路径 水印一般为gif或者png的，这样可设置透明度
-            ImageIcon imgIcon = new ImageIcon(icon);
-            //得到Image对象。
-            Image con = imgIcon.getImage();
             //透明度，最小值为0，最大值为1
             float clarity = 0.6f;
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, clarity));
             //表示水印图片的坐标位置(x,y)
-            g.drawImage(con, x, y, null);
+            g.drawImage(ic, x, y, null);
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             g.dispose();
-            File sf = new File(output, imageName + "." + imageType);
-            if (!sf.exists()) {
-                //不存在时创建文件
-                sf.getParentFile().mkdirs();
-            }
-            // 保存图片
-            ImageIO.write(bi, imageType, sf);
-            return sf.getAbsolutePath();
+            //输出图片
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // 保存文件
+            ImageIO.write(bi, "PNG", baos);
+            return baos.toByteArray();
         } catch (Exception e) {
             throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
         }

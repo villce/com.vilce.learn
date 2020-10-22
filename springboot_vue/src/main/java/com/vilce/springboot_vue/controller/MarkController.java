@@ -39,7 +39,7 @@ public class MarkController {
 
     @PostMapping("imageToImage")
     @ApiOperation(value = "给图片加图片水印")
-    public String markImageToImage(MultipartFile icon, MultipartFile source, Mark mark) {
-        return markService.markImageToImage(icon, source, mark);
+    public String markImageToImage(MultipartFile iconFile, MultipartFile sourceFile, Mark mark) {
+        return markService.markImageToImage(iconFile, sourceFile, mark);
     }
 }

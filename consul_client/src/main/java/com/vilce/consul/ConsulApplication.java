@@ -12,8 +12,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Date: 2020/9/14 15:59
  * @Version: 1.0
  */
-@SpringBootApplication
 @EnableDiscoveryClient
+@SpringBootApplication(scanBasePackages = "com.vilce")
 public class ConsulApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConsulApplication.class, args);

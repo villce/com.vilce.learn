@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: @project.name@
+  cloud:
+    consul:
+      config:
+        enabled: true
+        prefix: @project.name@
+        defaultContext: @project.version@
+        watch:
+          enabled: false
+          delay: 1000
+        format: properties
+        data-key: data
+        profile-separator: '/'
+        acl-token: ${JAVA_CONSULACLTOKEN}
+      discovery:
+        prefer-ip-address: true
+        acl-token: ${JAVA_CONSULACLTOKEN}
+      host: ${JAVA_LOCALIP}
+      port: 8500
+  vilce:
+    token:
+      system-number: @project.name@

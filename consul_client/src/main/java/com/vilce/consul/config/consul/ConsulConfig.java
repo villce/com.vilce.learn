@@ -22,11 +22,11 @@ public class ConsulConfig {
     private TtlScheduler ttlScheduler;
 
     @Bean
-    public EmisConsulServiceRegistry consulServiceRegistry(
+    public VilceConsulServiceRegistry consulServiceRegistry(
             ConsulClient consulClient,
             ConsulDiscoveryProperties properties,
             HeartbeatProperties heartbeatProperties) {
-        return new EmisConsulServiceRegistry(
+        return new VilceConsulServiceRegistry(
                 consulClient, properties, ttlScheduler, heartbeatProperties);
     }
 }

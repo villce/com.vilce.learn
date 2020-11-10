@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "health")
 @Api(tags = "健康检查控制器")
 public class HealthCheckController {
+
     @GetMapping
     public void record() {
         return;

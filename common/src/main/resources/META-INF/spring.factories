@@ -1,0 +1,3 @@
+org.springframework.boot.env.PropertySourceLoader=com.vilce.common.config.web.VilcePropertiesPropertySourceLoader
+# Bootstrap Configuration
+org.springframework.cloud.bootstrap.BootstrapConfiguration=com.vilce.common.config.consul.VilceConsulConfigBootstrapConfiguration

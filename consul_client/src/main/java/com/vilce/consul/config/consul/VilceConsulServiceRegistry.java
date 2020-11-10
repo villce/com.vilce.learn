@@ -17,19 +17,19 @@ import java.util.UUID;
 /**
  * @description: Consul自定义配置
  * @projectName: com.eastmoney.emis.statistic
- * @package: com.eastmoney.emis.statistic.config.consul.EmisConsulServiceRegistry
+ * @package: com.eastmoney.emis.statistic.config.consul.VilceConsulServiceRegistry
  * @author: 韩庆瑞
  * @date: 2020/6/5 1:32 PM
  * @version: 1.0
  */
 
-public class EmisConsulServiceRegistry extends ConsulServiceRegistry {
+public class VilceConsulServiceRegistry extends ConsulServiceRegistry {
     @Autowired
     private Environment env;
     @Value("${spring.vilce.token.system-number}")
     private String serviceNo;
 
-    public EmisConsulServiceRegistry(ConsulClient client, ConsulDiscoveryProperties properties, TtlScheduler ttlScheduler, HeartbeatProperties heartbeatProperties) {
+    public VilceConsulServiceRegistry(ConsulClient client, ConsulDiscoveryProperties properties, TtlScheduler ttlScheduler, HeartbeatProperties heartbeatProperties) {
         super(client, properties, ttlScheduler, heartbeatProperties);
     }
 

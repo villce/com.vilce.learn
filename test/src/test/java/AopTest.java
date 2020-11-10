@@ -1,5 +1,4 @@
 import com.vilce.test.Application;
-import com.vilce.test.config.TService;
 import com.vilce.test.model.MyTransaction;
 import com.vilce.test.model.po.Person;
 import org.junit.Test;
@@ -70,14 +69,5 @@ public class AopTest {
         // 经过代理生成代理对象
         Person proxy = (Person) proxyFactory.getProxy();
         proxy.run1();
-    }
-
-    @Test
-    public void test4() throws NoSuchMethodException {
-        Method method = TService.class.getMethod("run1");
-        //读取事务注解
-        AnnotationAttributes attributes = AnnotatedElementUtils.findMergedAnnotationAttributes(
-                method, MyTransaction.class, false, false);
-        System.out.println(attributes);
     }
 }

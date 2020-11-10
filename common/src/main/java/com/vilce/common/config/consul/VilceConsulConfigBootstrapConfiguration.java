@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Primary;
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(ConsulConfigBootstrapConfiguration.class)
-@ConditionalOnProperty(name = "spring.cloud.consul.config.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "spring.cloud.consul.config.enabled", havingValue = "true", matchIfMissing = true)
 public class VilceConsulConfigBootstrapConfiguration implements InitializingBean {
 
     @Autowired

@@ -33,15 +33,15 @@ public class BaseResponse<T> implements Serializable {
 
     public static <T> BaseResponse<T> buildResponse() {
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setStatus(ResultStatus.SUCCESS.getStatus());
-        baseResponse.setMessage(ResultStatus.SUCCESS.getMessage());
+        baseResponse.setStatus(ResultStatus.OK.getStatus());
+        baseResponse.setMessage(ResultStatus.OK.getMessage());
         return baseResponse;
     }
 
     public static <T> BaseResponse<T> buildResponse(T data) {
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setStatus(ResultStatus.SUCCESS.getStatus());
-        baseResponse.setMessage(ResultStatus.SUCCESS.getMessage());
+        baseResponse.setStatus(ResultStatus.OK.getStatus());
+        baseResponse.setMessage(ResultStatus.OK.getMessage());
         baseResponse.setData(data);
         return baseResponse;
     }

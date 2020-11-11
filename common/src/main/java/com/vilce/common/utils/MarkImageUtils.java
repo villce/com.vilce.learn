@@ -92,7 +92,7 @@ public class MarkImageUtils {
             return baos.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "生成一个新空白水印图片失败：" + e.getMessage());
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "生成一个新空白水印图片失败：" + e.getMessage());
         }
     }
 
@@ -148,7 +148,7 @@ public class MarkImageUtils {
             return baos.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "生成一个新空白水印图片失败：" + e.getMessage());
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "生成一个新空白水印图片失败：" + e.getMessage());
         }
     }
 
@@ -202,7 +202,7 @@ public class MarkImageUtils {
             ImageIO.write(bi, "PNG", baos);
             return baos.toByteArray();
         } catch (Exception e) {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "水印添加失败：" + e.getMessage());
         }
     }
 
@@ -247,7 +247,7 @@ public class MarkImageUtils {
             ImageIO.write(bi, "PNG", baos);
             return baos.toByteArray();
         } catch (Exception e) {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "水印添加失败：" + e.getMessage());
         }
     }
 
@@ -316,7 +316,7 @@ public class MarkImageUtils {
             ImageIO.write(bi, "PNG", baos);
             return baos.toByteArray();
         } catch (Exception e) {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "水印添加失败：" + e.getMessage());
         }
     }
 
@@ -366,7 +366,7 @@ public class MarkImageUtils {
             ImageIO.write(bi, "PNG", baos);
             return baos.toByteArray();
         } catch (Exception e) {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "水印添加失败：" + e.getMessage());
         }
     }
 
@@ -456,7 +456,7 @@ public class MarkImageUtils {
             ImageIO.write(bi, imageType, sf);
             return sf.getAbsolutePath();
         } catch (Exception e) {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "水印添加失败：" + e.getMessage());
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "水印添加失败：" + e.getMessage());
         }
     }
 }

@@ -15,8 +15,8 @@ public class BasicException extends RuntimeException{
     private String errorMessage;
 
     public BasicException() {
-        this.statusCode = ResultStatus.FAIL.getStatus();
-        this.errorMessage = ResultStatus.FAIL.getMessage();
+        this.statusCode = ResultStatus.ERROR.getStatus();
+        this.errorMessage = ResultStatus.ERROR.getMessage();
     }
 
     public BasicException(ResultStatus status) {

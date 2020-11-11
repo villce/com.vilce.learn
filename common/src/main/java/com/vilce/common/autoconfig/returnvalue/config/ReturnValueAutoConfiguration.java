@@ -1,10 +1,14 @@
-package com.vilce.common.config.advice;
+package com.vilce.common.autoconfig.returnvalue.config;
 
-import com.vilce.common.config.handler.ResponseHttpEntityMethodReturnValueHandler;
-import com.vilce.common.config.handler.ResponseHttpHeadersReturnValueHandler;
-import com.vilce.common.config.handler.ResponseMethodReturnValueHandler;
+import com.vilce.common.autoconfig.returnvalue.handler.ResponseHttpEntityMethodReturnValueHandler;
+import com.vilce.common.autoconfig.returnvalue.handler.ResponseHttpHeadersReturnValueHandler;
+import com.vilce.common.autoconfig.returnvalue.handler.ResponseMethodReturnValueHandler;
+import com.vilce.common.utils.LoggerUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor;
@@ -16,32 +20,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Description: 控制器返回值配置
+ * @Description: 返参包装自动化配置
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.annotation.config.advice.ResponseMethodReturnValueConfigurer
+ * @Package: com.vilce.common.autoconfig.returnvalue.config.ReturnValueAutoConfiguration
  * @Author: 雷才哲
- * @Date: 2019/11/13 13:47
+ * @Date: 2020/11/10 19:37
  * @Version: 1.0
  */
 @Configuration
-public class ResponseMethodReturnValueConfigurer implements InitializingBean {
+@EnableConfigurationProperties(ReturnValueProperties.class)
+@ConditionalOnProperty(prefix = "spring.vilce.returnvalue", name = "enable", havingValue = "true", matchIfMissing = true)
+public class ReturnValueAutoConfiguration implements InitializingBean, CommandLineRunner {
     @Autowired
     private RequestMappingHandlerAdapter handlerAdapter;
 
     @Override
-    public void afterPropertiesSet()  {
-
+    public void afterPropertiesSet() throws Exception {
         List<HandlerMethodReturnValueHandler> list = handlerAdapter.getReturnValueHandlers();
         if (null != list) {
             List<HandlerMethodReturnValueHandler> newList = new ArrayList<>();
-            for (HandlerMethodReturnValueHandler valueHandler: list) {
+            for (HandlerMethodReturnValueHandler valueHandler : list) {
                 if (valueHandler instanceof RequestResponseBodyMethodProcessor) {
                     ResponseMethodReturnValueHandler proxy = new ResponseMethodReturnValueHandler(valueHandler);
                     newList.add(proxy);
-                } else if(valueHandler instanceof HttpEntityMethodProcessor){
+                } else if (valueHandler instanceof HttpEntityMethodProcessor) {
                     ResponseHttpEntityMethodReturnValueHandler proxy = new ResponseHttpEntityMethodReturnValueHandler(valueHandler);
                     newList.add(proxy);
-                } else if(valueHandler instanceof HttpHeadersReturnValueHandler){
+                } else if (valueHandler instanceof HttpHeadersReturnValueHandler) {
                     ResponseHttpHeadersReturnValueHandler proxy = new ResponseHttpHeadersReturnValueHandler(valueHandler);
                     newList.add(proxy);
                 } else {
@@ -50,5 +55,10 @@ public class ResponseMethodReturnValueConfigurer implements InitializingBean {
             }
             handlerAdapter.setReturnValueHandlers(newList);
         }
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        LoggerUtils.info(ReturnValueAutoConfiguration.class, "【自动化配置】----返回值包装组件初始化完成...");
     }
 }

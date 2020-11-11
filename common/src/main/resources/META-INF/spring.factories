@@ -1,3 +1,6 @@
+# properties中文乱码
 org.springframework.boot.env.PropertySourceLoader=com.vilce.common.config.web.VilcePropertiesPropertySourceLoader
-# Bootstrap Configuration
-org.springframework.cloud.bootstrap.BootstrapConfiguration=com.vilce.common.config.consul.VilceConsulConfigBootstrapConfiguration
+# consul中文乱码
+org.springframework.cloud.bootstrap.BootstrapConfiguration=com.vilce.common.autoconfig.consul.VilceConsulConfigBootstrapConfiguration
+# 自动化配置
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.vilce.common.autoconfig.returnvalue.config.ReturnValueAutoConfiguration

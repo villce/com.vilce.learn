@@ -1,4 +1,4 @@
-package com.vilce.common.config.handler;
+package com.vilce.common.autoconfig.returnvalue.handler;
 
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.common.utils.SwaggerUtils;

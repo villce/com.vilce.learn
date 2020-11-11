@@ -1,4 +1,4 @@
-package com.vilce.common.config.consul;
+package com.vilce.common.autoconfig.consul;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.vilce.common.utils.LoggerUtils;
@@ -6,11 +6,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cloud.consul.ConditionalOnConsulEnabled;
-import org.springframework.cloud.consul.ConsulAutoConfiguration;
 import org.springframework.cloud.consul.config.ConsulConfigBootstrapConfiguration;
 import org.springframework.cloud.consul.config.ConsulConfigProperties;
-import org.springframework.cloud.consul.config.ConsulPropertySourceLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -18,7 +15,7 @@ import org.springframework.context.annotation.Primary;
 /**
  * @Description: Description
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.common.config.consul.VilceConsulConfigBootstrapConfiguration
+ * @Package: com.vilce.common.autoconfig.consul.VilceConsulConfigBootstrapConfiguration
  * @Author: 雷才哲
  * @Date: 2020/11/9 16:15
  * @Version: 1.0

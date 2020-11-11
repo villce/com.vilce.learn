@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.vilce.common.config.consul;
+package com.vilce.common.autoconfig.consul;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

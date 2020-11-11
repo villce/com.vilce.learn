@@ -1,4 +1,4 @@
-package com.vilce.common.config.consul;
+package com.vilce.common.autoconfig.consul;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
@@ -16,8 +16,6 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.util.ReflectionUtils;
 
 import java.util.*;
-
-import static org.springframework.cloud.consul.config.ConsulConfigProperties.Format.FILES;
 
 /**
  * @author Spencer Gibb

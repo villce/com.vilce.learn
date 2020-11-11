@@ -1,4 +1,4 @@
-package com.vilce.common.config.handler;
+package com.vilce.common.autoconfig.returnvalue.handler;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;

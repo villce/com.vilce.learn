@@ -1,4 +1,4 @@
-package com.vilce.common.config.web;
+package com.vilce.common.config.properties;
 
 import org.springframework.boot.env.OriginTrackedMapPropertySource;
 import org.springframework.boot.env.PropertySourceLoader;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @Description: 重写PropertiesPropertySourceLoader类，系统内部的PropertiesPropertySourceLoader类的优先级是2147483647，
  *  * 设置@Order注解，值是2147483646，优先级比系统自带的高
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.common.config.web.VilcePropertiesPropertySourceLoader
+ * @Package: com.vilce.common.config.properties.VilcePropertiesPropertySourceLoader
  * @Author: 雷才哲
  * @Date: 2020/11/10 13:24
  * @Version: 1.0

@@ -22,7 +22,7 @@ import java.util.List;
  * @Date: 2019/12/6 16:23
  * @Version: 1.0
  */
-@Api(tags = "异步接口")
+@Api(tags = "异步控制器")
 @RestController
 @RequestMapping("/async")
 public class AsyncController {

@@ -1,4 +1,4 @@
-package com.vilce.common.config.web;
+package com.vilce.common.config.properties;
 
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginTrackedValue;

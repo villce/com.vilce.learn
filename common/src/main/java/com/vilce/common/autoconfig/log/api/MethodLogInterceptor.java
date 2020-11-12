@@ -1,18 +1,22 @@
-package com.vilce.common.autoconfig.log.interceptor;
+package com.vilce.common.autoconfig.log.api;
 
+import ch.qos.logback.classic.Level;
+import com.google.common.collect.Maps;
+import com.vilce.common.autoconfig.log.api.even.LogAop;
+import com.vilce.common.autoconfig.log.api.even.LogApplicationEvent;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.vo.BaseRequest;
 import com.vilce.common.utils.HiddenUtils;
 import com.vilce.common.utils.JSONUtils;
 import com.vilce.common.utils.RequestUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,47 +24,58 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description: 日志拦截
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.common.autoconfig.log.interceptor.MethodLogInterceptor
+ * @Package: com.vilce.common.autoconfig.log.api.MethodLogInterceptor
  * @Author: 雷才哲
  * @Date: 2020/9/3 9:51
  * @Version: 1.0
  */
-@Slf4j
 public class MethodLogInterceptor implements MethodInterceptor {
 
+    /**
+     * 事件发布对象
+     */
+    private ApplicationEventPublisher eventPublisher;
+
+    public MethodLogInterceptor(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
     @Override
-    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        // 获取接口访问地址
-        String requestUrl = request.getRequestURL().toString();
+    public Object invoke(MethodInvocation invocation) throws Throwable {
         // 获取传参
-        Map<String, Object> params = getRequestParam(methodInvocation);
+        Map<String, Object> params = getRequestParam(invocation);
         // 启动计时器
         StopWatch stopWatch = StopWatch.createStarted();
         try {
             // 继续访问方法
-            Object obj = methodInvocation.proceed();
+            Object result = invocation.proceed();
             // 关闭计时器，获取响应时间
             stopWatch.stop();
+            LogAop logAop = null;
             long spendTime = stopWatch.getTime();
-            // 记录INFO日志
-            logInfo(requestUrl, params, spendTime, obj);
-            return obj;
+            if (Objects.nonNull(result) && (result instanceof ResponseEntity)) {
+                Object resultBody = ((ResponseEntity) result).getBody();
+                //打印INFO日志
+                logAop = logInfo(invocation, params, spendTime, resultBody);
+            } else {
+                //打印INFO日志
+                logAop = logInfo(invocation, params, spendTime, result);
+            }
+            eventPublisher.publishEvent(new LogApplicationEvent(logAop));
+            return result;
         } catch (Throwable e) {
             // 当访问异常时
             // 关闭计时器，获取响应时间
             stopWatch.stop();
             long spendTime = stopWatch.getTime();
             // 记录ERROR日志
-            logError(requestUrl, params, spendTime, e);
+            LogAop logAop = logError(invocation, params, spendTime, e);
+            eventPublisher.publishEvent(new LogApplicationEvent(logAop));
             throw e;
         }
     }
@@ -68,47 +83,50 @@ public class MethodLogInterceptor implements MethodInterceptor {
     /**
      * Info日志打印
      *
-     * @param requestUrl
-     * @param params
-     * @param spendTime
-     * @param obj
+     * @param invocation 执行器
+     * @param params     入参
+     * @param spendTime  响应耗时
+     * @param result     响应数据
      */
-    private void logInfo(String requestUrl, Map<String, Object> params, long spendTime, Object obj) {
-        Map<String, Object> logMap = new LinkedHashMap<>();
-        logMap.put("访问地址", requestUrl);
+    private LogAop logInfo(MethodInvocation invocation, Map<String, Object> params, long spendTime, Object result) {
+        HttpServletRequest request = RequestUtils.getRequest();
+        Map<String, Object> logMap = Maps.newLinkedHashMap();
+        logMap.put("方法类", StringUtils.join(invocation.getThis().getClass(), ".", invocation.getMethod().getName()));
+        logMap.put("访问地址", request.getRequestURL());
+        logMap.put("访问方法", request.getMethod());
+        logMap.put("传入参数", CollectionUtils.isEmpty(params) ? Collections.emptyMap() : params);
         logMap.put("响应耗时", spendTime);
-        logMap.put("传入参数", params);
-        logMap.put("返回数据", obj);
-        log.info(JSONUtils.toJsonPretty(logMap));
+        logMap.put("响应数据", result);
+        return new LogAop<>(Level.INFO.levelStr, invocation.getThis().getClass(), logMap);
     }
 
     /**
      * Error日志打印
      *
-     * @param requestUrl
-     * @param params
-     * @param spendTime
-     * @param e
+     * @param invocation 执行器
+     * @param params     入参
+     * @param spendTime  响应耗时
+     * @param e          异常
      */
-    private void logError(String requestUrl, Map<String, Object> params, long spendTime, Throwable e) {
-        Map<String, Object> logMap = new LinkedHashMap<>();
-        logMap.put("访问地址", requestUrl);
-        logMap.put("响应耗时", spendTime);
+    private LogAop logError(MethodInvocation invocation, Map<String, Object> params, long spendTime, Throwable e) {
+        HttpServletRequest request = RequestUtils.getRequest();
+        Map<String, Object> logMap = Maps.newLinkedHashMap();
+        logMap.put("方法类", StringUtils.join(invocation.getThis().getClass(), ".", invocation.getMethod().getName()));
+        logMap.put("访问地址", request.getRequestURL());
+        logMap.put("访问方法", request.getMethod());
         logMap.put("传入参数", params);
+        logMap.put("响应耗时", spendTime);
         if (e instanceof BasicException) {
             logMap.put("异常", StringUtils.join(e, ",【statusCode】：", ((BasicException) e).getStatusCode(), ",【errorMessage】:",
                     ((BasicException) e).getErrorMessage()));
         } else {
             logMap.put("异常", StringUtils.join(e.getStackTrace()[0], " ", e.getMessage()));
         }
-        log.error(JSONUtils.toJsonPretty(logMap));
+        return new LogAop<>(Level.ERROR.levelStr, invocation.getThis().getClass(), logMap);
     }
 
     /**
      * 获取请求参数
-     *
-     * @param invocation
-     * @return
      */
     private Map<String, Object> getRequestParam(MethodInvocation invocation) {
         Object[] args = invocation.getArguments();

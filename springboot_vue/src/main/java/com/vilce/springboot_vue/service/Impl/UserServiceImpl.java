@@ -2,9 +2,7 @@ package com.vilce.springboot_vue.service.Impl;
 
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.common.model.log.utils.LoggerUtils;
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.mapper.UserMapper;
 import com.vilce.springboot_vue.model.po.AdminRole;
 import com.vilce.springboot_vue.model.po.User;
@@ -53,7 +51,6 @@ public class UserServiceImpl implements UserService {
             List<AdminRole> roles = adminRoleService.getRolesByUserId(u.getId());
             u.setRoles(roles);
         });
-        LoggerUtils.info(UserServiceImpl.class, JSONUtils.toJson(userList));
         return userList;
     }
 

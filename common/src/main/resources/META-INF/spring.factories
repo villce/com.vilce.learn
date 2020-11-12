@@ -5,5 +5,6 @@ org.springframework.cloud.bootstrap.BootstrapConfiguration=com.vilce.common.auto
 # 自动化配置
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.vilce.common.autoconfig.log.logback.LogbackAutoConfiguration,\
   com.vilce.common.autoconfig.returnvalue.config.ReturnValueAutoConfiguration,\
-  com.vilce.common.autoconfig.exception.config.ExceptionAutoConfiguration\
+  com.vilce.common.autoconfig.exception.config.ExceptionAutoConfiguration,\
+  com.vilce.common.autoconfig.log.api.MethodLogAutoConfigure\
   

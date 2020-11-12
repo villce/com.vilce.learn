@@ -21,7 +21,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        //所有请求都允许跨域，使用这种配置方法就不能在 interceptor 中再配置 header 了
+        //所有请求都允许跨域，使用这种配置方法就不能在 api 中再配置 header 了
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedOrigins("*")

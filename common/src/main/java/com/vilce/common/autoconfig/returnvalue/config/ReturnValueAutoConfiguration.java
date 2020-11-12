@@ -28,7 +28,7 @@ import java.util.List;
  * @Date: 2020/11/10 19:37
  * @Version: 1.0
  */
-@Order(3)
+@Order(4)
 @Configuration
 @EnableConfigurationProperties(ReturnValueProperties.class)
 @ConditionalOnProperty(prefix = "spring.vilce.returnvalue", name = "enable", havingValue = "true", matchIfMissing = true)

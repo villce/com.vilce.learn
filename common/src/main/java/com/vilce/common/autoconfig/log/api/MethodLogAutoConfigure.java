@@ -24,7 +24,6 @@ import org.springframework.core.annotation.Order;
  * @Date: 2020/9/3 10:10
  * @Version: 1.0
  */
-@Order(2)
 @Configuration
 @EnableConfigurationProperties(MethodLogProperties.class)
 @Import(LogApplicationListener.class)

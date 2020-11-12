@@ -20,7 +20,7 @@ import java.util.Objects;
  * @Date: 2020/11/11 10:55
  * @Version: 1.0
  */
-@Order(1)
+@Order(0)
 @Configuration
 @EnableConfigurationProperties(LogbackProperties.class)
 @ConditionalOnProperty(prefix = "spring.vilce.logback", name = "enable", havingValue = "true")

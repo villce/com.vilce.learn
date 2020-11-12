@@ -17,7 +17,6 @@ import org.springframework.core.annotation.Order;
  * @Date: 2020/11/11 10:01
  * @Version: 1.0
  */
-@Order(2)
 @Configuration
 @EnableConfigurationProperties(ExceptionProperties.class)
 @ConditionalOnProperty(prefix = "spring.vilce.exception", name = "enable", havingValue = "true", matchIfMissing = true)

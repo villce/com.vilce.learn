@@ -20,7 +20,6 @@ import java.util.Arrays;
  * @Date: 2020/11/12 15:11
  * @Version: 1.0
  */
-@Order(2)
 @Configuration
 @EnableConfigurationProperties(Jackson2MessagesProperties.class)
 @ConditionalOnProperty(prefix = "spring.vilce.jackson", name = "enable", havingValue = "true", matchIfMissing = true)

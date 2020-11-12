@@ -1,35 +1,33 @@
-package com.vilce.springboot_vue.config.redis;
+package com.vilce.common.autoconfig.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
+import com.vilce.common.model.log.utils.LoggerUtils;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
-
 /**
- * @Description: Redis配置
+ * @Description: Description
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.springboot_vue.config.redis.RedisConfig
+ * @Package: com.vilce.common.autoconfig.redis.RedisAutoConfiguration
  * @Author: 雷才哲
- * @Date: 2020/8/26 14:45
+ * @Date: 2020/11/12 17:30
  * @Version: 1.0
  */
-@EnableCaching
 @Configuration
-public class RedisConfig extends CachingConfigurerSupport {
+@EnableConfigurationProperties(RedisProperties.class)
+@ConditionalOnProperty(prefix = "spring.vilce.redis", name = "enable", havingValue = "true", matchIfMissing = true)
+public class RedisAutoConfiguration implements CommandLineRunner {
 
     /**
      * redis序列化方式选择：
@@ -73,5 +71,10 @@ public class RedisConfig extends CachingConfigurerSupport {
         objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
         return jackson2JsonRedisSerializer;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        LoggerUtils.info(RedisAutoConfiguration.class, "【自动化配置】---Redis组件初始化完成...");
     }
 }

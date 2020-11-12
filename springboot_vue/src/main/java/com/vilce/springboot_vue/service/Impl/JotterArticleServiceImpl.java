@@ -91,14 +91,14 @@ public class JotterArticleServiceImpl implements JotterArticleService {
             if (jotterArticleMapper.updateArticle(article)) {
                 baseResponse = BaseResponse.buildResponse(0, "更新文章成功！");
             } else {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新文章失败!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "更新文章失败!");
             }
         } else {
             // 如果文章id为空，此时添加文章
             if (jotterArticleMapper.addArticle(article)) {
                 baseResponse = BaseResponse.buildResponse(0, "添加文章成功！");
             } else {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加文章失败!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "添加文章失败!");
             }
         }
         // 添加或更新成功后，也同步添加或更新缓存
@@ -119,7 +119,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
             redisTemplate.opsForValue().decrement(StringUtils.join(ARTICLE, "id:", id));
             return BaseResponse.buildResponse(0, "删除文章成功！");
         } else {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "删除文章失败!");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "删除文章失败!");
         }
     }
 

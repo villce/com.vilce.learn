@@ -1,7 +1,7 @@
 package com.vilce.common.autoconfig.consul;
 
 import com.ecwid.consul.v1.ConsulClient;
-import com.vilce.common.utils.LoggerUtils;
+import com.vilce.common.model.log.utils.LoggerUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

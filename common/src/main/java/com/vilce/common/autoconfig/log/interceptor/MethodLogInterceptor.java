@@ -1,4 +1,4 @@
-package com.vilce.common.config.interceptor;
+package com.vilce.common.autoconfig.log.interceptor;
 
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.vo.BaseRequest;
@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * @Description: 日志拦截
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.common.config.interceptor.MethodLogInterceptor
+ * @Package: com.vilce.common.autoconfig.log.interceptor.MethodLogInterceptor
  * @Author: 雷才哲
  * @Date: 2020/9/3 9:51
  * @Version: 1.0

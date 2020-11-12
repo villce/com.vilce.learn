@@ -46,14 +46,14 @@ public class LoginController {
             subject.login(usernamePasswordToken);
             User user = userService.getUserByUsername(username);
             if (!user.isEnabled()) {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "该用户已被禁用");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "该用户已被禁用");
             } else {
                 return BaseResponse.buildResponse(0, username);
             }
         } catch (IncorrectCredentialsException e) {
-            throw new BasicException(ResultStatus.userpwd_not_exist.getStatus(), "密码错误");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "密码错误");
         } catch (UnknownAccountException e) {
-            throw new BasicException(ResultStatus.userpwd_not_exist.getStatus(), "账户不存在");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "账户不存在");
         }
     }
 

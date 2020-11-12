@@ -52,12 +52,12 @@ public class AdminUserRoleServiceImpl implements AdminUserRoleService {
         if (ObjectUtils.isNotEmpty(userRoleList)) {
             // 删除旧的用户角色信息
             if (!adminUserRoleMapper.deleteUserRoleByUid(uid)) {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "删除用户角色信息失败!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "删除用户角色信息失败!");
             }
         }
         for (AdminRole role : roles) {
             if (!adminUserRoleMapper.addUserRole(uid, role.getId())) {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加用户角色信息失败!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "添加用户角色信息失败!");
             }
         }
         return BaseResponse.buildResponse(0, "更新用户角色信息成功！");

@@ -54,15 +54,15 @@ public class WageServiceImpl implements WageService {
     public BaseResponse addOrUpdateWageOrder(WageOrder wageOrder) {
         if (ObjectUtils.isEmpty(wageOrder.getId()) || wageOrder.getId() == 0) {
             if (wageMapper.addWageOrder(wageOrder)) {
-                return BaseResponse.buildResponse(ResultStatus.SUCCESS.getStatus(), "添加工资条信息成功！");
+                return BaseResponse.buildResponse(ResultStatus.OK.getStatus(), "添加工资条信息成功！");
             } else {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加工资条信息失败！");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "添加工资条信息失败！");
             }
         } else {
             if (wageMapper.updateWageOrder(wageOrder)) {
-                return BaseResponse.buildResponse(ResultStatus.SUCCESS.getStatus(), "更新工资条信息成功！");
+                return BaseResponse.buildResponse(ResultStatus.OK.getStatus(), "更新工资条信息成功！");
             } else {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新工资条信息失败！");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "更新工资条信息失败！");
             }
         }
     }
@@ -76,9 +76,9 @@ public class WageServiceImpl implements WageService {
     @Override
     public BaseResponse deleteWageOrder(int id) {
         if (wageMapper.deleteWageOrder(id)) {
-            return BaseResponse.buildResponse(ResultStatus.SUCCESS.getStatus(), "删除工资条信息成功！");
+            return BaseResponse.buildResponse(ResultStatus.OK.getStatus(), "删除工资条信息成功！");
         } else {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "删除工资条信息失败！");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "删除工资条信息失败！");
         }
     }
 }

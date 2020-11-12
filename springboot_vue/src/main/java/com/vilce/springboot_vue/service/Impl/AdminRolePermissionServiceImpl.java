@@ -51,13 +51,13 @@ public class AdminRolePermissionServiceImpl implements AdminRolePermissionServic
         List<AdminRolePermission> rolePermissionList = adminRolePermissionMapper.getRolePermissionByRid(rid);
         if (ObjectUtils.isNotEmpty(rolePermissionList)) {
             if (!adminRolePermissionMapper.deleteRolePermissionByRid(rid)) {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "删除角色权限信息失败!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "删除角色权限信息失败!");
             }
         }
         // 保存需要修改更新的角色权限信息
         for (AdminPermission permission : perms) {
             if (!adminRolePermissionMapper.addRolePermission(rid, permission.getId())) {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加角色权限信息失败!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "添加角色权限信息失败!");
             }
         }
         return BaseResponse.buildResponse(0, "更新角色权限信息成功！");

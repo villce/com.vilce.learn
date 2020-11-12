@@ -3,13 +3,14 @@ package com.vilce.common.autoconfig.returnvalue.config;
 import com.vilce.common.autoconfig.returnvalue.handler.ResponseHttpEntityMethodReturnValueHandler;
 import com.vilce.common.autoconfig.returnvalue.handler.ResponseHttpHeadersReturnValueHandler;
 import com.vilce.common.autoconfig.returnvalue.handler.ResponseMethodReturnValueHandler;
-import com.vilce.common.utils.LoggerUtils;
+import com.vilce.common.model.log.utils.LoggerUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor;
 import org.springframework.web.servlet.mvc.method.annotation.HttpHeadersReturnValueHandler;
@@ -20,13 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Description: 返参包装自动化配置
+ * @Description: 返参包装自动化配置（默认开启）
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.common.autoconfig.returnvalue.config.ReturnValueAutoConfiguration
  * @Author: 雷才哲
  * @Date: 2020/11/10 19:37
  * @Version: 1.0
  */
+@Order(3)
 @Configuration
 @EnableConfigurationProperties(ReturnValueProperties.class)
 @ConditionalOnProperty(prefix = "spring.vilce.returnvalue", name = "enable", havingValue = "true", matchIfMissing = true)

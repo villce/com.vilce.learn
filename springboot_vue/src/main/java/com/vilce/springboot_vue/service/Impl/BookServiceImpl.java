@@ -67,20 +67,20 @@ public class BookServiceImpl implements BookService {
             if (bookMapper.updateBook(book)) {
                 return BaseResponse.buildResponse(0, "更新图书信息成功！");
             } else {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新图书信息失败");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "更新图书信息失败");
             }
         } else {
             // 根据书名和作者获取图书信息
             Book result = bookMapper.getBookByNameAndAuthor(book);
             if (ObjectUtils.isNotEmpty(result)) {
                 // 当eid为空，但书名、作者相同时，不能添加
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加图书失败，存在相同的书名和作者名!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "添加图书失败，存在相同的书名和作者名!");
             } else {
                 // 当eid为空，但书名、作者不相同时，能添加
                 if (bookMapper.addBook(book)) {
                     return BaseResponse.buildResponse(0, "添加图书成功！");
                 } else {
-                    throw new BasicException(ResultStatus.FAIL.getStatus(), "添加图书失败!");
+                    throw new BasicException(ResultStatus.ERROR.getStatus(), "添加图书失败!");
                 }
             }
         }
@@ -97,7 +97,7 @@ public class BookServiceImpl implements BookService {
         if (bookMapper.deleteBookById(id)) {
             return BaseResponse.buildResponse(0, "删除图书成功！");
         } else {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "删除图书失败!");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "删除图书失败!");
         }
     }
 

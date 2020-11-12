@@ -3,5 +3,7 @@ org.springframework.boot.env.PropertySourceLoader=com.vilce.common.config.web.Vi
 # consul中文乱码
 org.springframework.cloud.bootstrap.BootstrapConfiguration=com.vilce.common.autoconfig.consul.VilceConsulConfigBootstrapConfiguration
 # 自动化配置
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.vilce.common.autoconfig.returnvalue.config.ReturnValueAutoConfiguration,\
-  com.vilce.common.autoconfig.exception.config.ExceptionAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.vilce.common.autoconfig.log.logback.LogbackAutoConfiguration,\
+  com.vilce.common.autoconfig.returnvalue.config.ReturnValueAutoConfiguration,\
+  com.vilce.common.autoconfig.exception.config.ExceptionAutoConfiguration\
+  

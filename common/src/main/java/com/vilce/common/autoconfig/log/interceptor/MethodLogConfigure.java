@@ -1,4 +1,4 @@
-package com.vilce.common.config.interceptor;
+package com.vilce.common.autoconfig.log.interceptor;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @Description: Description
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.common.config.interceptor.MethodLogConfigure
+ * @Package: com.vilce.common.autoconfig.log.interceptor.MethodLogConfigure
  * @Author: 雷才哲
  * @Date: 2020/9/3 10:10
  * @Version: 1.0

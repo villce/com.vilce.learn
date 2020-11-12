@@ -1,6 +1,7 @@
 package com.vilce.common.utils;
 
 import com.vilce.common.model.enums.DateEnum;
+import com.vilce.common.model.log.utils.LoggerUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 

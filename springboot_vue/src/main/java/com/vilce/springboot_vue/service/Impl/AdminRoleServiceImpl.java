@@ -88,7 +88,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         if (adminRoleMapper.updateRoleStatus(role)) {
             return BaseResponse.buildResponse(0, "状态更新成功！");
         }else {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "状态更新失败!");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "状态更新失败!");
         }
     }
 
@@ -105,7 +105,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             if (adminRoleMapper.addRole(role)) {
                 return BaseResponse.buildResponse(0, "添加角色成功！");
             }else {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "添加角色失败!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "添加角色失败!");
             }
         }else {
             // 当角色id不为空时，更新角色，更新角色对应权限信息
@@ -114,10 +114,10 @@ public class AdminRoleServiceImpl implements AdminRoleService {
                 if (response.getStatus() == 0) {
                     return BaseResponse.buildResponse(0, "更新角色信息成功！");
                 }else {
-                    throw new BasicException(ResultStatus.FAIL.getStatus(), "更新角色信息失败!");
+                    throw new BasicException(ResultStatus.ERROR.getStatus(), "更新角色信息失败!");
                 }
             }else {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新角色基础信息失败!");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "更新角色基础信息失败!");
             }
         }
     }

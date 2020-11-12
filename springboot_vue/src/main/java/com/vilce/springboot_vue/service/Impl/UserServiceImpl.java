@@ -2,7 +2,9 @@ package com.vilce.springboot_vue.service.Impl;
 
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
+import com.vilce.common.model.log.utils.LoggerUtils;
 import com.vilce.common.model.po.BaseResponse;
+import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.mapper.UserMapper;
 import com.vilce.springboot_vue.model.po.AdminRole;
 import com.vilce.springboot_vue.model.po.User;
@@ -51,6 +53,7 @@ public class UserServiceImpl implements UserService {
             List<AdminRole> roles = adminRoleService.getRolesByUserId(u.getId());
             u.setRoles(roles);
         });
+        LoggerUtils.info(UserServiceImpl.class, JSONUtils.toJson(userList));
         return userList;
     }
 
@@ -89,11 +92,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setEnabled(true);
         if (username.equals("") || password.equals("")) {
-            throw new BasicException(ResultStatus.error_invalid_argument.getStatus(), "用户名和密码不能为空!");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "用户名和密码不能为空!");
         }
         User userFind = userMapper.getUserByUsername(username);
         if (ObjectUtils.isNotEmpty(userFind)) {
-            throw new BasicException(ResultStatus.user_exist.getStatus(), "用户已存在!");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "用户已存在!");
         }
         // 默认生成 16 位盐
         String salt = new SecureRandomNumberGenerator().nextBytes().toString();
@@ -106,7 +109,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.addUser(user)) {
             return BaseResponse.buildResponse(0, "注册成功！");
         } else {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "注册失败，未知错误！");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "注册失败，未知错误！");
         }
     }
 
@@ -120,7 +123,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.updateUserStatus(user)) {
             return BaseResponse.buildResponse(0, "更新用户状态成功！");
         } else {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "更新用户状态失败!");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "更新用户状态失败!");
         }
     }
 
@@ -140,7 +143,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.updatePassword(requestUser)) {
             return BaseResponse.buildResponse(0, "更新用户密码成功！");
         } else {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "更新用户密码失败!");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "更新用户密码失败!");
         }
     }
 
@@ -158,10 +161,10 @@ public class UserServiceImpl implements UserService {
             if (baseResponse.getStatus() == 0) {
                 return BaseResponse.buildResponse(0, "更新用户信息成功！");
             } else {
-                throw new BasicException(ResultStatus.FAIL.getStatus(), "更新用户信息失败！");
+                throw new BasicException(ResultStatus.ERROR.getStatus(), "更新用户信息失败！");
             }
         } else {
-            throw new BasicException(ResultStatus.FAIL.getStatus(), "更新用户基础信息失败！");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "更新用户基础信息失败！");
         }
     }
 }

@@ -5,13 +5,18 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 
+import com.vilce.common.model.enums.DateEnum;
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.log.utils.LoggerUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -27,216 +32,295 @@ import org.apache.commons.lang3.ObjectUtils;
 @SuppressWarnings("all")
 public class JSONUtils {
 
-    private static ObjectMapper om = new ObjectMapper();
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
     static {
-        // 对象的所有字段全部列入，还是其他的选项，可以忽略null等
-        om.setSerializationInclusion(Include.ALWAYS);
+        //对象的所有字段全部序列化
+        objectMapper.setSerializationInclusion(Include.ALWAYS);
         //取消默认转换timestamps
-        om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,false);
-        // 设置Date类型的序列化及反序列化格式
-        om.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        // 忽略空Bean转json的错误
-        om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        // 忽略未知属性，防止json字符串中存在，java对象中不存在对应属性的情况出现错误
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        // 注册一个时间序列化及反序列化的处理模块，用于解决jdk8中localDateTime等的序列化问题
-        om.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        //所有的日期格式都统一为以下的样式，即yyyy-MM-dd HH:mm:ss
+        objectMapper.setDateFormat(new SimpleDateFormat(DateEnum.YYYY_MM_DD_HH_MM_SS.getFormat()));
+        //忽略空Bean转json的错误
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        //忽略，在json字符串中存在但是在java对象中不存在的属性
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     /**
-     * 对象转json字符串，支持List、Map、Collection、字符串
-     * @param obj
-     * @param <T>
-     * @return
+     * @Description 对象转换为json字符串, 支持List、Map、Collection、字符串
+     * @Version 1.0
      */
-    public static <T> String toJson(T obj) {
-        String json = null;
-        if (ObjectUtils.isNotEmpty(obj)) {
-            try {
-                json = om.writeValueAsString(obj);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-                LoggerUtils.error(JSONUtils.class, e.toString());
-            }
-        }
-        return json;
+    public static <T> String toJSONString(T o) {
+        return toJSONString(o, Include.ALWAYS);
     }
 
     /**
-     * 带格式化，对象转换为json字符串,支持List、Map、Collection、字符串
-     * @param obj
-     * @param <T>
-     * @return
+     * @param include 定义javaBean的那些属性需要序列化
+     *                ALWAYS：始终包含javaBean的值，与属性的值无关。
+     *                NON_NULL：表示只包含非null的属性值。
+     *                NON_ABSENT：表示属性值为null,或者JAVA8、Guava中的Optional
+     *                NON_EMPTY：表示非null、""和数组集合isEmpty()=false都将会被忽略
+     *                NON_DEFAULT：表示POJO类属性的值为缺省值是不序列化，如User类的 int age = 0; String username = null;
+     *                CUSTOM:自定义，根据过滤器等
+     *                USE_DEFAULTS：...
+     * @Description 对象转换为json字符串, 支持List、Map、Collection、字符串
+     * @Version 1.0
      */
-    public static <T> String toJsonPretty(T obj){
-        String json = null;
-        if (ObjectUtils.isNotEmpty(obj)){
-            try {
-                json = om.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-                LoggerUtils.error(JSONUtils.class,e.toString());
-            }
-        }
-        return json;
-    }
-
-    /**
-     * json字符串转换为java对象,支持List、Map、Collection、字符串
-     *
-     * @param json 源json串
-     * @param <T> 泛型
-     */
-    public static <T> T toJavaBean(String json, Class<T> responseType) {
+    public static <T> String toJSONString(T o, Include include) {
         try {
-            return om.readValue(json, responseType);
-        } catch (JsonParseException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-            return null;
-        } catch (JsonMappingException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-            return null;
-        } catch (IOException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-            return null;
+            if (null == include) {
+                include = Include.ALWAYS;
+            }
+            objectMapper.setSerializationInclusion(include);
+            return objectMapper.writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            throw new BasicException(ResultStatus.JSON_SERIALIZE_EXCEPTION.getStatus(), "JSON序列化处理异常，" + e);
         }
     }
 
     /**
-     * @Description json字符串转换为java对象,支持List、Map、Collection、字符串
-     * @Version  1.0
+     * @Description 带格式化， 对象转换为json字符串,支持List、Map、Collection、字符串
+     * @Version 1.0
      */
-    public static <T> T toJavaBean(File file, Class<T> responseType){
+    public static <T> String toJSONPrettyString(T o) {
+        return toJSONPrettyString(o, Include.ALWAYS);
+    }
+
+    /**
+     * @param include 定义javaBean的那些属性需要序列化
+     *                ALWAYS：始终包含javaBean的值，与属性的值无关。
+     *                NON_NULL：表示只包含非null的属性值。
+     *                NON_ABSENT：表示属性值为null,或者JAVA8、Guava中的Optional
+     *                NON_EMPTY：表示非null、""和数组集合isEmpty()=false都将会被忽略
+     *                NON_DEFAULT：表示POJO类属性的值为缺省值是不序列化，如User类的 int age = 0; String username = null;
+     *                CUSTOM:自定义，根据过滤器等
+     *                USE_DEFAULTS：...
+     * @Description 带格式化， 对象转换为json字符串,支持List、Map、Collection、字符串
+     * @Version 1.0
+     */
+    public static <T> String toJSONPrettyString(T o, Include include) {
         try {
-            return om.readValue(file, responseType);
-        } catch (JsonMappingException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-            return null;
-        } catch (JsonParseException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-            return null;
-        } catch (IOException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-            return null;
+            if (null == include) {
+                include = Include.ALWAYS;
+            }
+            objectMapper.setSerializationInclusion(include);
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            throw new BasicException(ResultStatus.JSON_SERIALIZE_EXCEPTION.getStatus(), "JSON序列化处理异常，" + e);
+        }
+    }
+
+    /**
+     * @Description JSON字符串转换为java对象, 支持List、Map、Collection、字符串
+     * @Version 1.0
+     */
+    public static <T> T toJavaBean(String str, Class<T> responseType) {
+        try {
+            return objectMapper.readValue(str, responseType);
+        } catch (JsonParseException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换异常，" + e);
+        } catch (JsonMappingException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换对应关系异常，" + e);
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "IO异常，" + e);
+        }
+    }
+
+    /**
+     * @Description JSON字符串转换为java对象, 支持List、Map、Collection、字符串
+     * @Version 1.0
+     */
+    public static <T> T toJavaBean(File file, Class<T> responseType) {
+        try {
+            return objectMapper.readValue(file, responseType);
+        } catch (JsonMappingException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换对应关系异常，" + e);
+        } catch (JsonParseException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换异常，" + e);
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "IO异常，" + e);
         }
     }
 
     /**
      * 示例1：
-     *         List<Map<Integer, String>> list = Lists.newArrayList();
-     *         Map<Integer, String> map = Maps.newHashMap();
-     *         map.put(12, "gg");
-     *         map.put(34, "sd");
-     *         list.add(map);
-     *         List<Map<Integer, String>> list1 = toJavaBean(JSONUtils.toJSONString(list), ArrayList.class, HashMap.class);
+     * List<Map<Integer, String>> list = Lists.newArrayList();
+     * Map<Integer, String> map = Maps.newHashMap();
+     * map.put(12, "gg");
+     * map.put(34, "sd");
+     * list.add(map);
+     * List<Map<Integer, String>> list1 = toJavaBean(JSONUtils.toJSONString(list), ArrayList.class, HashMap.class);
      * 示例2：
-     *         Map<Integer, String> map = Maps.newHashMap();
-     *         map.put(12, "gg");
-     *         map.put(34, "sd");
-     *         Map<Integer, String> map1 = toJavaBean(JSONUtils.toJSONString(map), HashMap.class, Integer.class, String.class);
-     * @param jsonString JSON字符串
-     * @param parametrized 数据类型最外层class或者泛型实际的class, 如List<Map<String, Integer>>的List.class 或者Map<String, Integer>中的Map.class
+     * Map<Integer, String> map = Maps.newHashMap();
+     * map.put(12, "gg");
+     * map.put(34, "sd");
+     * Map<Integer, String> map1 = toJavaBean(JSONUtils.toJSONString(map), HashMap.class, Integer.class, String.class);
+     *
+     * @param jsonString       JSON字符串
+     * @param parametrized     数据类型最外层class或者泛型实际的class, 如List<Map<String, Integer>>的List.class 或者Map<String, Integer>中的Map.class
      * @param parameterClasses 参数内部类型，如List<Map<String, Object>中的Map.class 或者Map<String, Integer>中的String.class、Integer.class
      * @param <T>
      * @return
      */
-    public static <T> T toJavaBean(String jsonString, Class<?> parametrized, Class<?>... parameterClasses){
-        try{
+    public static <T> T toJavaBean(String jsonString, Class<?> parametrized, Class<?>... parameterClasses) {
+        try {
             JavaType javaType = javaType(parametrized, parameterClasses);
-            return om.readValue(jsonString, javaType);
-        } catch (JsonParseException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-        } catch (JsonMappingException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-        } catch (IOException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
+            return objectMapper.readValue(jsonString, javaType);
+        } catch (JsonParseException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换异常，" + e);
+        } catch (JsonMappingException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换对应关系异常，" + e);
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "IO异常，" + e);
         }
-        return null;
-    }
-    /**
-     *  示例1：
-     *  Map<Integer, String> map = Maps.newHashMap();
-     *  JavaType javaType = javaType(Map.class, Integer.class, String.class);
-     *  示例2：
-     *   List<Map<Integer, String>> list = Lists.newArrayList();
-     *   Map<Integer, String> map = Maps.newHashMap();
-     *   map.put(12, "gg");
-     *   map.put(34, "sd");
-     *   list.add(map);
-     *   JavaType javaType = javaType(List.class, Map.class);
-     * @param parametrized 实际的数据类型，即最外层数据类型List
-     * @param parameterClasses 内部参数类型，即Set.class Bean.class
-     * @return
-     */
-    public static JavaType javaType(Class<?> parametrized, Class<?>... parameterClasses){
-        return om.getTypeFactory().constructParametricType(parametrized, parameterClasses);
-    }
-    /**
-     * @Description 将对象写入文件
-     * @Version  1.0
-     */
-    public static boolean writeToFile(File file, Object o){
-        try{
-            om.writeValue(file, o);
-            return true;
-        } catch (JsonMappingException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-        } catch (JsonGenerationException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-        } catch (IOException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-        }
-        return false;
-    }
-    /**
-     * @Description 格式化，将对象写入文件
-     * @Version  1.0
-     */
-    public static boolean writeToFilePretty(File file, Object o){
-        try{
-            om.writerWithDefaultPrettyPrinter().writeValue(file, o);
-            return true;
-        } catch (JsonMappingException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-        } catch (JsonGenerationException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-        } catch (IOException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
-        }
-        return false;
     }
 
     /**
+     * json字符串反序列化
+     * 示例：
+     * Map<String, List<Integer>> map = Maps.newHashMap();
+     * ObjectMapper mapper = new ObjectMapper();
+     * JavaType javaType = JSONUtils.javaType(List.class, Integer.class);
+     * JavaType javaType1 = JSONUtils.javaType(HashMap.class, String.class, javaType.getRawClass());
+     * Map<String, List<Integer>> result = JSONUtils.toJavaBean(JSONUtils.toJSONString(map), javaType1);
+     *
+     * @param jsonString json字符串
+     * @param javaType   java数据类型 objectMapper.getTypeFactory().constructParametricType(parametrized, parameterClasses)
+     * @param <T>        具体数据类型
+     * @return 反序列化后的数据类型
+     */
+    public static <T> T toJavaBean(String jsonString, JavaType javaType) {
+        try {
+            return objectMapper.readValue(jsonString, javaType);
+        } catch (JsonParseException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换异常，" + e);
+        } catch (JsonMappingException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换对应关系异常，" + e);
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "IO异常，" + e);
+        }
+    }
+
+    /**
+     * 将json字符串反序列化为指定的数据类型
+     * 示例：
+     * List<Map<Long, Map<Integer, Integer>>> data2 = JSONUtils.toJavaBean(jsonString, new TypeReference<List<Map<Long, Map<Integer, Integer>>>>() {});
+     *
+     * @param jsonString json字符串
+     * @param var2       TypeReference引用
+     * @param <T>        转换的实际类型
+     * @return 目标数据类型
+     */
+    public static <T> T toJavaBean(String jsonString, TypeReference<T> typeReference) {
+        try {
+            return objectMapper.readValue(jsonString, typeReference);
+        } catch (JsonParseException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换异常，" + e);
+        } catch (JsonMappingException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "JSON转换对应关系异常，" + e);
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "IO异常，" + e);
+        }
+    }
+
+    /**
+     * 示例1：
+     * Map<Integer, String> map = Maps.newHashMap();
+     * JavaType javaType = javaType(Map.class, Integer.class, String.class);
+     * 示例2：
+     * List<Map<Integer, String>> list = Lists.newArrayList();
+     * Map<Integer, String> map = Maps.newHashMap();
+     * map.put(12, "gg");
+     * map.put(34, "sd");
+     * list.add(map);
+     * JavaType javaType = javaType(List.class, Map.class);
+     *
+     * @param parametrized     实际的数据类型，即最外层数据类型List
+     * @param parameterClasses 内部参数类型，即Set.class Bean.class
+     * @return
+     */
+    public static JavaType javaType(Class<?> parametrized, Class<?>... parameterClasses) {
+        return objectMapper.getTypeFactory().constructParametricType(parametrized, parameterClasses);
+    }
+
+    /**
+     * @Description 将对象写入文件
+     * @Version 1.0
+     */
+    public static void writeToFile(File file, Object o) {
+        try {
+            objectMapper.writeValue(file, o);
+        } catch (JsonMappingException e) {
+            throw new BasicException(ResultStatus.JSON_SERIALIZE_EXCEPTION.getStatus(), "JSON转换对应关系异常，" + e);
+        } catch (JsonGenerationException e) {
+            throw new BasicException(ResultStatus.JSON_SERIALIZE_EXCEPTION.getStatus(), "JSON转换异常，" + e);
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "IO异常，" + e);
+        }
+    }
+
+    /**
+     * @Description 格式化，将对象写入文件
+     * @Version 1.0
+     */
+    public static void writeToFilePretty(File file, Object o) {
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, o);
+        } catch (JsonMappingException e) {
+            throw new BasicException(ResultStatus.JSON_SERIALIZE_EXCEPTION.getStatus(), "JSON转换对应关系异常，" + e);
+        } catch (JsonGenerationException e) {
+            throw new BasicException(ResultStatus.JSON_SERIALIZE_EXCEPTION.getStatus(), "JSON字符串转换异常，" + e);
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "IO异常，" + e);
+        }
+    }
+    /**
+     * @param src          输入流对象
+     * @param responseType 返回的数据对象
+     * @param <T>
+     * @return
+     * @Description 从输入流InputStream中读取数据
+     */
+    public static <T> T toObject(InputStream src, Class<T> responseType) {
+        try {
+            return objectMapper.readValue(src, responseType);
+        } catch (Exception e) {
+            throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "从输入流中读取数据对象异常，" + e);
+        }
+    }
+
+    /**
+     * 将字节数组转化为指定的对象
+     *
+     * @param bytes        字节数组
+     * @param responseType 返回值类型
+     * @param <T>
+     */
+    public static <T> T toObject(byte[] bytes, Class<T> responseType) {
+        if (ArrayUtils.isEmpty(bytes)) {
+            return null;
+        }
+        try {
+            return objectMapper.readValue(bytes, responseType);
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.JSON_DESERIALIZE_EXCEPTION.getStatus(), "数据转换为对象异常，" + e);
+        }
+    }
+    /**
      * 将对象转换为字节数组
+     *
      * @param value
      * @return
      */
-    public static byte[] toByteArray(Object value){
-        if(value == null){
+    public static byte[] toByteArray(Object value) {
+        if (value == null) {
             return ArrayUtils.EMPTY_BYTE_ARRAY;
         }
-        try{
-            return om.writeValueAsBytes(value);
-        } catch (JsonProcessingException e){
-            e.printStackTrace();
-            LoggerUtils.error(JSONUtils.class, e.toString());
+        try {
+            return objectMapper.writeValueAsBytes(value);
+        } catch (JsonProcessingException e) {
+            throw new BasicException(ResultStatus.JSON_SERIALIZE_EXCEPTION.getStatus(), "对象转换为字节数组异常，" + e);
         }
-        return ArrayUtils.EMPTY_BYTE_ARRAY;
     }
 }

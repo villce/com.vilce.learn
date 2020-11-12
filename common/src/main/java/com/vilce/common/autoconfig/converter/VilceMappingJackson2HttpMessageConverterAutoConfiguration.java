@@ -38,7 +38,7 @@ public class VilceMappingJackson2HttpMessageConverterAutoConfiguration implement
 
     @Override
     public void run(String... args) throws Exception {
-        LoggerUtils.info(VilceMappingJackson2HttpMessageConverterAutoConfiguration.class, "【自动化配置】----响应报文Content-Type编码组件初始化完成...");
+        LoggerUtils.info(VilceMappingJackson2HttpMessageConverterAutoConfiguration.class, "【自动化配置】---响应报文Content-Type编码组件初始化完成...");
     }
 
 }

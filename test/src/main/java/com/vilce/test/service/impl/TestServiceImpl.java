@@ -1,8 +1,11 @@
 package com.vilce.test.service.impl;
 
 import com.vilce.test.service.TestService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @Description: Description
@@ -15,11 +18,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestServiceImpl implements TestService {
 
-    @Value("${text}")
-    private String text;
-    
+    @Value("${spring.vilce.springbootvue}")
+    private String springbootVue;
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Override
     public String text() {
-        return text;
+        String url = StringUtils.join(springbootVue, "//article/listArticles?page=1&size=1");
+        String responseStr = restTemplate.getForObject(url, String.class);
+        return responseStr;
     }
 }

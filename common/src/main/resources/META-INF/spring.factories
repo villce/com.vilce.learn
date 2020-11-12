@@ -7,4 +7,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.vilce.common.
   com.vilce.common.autoconfig.returnvalue.config.ReturnValueAutoConfiguration,\
   com.vilce.common.autoconfig.exception.config.ExceptionAutoConfiguration,\
   com.vilce.common.autoconfig.log.api.MethodLogAutoConfigure,\
-  com.vilce.common.autoconfig.converter.VilceMappingJackson2HttpMessageConverterAutoConfiguration
+  com.vilce.common.autoconfig.converter.VilceMappingJackson2HttpMessageConverterAutoConfiguration,\
+  com.vilce.common.autoconfig.httpclient.config.HttpClientAutoConfiguration

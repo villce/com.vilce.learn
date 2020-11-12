@@ -1,20 +1,27 @@
 package com.vilce.common.utils;
 
+import com.google.common.collect.Maps;
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @Description: Description
+ * @Description: request工具类
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.common.utils.RequestUtils
  * @Author: 雷才哲
@@ -30,10 +37,7 @@ public class RequestUtils {
     private static final String UNKNOWN = "unknown";
     private static final String LOCAL_IP = "127.0.0.1";
     /**
-     * @Description 获取客户单IP地址
-     * @Author 姚明洋
-     * @Date 2019/5/21 13:17
-     * @Version  1.0
+     * 获取客户单IP地址
      */
     public static String getClientIp(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
@@ -55,10 +59,7 @@ public class RequestUtils {
         return ip;
     }
     /**
-     * @Description 判断请求IP是否是内网IP
-     * @Author 姚明洋
-     * @Date 2019/5/27 13:44
-     * @Version  1.0
+     * 判断请求IP是否是内网IP
      */
     public static boolean isInnerIp(String ip) {
         String reg = "((192\\.168|172\\.([1][6-9]|[2]\\d|3[01]))"
@@ -70,10 +71,7 @@ public class RequestUtils {
     }
 
     /**
-     * @Description 获取服务器端的IP
-     * @Author 姚明洋
-     * @Date 2019/9/2 15:17
-     * @Version  1.0
+     * 获取服务器端的IP
      */
     public static String getServerIp(){
         try{
@@ -96,6 +94,7 @@ public class RequestUtils {
         }
         return LOCAL_IP;
     }
+
     /**
      * 获取用户当前请求的HttpServletRequest
      */
@@ -110,5 +109,62 @@ public class RequestUtils {
     public static HttpServletResponse getResponse(){
         ServletRequestAttributes attributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
         return attributes.getResponse();
+    }
+
+    /**
+     * 获取参数对象
+     *
+     * @param params
+     * @return
+     */
+    public static Map<String, Object> getParameterMap(byte[] params) {
+        try {
+            return JSONUtils.toObject(params, Map.class);
+        } catch (Exception e) {
+            try {
+                return convertParameterToMap(IOUtils.toString(params, "utf-8"));
+            } catch (IOException ex) {
+                throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "将数据资源转换为字符串异常，" + e);
+            }
+        }
+    }
+
+    /**
+     * 将参数转换为Map类型
+     *
+     * @param param
+     * @return
+     */
+    public static Map<String, Object> convertParameterToMap(String param) {
+        if (StringUtils.isEmpty(param)) {
+            return Collections.emptyMap();
+        }
+        Map<String, Object> pMap = Maps.newLinkedHashMap();
+        String[] pArray = StringUtils.split(param, "&");
+        for (int i = 0; i < pArray.length; i++) {
+            String[] array = StringUtils.split(pArray[i], "=");
+            if (array.length == 2) {
+                pMap.put(array[0], array[1]);
+            }
+        }
+        return pMap;
+    }
+
+    /**
+     * 获取返回结果对象
+     *
+     * @param body 返回结果字节数组
+     * @return
+     */
+    public static Object getResponseBody(byte[] body) {
+        try {
+            return JSONUtils.toObject(body, Object.class);
+        } catch (Exception e) {
+            try {
+                return IOUtils.toString(body, "UTF-8");
+            } catch (IOException ex) {
+                throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "将数据资源转换为字符串异常，" + e);
+            }
+        }
     }
 }

@@ -28,15 +28,15 @@ public class LogApplicationListener implements ApplicationListener<ApplicationEv
             LogAop logAop = (LogAop) event.getSource();
             if (StringUtils.equalsIgnoreCase(Level.INFO.levelStr, logAop.getLogLevel())) {
                 if (LoggerUtils.isDebug()) {
-                    LoggerUtils.info(logAop.getaClass(), JSONUtils.toJsonPretty(logAop.getLogInfo()));
+                    LoggerUtils.info(logAop.getaClass(), JSONUtils.toJSONPrettyString(logAop.getLogInfo()));
                 } else {
-                    LoggerUtils.info(logAop.getaClass(), JSONUtils.toJson(logAop.getLogInfo()));
+                    LoggerUtils.info(logAop.getaClass(), JSONUtils.toJSONString(logAop.getLogInfo()));
                 }
             } else if (StringUtils.equalsIgnoreCase(Level.ERROR.levelStr, logAop.getLogLevel())) {
                 if (LoggerUtils.isDebug()) {
-                    LoggerUtils.error(logAop.getaClass(), JSONUtils.toJsonPretty(logAop.getLogInfo()));
+                    LoggerUtils.error(logAop.getaClass(), JSONUtils.toJSONPrettyString(logAop.getLogInfo()));
                 } else {
-                    LoggerUtils.error(logAop.getaClass(), JSONUtils.toJson(logAop.getLogInfo()));
+                    LoggerUtils.error(logAop.getaClass(), JSONUtils.toJSONString(logAop.getLogInfo()));
                 }
             }
         }

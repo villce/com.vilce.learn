@@ -161,6 +161,6 @@ public class MethodLogInterceptor implements MethodInterceptor {
             }
         }
         paramMap = HiddenUtils.hidden(paramMap, request.getRequestURI());
-        return JSONUtils.toJavaBean(JSONUtils.toJsonPretty(paramMap), Map.class);
+        return JSONUtils.toJavaBean(JSONUtils.toJSONPrettyString(paramMap), Map.class);
     }
 }

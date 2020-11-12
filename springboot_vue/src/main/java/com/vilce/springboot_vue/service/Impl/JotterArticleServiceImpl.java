@@ -72,7 +72,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         JotterArticle article = jotterArticleMapper.findArticleById(id);
         JotterArticleRes articleRes = JotterArticleRes.create(article);
         if (ObjectUtils.isNotEmpty(articleRes)) {
-            redisTemplate.opsForValue().set(redisKey, JSONUtils.toJsonPretty(articleRes), redisTimeOut, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(redisKey, JSONUtils.toJSONPrettyString(articleRes), redisTimeOut, TimeUnit.SECONDS);
         }
         return articleRes;
     }
@@ -103,7 +103,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         }
         // 添加或更新成功后，也同步添加或更新缓存
         String redisKey = StringUtils.join(ARTICLE, article.getId());
-        redisTemplate.opsForValue().set(redisKey, JSONUtils.toJsonPretty(article), redisTimeOut, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(redisKey, JSONUtils.toJSONPrettyString(article), redisTimeOut, TimeUnit.SECONDS);
         return baseResponse;
     }
 

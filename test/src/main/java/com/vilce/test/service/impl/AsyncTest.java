@@ -27,12 +27,12 @@ import java.util.concurrent.Future;
 public class AsyncTest {
     @Async("asyncExecutor")
     public Future<UserRes> userUp(User user) throws InterruptedException {
-        System.out.println("user：" + JSONUtils.toJson(user));
+        System.out.println("user：" + JSONUtils.toJSONString(user));
         UserRes userRes = new UserRes();
         userRes.setName(user.getName());
         userRes.setAge(user.getAge() + 1);
         Thread.sleep(1000L);
-        System.out.println("userRes：" + JSONUtils.toJson(userRes));
+        System.out.println("userRes：" + JSONUtils.toJSONString(userRes));
         return new AsyncResult<>(userRes);
     }
 
@@ -47,8 +47,8 @@ public class AsyncTest {
         a1.add("2");
         List<String> a2 = a1;
         a2.add("3");
-        System.out.println(JSONUtils.toJsonPretty(a1));
-        System.out.println(JSONUtils.toJsonPretty(a2));
+        System.out.println(JSONUtils.toJSONPrettyString(a1));
+        System.out.println(JSONUtils.toJSONPrettyString(a2));
     }
 
     private static void test2(String str, Calendar cal, int count) {

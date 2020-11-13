@@ -1,18 +1,18 @@
 version: "3"
 services:
   springboot_vue:
-    build: /lcz/application/springbootVue
+    build: /vilce/application/springbootVue
     image: mydockerhub.com:5000/springboot_vue:${tag}
     container_name: springboot_vue
     ports:
       - "8006:8006"
     volumes:
-      - /lcz/application/springbootVue/config:/lcz/application/springbootVue/config
-      - /lcz/application/springbootVue/springboot_log:/lcz/application/springbootVue/springboot_log
-      - /lcz/img:/lcz/img
+      - /vilce/application/springbootVue/config:/vilce/application/springbootVue/config
+      - /vilce/application/springbootVue/springboot_log:/vilce/application/springbootVue/springboot_log
+      - /vilce/img:/vilce/img
 
   vuejs:
-    build: /lcz/application/vuejs
+    build: /vilce/application/vuejs
     image: mydockerhub.com:5000/vuejs:${tag}
     container_name: vuejs
     ports:

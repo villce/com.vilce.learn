@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @Date: 2020/11/6 17:57
  * @Version: 1.0
  */
-@ConfigurationProperties(prefix = "com.vilce.http-client")
+@ConfigurationProperties(prefix = "spring.vilce.http-client")
 public class HttpClientProperties {
 
     private boolean enable;

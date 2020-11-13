@@ -29,7 +29,7 @@ import java.util.Collections;
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(HttpClientProperties.class)
-@ConditionalOnProperty(prefix = "spring.vilce.http-client", name = "enable", havingValue = "ture", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "spring.vilce.http-client", name = "enable", havingValue = "true", matchIfMissing = true)
 @Import(value = {AsyncLogHttpClientServiceImpl.class})
 public class HttpClientAutoConfiguration implements CommandLineRunner {
 

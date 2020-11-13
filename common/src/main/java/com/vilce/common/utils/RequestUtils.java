@@ -1,16 +1,13 @@
 package com.vilce.common.utils;
 
 import com.google.common.collect.Maps;
-import com.vilce.common.model.enums.ResultStatus;
-import com.vilce.common.model.exception.BasicException;
-import org.apache.commons.io.IOUtils;
+import com.vilce.common.utils.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -36,6 +33,7 @@ public class RequestUtils {
      */
     private static final String UNKNOWN = "unknown";
     private static final String LOCAL_IP = "127.0.0.1";
+
     /**
      * 获取客户单IP地址
      */
@@ -58,6 +56,7 @@ public class RequestUtils {
         }
         return ip;
     }
+
     /**
      * 判断请求IP是否是内网IP
      */
@@ -73,24 +72,24 @@ public class RequestUtils {
     /**
      * 获取服务器端的IP
      */
-    public static String getServerIp(){
-        try{
+    public static String getServerIp() {
+        try {
             Enumeration<NetworkInterface> allNetInterfaces = NetworkInterface.getNetworkInterfaces();
-            while (allNetInterfaces.hasMoreElements()){
+            while (allNetInterfaces.hasMoreElements()) {
                 NetworkInterface netInterface = allNetInterfaces.nextElement();
                 Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
-                while (addresses.hasMoreElements()){
+                while (addresses.hasMoreElements()) {
                     InetAddress ip = addresses.nextElement();
                     //loopback地址即本机地址，IPv4的loopback范围是127.0.0.0 ~ 127.255.255.255
                     if (ip != null
                             && ip instanceof Inet4Address
                             && !ip.isLoopbackAddress()
-                            && ip.getHostAddress().indexOf(":")==-1){
+                            && ip.getHostAddress().indexOf(":") == -1) {
                         return ip.getHostAddress();
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
         return LOCAL_IP;
     }
@@ -98,7 +97,7 @@ public class RequestUtils {
     /**
      * 获取用户当前请求的HttpServletRequest
      */
-    public static HttpServletRequest getRequest(){
+    public static HttpServletRequest getRequest() {
         ServletRequestAttributes attributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
         return attributes.getRequest();
     }
@@ -106,7 +105,7 @@ public class RequestUtils {
     /**
      * 获取当前请求的HttpServletResponse
      */
-    public static HttpServletResponse getResponse(){
+    public static HttpServletResponse getResponse() {
         ServletRequestAttributes attributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
         return attributes.getResponse();
     }
@@ -121,11 +120,7 @@ public class RequestUtils {
         try {
             return JSONUtils.toObject(params, Map.class);
         } catch (Exception e) {
-            try {
-                return convertParameterToMap(IOUtils.toString(params, "utf-8"));
-            } catch (IOException ex) {
-                throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "将数据资源转换为字符串异常，" + e);
-            }
+            return convertParameterToMap(IOUtils.toString(params, "utf-8"));
         }
     }
 
@@ -160,11 +155,7 @@ public class RequestUtils {
         try {
             return JSONUtils.toObject(body, Object.class);
         } catch (Exception e) {
-            try {
-                return IOUtils.toString(body, "UTF-8");
-            } catch (IOException ex) {
-                throw new BasicException(ResultStatus.IO_EXCEPTION.getStatus(), "将数据资源转换为字符串异常，" + e);
-            }
+            return IOUtils.toString(body, "UTF-8");
         }
     }
 }

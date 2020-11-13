@@ -8,7 +8,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import java.util.Date;
 
 /**
- * @Description: Description
+ * @Description: 时间转换工具
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.common.utils.TimeUtils
  * @Author: 雷才哲

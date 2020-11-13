@@ -3,15 +3,15 @@ package com.vilce.common.utils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.vilce.common.model.vo.BaseRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
- * @Description: Description
+ * @Description: 隐藏信息工具
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.common.utils.HiddenUtils
  * @Author: 雷才哲
@@ -84,22 +84,55 @@ public class HiddenUtils {
             return paramMap;
         }
         Multimap<Integer, String> routeMap = map.get(route);
-        if(!routeMap.containsKey(HiddenType.PHONE.getType())){
-            return paramMap;
-        }
         Map<String, Object> pMap = Maps.newHashMap();
         pMap.putAll(paramMap);
-        Collection<String> collection = routeMap.get(HiddenType.PHONE.getType());
-        collection.forEach((fieldName)->{
-            pMap.put(fieldName, PhoneUtils.hidden(paramMap.get(fieldName)==null ? null :paramMap.get(fieldName).toString()));
+        pMap.forEach((key, value)->{
+            if(ObjectUtils.isEmpty(value)){
+                return;
+            }
+            if(value instanceof BaseRequest){
+                Map<String, Object> objectMap = JSONUtils.toJavaBean(JSONUtils.toJSONString(value), Map.class);
+                routeMap.keySet().forEach((type)->{
+                    routeMap.get(type).forEach((fieldName)->{
+                        if(objectMap.containsKey(fieldName) && objectMap.get(fieldName) != null){
+                            if(HiddenType.PHONE.getType() == NumberUtils.toInt(type.toString())){
+                                objectMap.put(fieldName, HiddenFieldUtils.hiddenPhoneNum(objectMap.get(fieldName).toString()));
+                            } else if(HiddenType.ACCOUNT_ID.getType() == NumberUtils.toInt(type.toString())){
+                                objectMap.put(fieldName, HiddenFieldUtils.hiddenAccountId(objectMap.get(fieldName).toString()));
+                            }  else if(HiddenType.ID_CARD_NUM.getType() == NumberUtils.toInt(type.toString())){
+                                objectMap.put(fieldName, HiddenFieldUtils.hiddenIdCardNum(objectMap.get(fieldName).toString()));
+                            }
+                        }
+                    });
+                });
+                pMap.put(key, objectMap);
+            } else {
+                routeMap.keySet().forEach((type)->{
+                    routeMap.get(type).forEach((fieldName)->{
+                        if(StringUtils.equals(fieldName, key) && !ObjectUtils.isEmpty(value)){
+                            if(HiddenType.PHONE.getType() == NumberUtils.toInt(type.toString())){
+                                pMap.put(fieldName, HiddenFieldUtils.hiddenPhoneNum(value.toString()));
+                            }else if(HiddenType.ACCOUNT_ID.getType() == NumberUtils.toInt(type.toString())){
+                                pMap.put(fieldName, HiddenFieldUtils.hiddenAccountId(value.toString()));
+                            }  else if(HiddenType.ID_CARD_NUM.getType() == NumberUtils.toInt(type.toString())){
+                                pMap.put(fieldName, HiddenFieldUtils.hiddenIdCardNum(value.toString()));
+                            }
+                        }
+                    });
+                });
+            }
+
         });
+
         return pMap;
     }
     /**
      * 隐藏字段类型枚举类
      */
     public enum HiddenType{
-        PHONE(1, "手机号");
+        PHONE(1, "手机号"),
+        ID_CARD_NUM(2, "身份证号"),
+        ACCOUNT_ID(3, "账号");
 
         private Integer type;
         private String desc;

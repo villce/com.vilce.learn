@@ -1,7 +1,10 @@
 package com.vilce.common.autoconfig.returnvalue.handler;
 
+import com.vilce.common.autoconfig.returnvalue.annotation.ApiWrapperIgnore;
+import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.common.utils.SwaggerUtils;
+import com.vilce.common.utils.RouteUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
@@ -13,6 +16,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Map;
 
 /**
  * @Description: HttpEntity返回值控制器
@@ -37,29 +41,37 @@ public class ResponseHttpEntityMethodReturnValueHandler implements HandlerMethod
     }
 
     @Override
-    public void handleReturnValue(Object o, MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest) throws Exception {
+    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
         //标注该请求已经在当前处理程序处理过
-        modelAndViewContainer.setRequestHandled(true);
+        mavContainer.setRequestHandled(true);
+        ResponseEntity entity = (ResponseEntity) returnValue;
         //获取ResponseEntity封装的真实返回值
-        Object entity = (null == o) ? null : ((ResponseEntity) o).getBody();
-        HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-        if (SwaggerUtils.URLS.contains(request.getRequestURI())) {
-            // 包含在路径配置文件里或添加有标签注解的，都不进行处理
-            proxyObject.handleReturnValue(o, methodParameter, modelAndViewContainer, nativeWebRequest);
-        } else if (null != entity && (entity instanceof BaseResponse)) {
-            // entity不为空但继承BaseResponse，不进行处理
-            proxyObject.handleReturnValue(o, methodParameter, modelAndViewContainer, nativeWebRequest);
+        Object body = (null == returnValue) ? null : entity.getBody();
+        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        if (entity.getStatusCode().value() == ResultStatus.NOT_FOUND.getStatus()) {
+            String path = ((Map) body).get("path").toString();
+            BaseResponse baseResponse = BaseResponse.buildResponse(ResultStatus.NOT_FOUND.getStatus(), StringUtils.join("接口【", path, "】不存在"));
+            proxyObject.handleReturnValue(ResponseEntity.ok(baseResponse), returnType, mavContainer, webRequest);
+        } else if (RouteUtils.match(request.getRequestURI())
+                || returnType.hasMethodAnnotation(ApiWrapperIgnore.class)
+                || returnType.getContainingClass().isAnnotationPresent(ApiWrapperIgnore.class)) {
+            proxyObject.handleReturnValue(returnValue, returnType, mavContainer, webRequest);
+        } else if (null != body && (body instanceof BaseResponse)) {
+            proxyObject.handleReturnValue(returnValue, returnType, mavContainer, webRequest);
         } else {
-            BaseResponse baseResponse = BaseResponse.buildResponse();
-            Type type = methodParameter.getMethod().getGenericReturnType();
+            Type type = returnType.getMethod().getGenericReturnType();
             /**
              * 1.如果返回的是ResponseEntity类，无泛型化参数
              * 2.返回的ResponseEntity带泛型化参数，且参数是void
              */
-            if (!(type.equals(ResponseEntity.class)) && !((type instanceof ParameterizedType) && (((ParameterizedType) type).getActualTypeArguments()[0]).equals(Void.class))) {
-                baseResponse.setData(entity);
+            if ((type.equals(ResponseEntity.class)) || ((type instanceof ParameterizedType) && (((ParameterizedType) type).getActualTypeArguments()[0]).equals(Void.class))) {
+                BaseResponse baseResponse = BaseResponse.buildResponse();
+                proxyObject.handleReturnValue(ResponseEntity.ok(baseResponse), returnType, mavContainer, webRequest);
+            } else {
+                BaseResponse baseResponse = BaseResponse.buildResponse();
+                baseResponse.setData(body);
+                proxyObject.handleReturnValue(ResponseEntity.ok(baseResponse), returnType, mavContainer, webRequest);
             }
-            proxyObject.handleReturnValue(ResponseEntity.ok(baseResponse), methodParameter, modelAndViewContainer, nativeWebRequest);
         }
     }
 }

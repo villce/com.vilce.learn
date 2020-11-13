@@ -13,10 +13,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 /**
- * @Description: Description
+ * @Description: 图片水印工具
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.common.utils.MarkImageUtils
  * @Author: 雷才哲

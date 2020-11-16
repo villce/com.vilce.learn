@@ -39,4 +39,9 @@
         WHERE id=#{id}
     </update>
 
+    <select id="countArticle" resultType="java.lang.Integer" >
+		SELECT COUNT(*)
+		FROM jotter_article
+    </select>
+
 </mapper>

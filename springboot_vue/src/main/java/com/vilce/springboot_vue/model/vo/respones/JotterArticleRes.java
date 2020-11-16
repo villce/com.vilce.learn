@@ -25,18 +25,22 @@ import java.util.concurrent.TimeUnit;
 public class JotterArticleRes {
     @ApiModelProperty(value = "文章id",example = "0")
     private int id;
+    @ApiModelProperty(value = "文章类型", example = "随笔")
+    private String type;
+    @ApiModelProperty(value = "文章标签", example = "java")
+    private String[] label;
     @ApiModelProperty(value = "文章标题",example = "示例")
-    private String article_title;
+    private String title;
     @ApiModelProperty(value = "文章html",example = "示例")
-    private String article_content_html;
+    private String contentHtml;
     @ApiModelProperty(value = "文章md",example = "示例")
-    private String article_content_md;
+    private String contentMd;
     @ApiModelProperty(value = "文章摘要",example = "示例")
-    private String article_abstract;
+    private String introduction;
     @ApiModelProperty(value = "文章封面地址",example = "d:/img/1.png")
-    private String article_cover;
+    private String cover;
     @ApiModelProperty(value = "文章发布时间",example = "2020.08.26 00:00:00")
-    private String article_date;
+    private String publishDate;
 
     /**
      * JotterArticle映射数据
@@ -47,10 +51,16 @@ public class JotterArticleRes {
         if (ObjectUtils.isEmpty(article)) {
             return null;
         }
-        //将属性和名称相似的值进行拷贝
-        BeanCopier beanCopier = BeanCopier.create(JotterArticle.class, JotterArticleRes.class, false);
-        JotterArticleRes articleRes = new JotterArticleRes();
-        beanCopier.copy(article, articleRes, null);
-        return articleRes;
+        JotterArticleRes jotterArticleRes = new JotterArticleRes();
+        jotterArticleRes.setId(article.getId());
+        jotterArticleRes.setType(article.getArticle_type());
+        jotterArticleRes.setLabel(article.getArticle_label().split(";"));
+        jotterArticleRes.setTitle(article.getArticle_title());
+        jotterArticleRes.setContentHtml(article.getArticle_content_html());
+        jotterArticleRes.setContentMd(article.getArticle_content_md());
+        jotterArticleRes.setIntroduction(article.getArticle_abstract());
+        jotterArticleRes.setCover(article.getArticle_cover());
+        jotterArticleRes.setPublishDate(TimeUtils.dateToYMD(article.getArticle_date()));
+        return jotterArticleRes;
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.*;
 
 
 /**
- * @Description: 跨域请求支持
+ * @Description: 访问路径映射
  * @ProjectName: com.vilce.learn
  * @Package: com.vilce.springboot_vue.config.web.WebConfiguration
  * @Author: 雷才哲

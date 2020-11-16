@@ -34,10 +34,10 @@ public class JotterController {
         return jotterArticleService.addOrUpdate(article);
     }
 
-    @GetMapping("listArticles")
+    @GetMapping("listArticles/{pageIndex}/{pageSize}")
     @ApiOperation(value = "分页展示文章信息")
-    public List<JotterArticleRes> listArticles(@RequestParam("page") int page,@RequestParam("size") int size) {
-        return jotterArticleService.listArticles(page, size);
+    public List<JotterArticleRes> listArticles(@PathVariable int pageIndex,@PathVariable int pageSize) {
+        return jotterArticleService.listArticles(pageIndex, pageSize);
     }
 
     @GetMapping("getOneArticle")
@@ -50,5 +50,11 @@ public class JotterController {
     @ApiOperation(value = "根据id删除文章")
     public BaseResponse deleteArticle(int id) {
         return jotterArticleService.deleteArticle(id);
+    }
+
+    @GetMapping("countArticle")
+    @ApiOperation(value = "统计文章数量")
+    public Integer countArticle() {
+        return jotterArticleService.countArticle();
     }
 }

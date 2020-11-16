@@ -26,11 +26,11 @@ public interface JotterArticleService {
     /**
      * 分页获取文章信息
      *
-     * @param page
-     * @param size
+     * @param pageIndex 页码
+     * @param pageSize  每页数量
      * @return
      */
-    List<JotterArticleRes> listArticles(int page, int size);
+    List<JotterArticleRes> listArticles(int pageIndex, int pageSize);
 
     /**
      * 根据id获取文章信息
@@ -47,4 +47,11 @@ public interface JotterArticleService {
      * @return
      */
     BaseResponse deleteArticle(int id);
+
+    /**
+     * 统计文章数量
+     *
+     * @return
+     */
+    Integer countArticle();
 }

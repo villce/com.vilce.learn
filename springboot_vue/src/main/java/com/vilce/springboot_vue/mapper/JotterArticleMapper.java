@@ -55,4 +55,10 @@ public interface JotterArticleMapper {
      * @return
      */
     boolean updateArticle(JotterArticle article);
+
+    /**
+     * 统计文章数量
+     * @return
+     */
+    Integer countArticle();
 }

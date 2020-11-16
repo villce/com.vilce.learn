@@ -41,13 +41,13 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     /**
      * 分页获取文章
      *
-     * @param page
-     * @param size
+     * @param pageIndex 页码
+     * @param pageSize  每页数量
      * @return
      */
     @Override
-    public List<JotterArticleRes> listArticles(int page, int size) {
-        List<JotterArticle> articleList = jotterArticleMapper.findAll(page - 1, size);
+    public List<JotterArticleRes> listArticles(int pageIndex, int pageSize) {
+        List<JotterArticle> articleList = jotterArticleMapper.findAll((pageIndex - 1) * pageSize, pageIndex * pageSize);
         List<JotterArticleRes> articleResList = new ArrayList<>();
         articleList.forEach(article -> {
             JotterArticleRes articleRes = JotterArticleRes.create(article);
@@ -123,4 +123,13 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         }
     }
 
+    /**
+     * 统计文章数量
+     *
+     * @return
+     */
+    @Override
+    public Integer countArticle() {
+        return jotterArticleMapper.countArticle();
+    }
 }

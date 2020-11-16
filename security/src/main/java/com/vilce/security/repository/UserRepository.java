@@ -1,9 +1,7 @@
 package com.vilce.security.repository;
 
 import com.vilce.security.model.UserDO;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 /**
  * @Description: Description
@@ -13,8 +11,16 @@ import org.springframework.stereotype.Repository;
  * @Date: 2019/12/11 11:28
  * @Version: 1.0
  */
-@Repository
 @Component
-public interface UserRepository extends CrudRepository<UserDO, Long> {
+public interface UserRepository {
+
+    void insert(UserDO userDO);
+
+    /**
+     * 根据用户名获取用户信息
+     *
+     * @param username
+     * @return
+     */
     UserDO findByUsername(String username);
 }

@@ -4,7 +4,8 @@
 
     <insert id="insert" parameterType="com.vilce.security.model.UserDO" >
 		INSERT security_user
-		VALUES (#{id},#{nickname},#{password},#{username})
+		(username, password)
+		VALUES (#{username}, #{password})
     </insert>
 
     <select id="findByUsername" resultType="com.vilce.security.model.UserDO" >

@@ -27,8 +27,6 @@ import java.util.Random;
  * @Version: 1.0
  */
 @Service
-@Primary
-@Slf4j
 public class UserServiceImpl implements UserService {
     private final static Map<Integer, String> ENCODER_TYPE = new HashMap<>();
     private final static Map<String, PasswordEncoder> ENCODER_MAP = new HashMap<>();
@@ -62,7 +60,7 @@ public class UserServiceImpl implements UserService {
         String encoderType = ENCODER_TYPE.get(x);
         PasswordEncoder passwordEncoder = ENCODER_MAP.get(encoderType);
         userDO.setPassword(String.format(PASSWORD_FORMAT, encoderType, passwordEncoder.encode(userDO.getPassword())));
-        userRepository.save(userDO);
+        userRepository.insert(userDO);
     }
 
     @Override

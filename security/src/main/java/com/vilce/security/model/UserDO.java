@@ -12,24 +12,18 @@ import javax.persistence.*;
  * @Date: 2019/12/11 11:24
  * @Version: 1.0
  */
-@Entity
-@Table(name = "security_user")
 @Data
 public class UserDO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 账号
      */
     private String username;
-
     /**
      * 密码
      */
     private String password;
-
     /**
      * 昵称
      */

@@ -1,13 +1,18 @@
-CREATE TABLE vilce.security_user
+DROP TABLE IF EXISTS `security_user`;
+CREATE TABLE `security_user`
 (
-    id       number(10) NOT NULL,
-    username varchar2(255) DEFAULT NULL,
-    password varchar2(255) DEFAULT NULL,
-    nickname varchar(255)  DEFAULT ''
-);
---注释脚本
-comment on table vilce.security_user is 'Security用户表';
-comment on column vilce.security_user.id is '系统物理主键';
-comment on column vilce.security_user.username is '账号';
-comment on column vilce.security_user.password is '密码';
-comment on column vilce.security_user.nickname is '昵称';
+    `id`       int(11)                                              NOT NULL AUTO_INCREMENT COMMENT '系统物理主键',
+    `username` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+    `password` varchar(255)                                            DEFAULT NULL COMMENT '用户密码',
+    PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB
+    AUTO_INCREMENT = 110
+    DEFAULT CHARSET = utf8;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `security_user`
+VALUES ('1', 'vilce', 'vilce');
+INSERT INTO `admin_user`
+VALUES ('2', 'test', '123');

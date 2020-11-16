@@ -37,7 +37,9 @@ public class VilceWebMvcAutoConfiguration implements WebMvcConfigurer, CommandLi
      * 自定义跨域规则是否已加载
      */
     private boolean enableCors;
-    //忽略URL前缀的控制器类
+    /**
+     * 忽略URL前缀的控制器类
+     */
     private static String[] ignoreUrlPrefixController = new String[]{"springfox.documentation.swagger.web.ApiResourceController",
             "org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController",
             "springfox.documentation.swagger2.web.Swagger2ControllerWebMvc"};

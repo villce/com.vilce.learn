@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilce.springboot_vue.module.user.mapper.AdminRolePermissionMapper">
+
+    <select id="getRolePermissionByRid" resultType="com.vilce.springboot_vue.module.user.model.AdminRolePermission" >
+		SELECT *
+		FROM admin_role_permission
+		WHERE rid = #{rid}
+    </select>
+
+    <delete id="deleteRolePermissionByRid" >
+		DELETE
+		FROM admin_role_permission
+		WHERE rid = #{rid}
+    </delete>
+
+    <insert id="addRolePermission" >
+		INSERT INTO admin_role_permission
+		(rid,pid)
+		VALUES (#{rid},{pid})
+    </insert>
+
+</mapper>

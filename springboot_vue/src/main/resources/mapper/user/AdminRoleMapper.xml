@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilce.springboot_vue.module.user.mapper.AdminRoleMapper">
+
+    <select id="getRoleById" resultType="com.vilce.springboot_vue.module.user.model.AdminRole" >
+		SELECT *
+		FROM admin_role
+		WHERE id = #{id}
+    </select>
+
+    <select id="getAllRole" resultType="com.vilce.springboot_vue.module.user.model.AdminRole" >
+		SELECT *
+		FROM admin_role
+    </select>
+
+    <update id="updateRoleStatus" >
+		UPDATE admin_role
+		SET enabled=#{enabled}
+		WHERE id=#{id}
+    </update>
+
+    <insert id="addRole" parameterType="com.vilce.springboot_vue.module.user.model.AdminRole" >
+		INSERT INTO admin_role
+		(name,name_zh,enabled)
+		VALUES (#{name},#{name_zh},#{enabled})
+    </insert>
+
+    <update id="updateRole" parameterType="com.vilce.springboot_vue.module.user.model.AdminRole">
+		UPDATE admin_role
+		SET name=#{name},
+		    name_zh=#{name_zh},
+		    enabled=#{enabled}
+		WHERE id=#{id}
+    </update>
+</mapper>

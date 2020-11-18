@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilce.springboot_vue.module.article.mapper.JotterStatisticsMapper">
+    <resultMap id="articleLabelMap" type="com.vilce.springboot_vue.module.article.model.po.ArticleLabel">
+        <result column="label" property="label"/>
+        <result column="num" property="num"/>
+    </resultMap>
+
+    <select id="statisticsLabels" resultMap="articleLabelMap">
+        SELECT article_label AS label,
+               COUNT(article_type) AS num
+        FROM jotter_article
+        GROUP BY article_label
+    </select>
+</mapper>

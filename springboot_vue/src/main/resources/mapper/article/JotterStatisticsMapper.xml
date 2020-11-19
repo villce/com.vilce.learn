@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vilce.springboot_vue.module.article.mapper.JotterStatisticsMapper">
-    <resultMap id="articleLabelMap" type="com.vilce.springboot_vue.module.article.model.vo.ArticleLabel">
-        <result column="label" property="label"/>
+    <resultMap id="articleTypeMap" type="com.vilce.springboot_vue.module.article.model.vo.ArticleType">
+        <result column="type" property="type"/>
         <result column="num" property="num"/>
     </resultMap>
+
+    <select id="countArticle" resultType="java.lang.Integer" >
+		SELECT COUNT(*)
+		FROM jotter_article
+    </select>
+
+    <select id="statisticsTypes" resultMap="articleTypeMap">
+        SELECT article_type AS type,
+               COUNT(article_type) AS num
+        FROM jotter_article
+        GROUP BY article_type
+        ORDER BY num DESC
+    </select>
 
     <select id="getAllLabels" resultType="java.lang.String">
         SELECT article_label

@@ -15,7 +15,7 @@ import java.util.*;
  * @Version: 1.0
  */
 @Data
-@ApiModel(value = "笔记标签")
+@ApiModel(value = "文章标签")
 public class ArticleLabel {
     @ApiModelProperty(value = "标签名")
     private String label;
@@ -46,6 +46,7 @@ public class ArticleLabel {
             articleLabel.setNum(num);
             articleLabels.add(articleLabel);
         });
+        Collections.sort(articleLabels, Comparator.comparing(ArticleLabel::getNum, Collections.reverseOrder()));
         return articleLabels;
     }
 }

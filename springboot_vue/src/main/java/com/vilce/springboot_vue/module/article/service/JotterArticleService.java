@@ -49,9 +49,18 @@ public interface JotterArticleService {
     BaseResponse deleteArticle(int id);
 
     /**
-     * 统计文章数量
+     * 获取某类文章
      *
+     * @param type 类别
      * @return
      */
-    Integer countArticle();
+    List<JotterArticleRes> getArticleByType(String type);
+
+    /**
+     * 模糊查询文章
+     *
+     * @param searchStr 查询字符串
+     * @return
+     */
+    List<JotterArticleRes> searchArticle(String searchStr);
 }

@@ -1,6 +1,7 @@
 package com.vilce.springboot_vue.module.article.controller;
 
 import com.vilce.springboot_vue.module.article.model.vo.ArticleLabel;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleType;
 import com.vilce.springboot_vue.module.article.service.JotterStatisticsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,13 +22,25 @@ import java.util.List;
  */
 @RestController
 @Api(tags = "文章统计相关控制器")
-@RequestMapping("/jotter/statistics")
+@RequestMapping("/article/statistics")
 public class JotterStatisticsController {
 
     @Autowired
     private JotterStatisticsService jotterStatisticsService;
 
-    @GetMapping("labels")
+    @GetMapping("countArticle")
+    @ApiOperation(value = "统计文章数量")
+    public Integer countArticle() {
+        return jotterStatisticsService.countArticle();
+    }
+
+    @GetMapping("type")
+    @ApiOperation(value = "统计文章类别")
+    public List<ArticleType> statisticsTypes() {
+        return jotterStatisticsService.statisticsTypes();
+    }
+
+    @GetMapping("label")
     @ApiOperation(value = "统计文章标签")
     public List<ArticleLabel> statisticsLabels(){
         return jotterStatisticsService.statisticsLabels();

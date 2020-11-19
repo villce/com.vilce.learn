@@ -31,7 +31,7 @@ public interface JotterArticleMapper {
      * @param size
      * @return
      */
-    List<JotterArticle> findAll(int page,int size);
+    List<JotterArticle> findAll(int page, int size);
 
     /**
      * 根据id删除文章
@@ -57,8 +57,18 @@ public interface JotterArticleMapper {
     boolean updateArticle(JotterArticle article);
 
     /**
-     * 统计文章数量
+     * 获取某类文章
+     *
+     * @param type 类别
      * @return
      */
-    Integer countArticle();
+    List<JotterArticle> getArticleByType(String type);
+
+    /**
+     * 模糊查询文章
+     *
+     * @param searchStr 查询字符串
+     * @return
+     */
+    List<JotterArticle> searchArticle(String searchStr);
 }

@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.io.Serializable;
+
 /**
  * @Description: 文章
  * @ProjectName: com.vilce.learn
@@ -17,7 +19,7 @@ import org.apache.commons.lang3.ObjectUtils;
  */
 @Data
 @ApiModel(value = "文章")
-public class JotterArticleRes {
+public class JotterArticleRes implements Serializable {
     @ApiModelProperty(value = "文章id",example = "0")
     private int id;
     @ApiModelProperty(value = "文章类型", example = "随笔")

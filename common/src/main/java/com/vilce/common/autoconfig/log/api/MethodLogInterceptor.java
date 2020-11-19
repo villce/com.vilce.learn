@@ -48,7 +48,7 @@ public class MethodLogInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         // 获取传参
-        Map<String, Object> params = getRequestParam(invocation);
+        Map<String, Object> params = RequestUtils.getRequestParam(invocation);
         // 启动计时器
         StopWatch stopWatch = StopWatch.createStarted();
         try {
@@ -123,44 +123,5 @@ public class MethodLogInterceptor implements MethodInterceptor {
             logMap.put("异常", StringUtils.join(e.getStackTrace()[0], " ", e.getMessage()));
         }
         return new LogAop<>(Level.ERROR.levelStr, invocation.getThis().getClass(), logMap);
-    }
-
-    /**
-     * 获取请求参数
-     */
-    private Map<String, Object> getRequestParam(MethodInvocation invocation) {
-        Object[] args = invocation.getArguments();
-        Method method = invocation.getMethod();
-        Parameter[] parameters = method.getParameters();
-        if (ArrayUtils.isEmpty(parameters)) {
-            return Collections.emptyMap();
-        }
-        Map<String, Object> paramMap = new LinkedHashMap<>();
-        HttpServletRequest request = RequestUtils.getRequest();
-        for (int i = 0; i < parameters.length; i++) {
-            if (args[i] instanceof HttpServletResponse) {
-                continue;
-            }
-            if (args[i] instanceof HttpServletRequest) {
-                Enumeration<String> params = request.getParameterNames();
-                while (params.hasMoreElements()) {
-                    String key = params.nextElement();
-                    paramMap.put(key, request.getParameter(key));
-                }
-            } else if (args[i] instanceof BaseRequest) {
-                request.setAttribute(parameters[i].getName(), args[i]);
-                paramMap.put(parameters[i].getName(), args[i]);
-            } else if (args[i] instanceof MultipartFile) {
-                paramMap.put(parameters[i].getName(), ((MultipartFile) args[i]).getOriginalFilename());
-            } else if (args[i] instanceof File) {
-                paramMap.put(parameters[i].getName(), ((File) args[i]).getPath());
-            } else if (args[i] instanceof Throwable) {
-                //参数信息异常，忽略
-            } else {
-                paramMap.put(parameters[i].getName(), args[i]);
-            }
-        }
-        paramMap = HiddenUtils.hidden(paramMap, request.getRequestURI());
-        return JSONUtils.toJavaBean(JSONUtils.toJSONPrettyString(paramMap), Map.class);
     }
 }

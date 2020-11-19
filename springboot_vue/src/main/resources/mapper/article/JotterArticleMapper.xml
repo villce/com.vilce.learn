@@ -39,9 +39,17 @@
         WHERE id=#{id}
     </update>
 
-    <select id="countArticle" resultType="java.lang.Integer" >
-		SELECT COUNT(*)
+    <select id="getArticleByType" resultType="com.vilce.springboot_vue.module.article.model.po.JotterArticle" >
+		SELECT *
 		FROM jotter_article
+		WHERE article_type = #{type}
     </select>
 
+    <select id="searchArticle" resultType="com.vilce.springboot_vue.module.article.model.po.JotterArticle" >
+		SELECT *
+		FROM jotter_article
+		WHERE article_title LIKE #{searchStr}
+		OR article_content_md LIKE #{searchStr}
+		OR article_abstract LIKE #{searchStr}
+    </select>
 </mapper>

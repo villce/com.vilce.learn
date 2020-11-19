@@ -1,6 +1,5 @@
 package com.vilce.springboot_vue.module.article.mapper;
 
-import com.vilce.springboot_vue.module.article.model.po.ArticleLabel;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,9 +16,9 @@ import java.util.List;
 public interface JotterStatisticsMapper {
 
     /**
-     * 统计文章标签
+     * 获取所有的文章标签
      *
      * @return
      */
-    List<ArticleLabel> statisticsLabels();
+    List<String> getAllLabels();
 }

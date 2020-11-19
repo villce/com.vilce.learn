@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.module.article.controller;
 
-import com.vilce.springboot_vue.module.article.model.po.ArticleLabel;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleLabel;
 import com.vilce.springboot_vue.module.article.service.JotterStatisticsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.module.article.service;
 
-import com.vilce.springboot_vue.module.article.model.po.ArticleLabel;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleLabel;
 
 import java.util.List;
 

@@ -1,19 +1,15 @@
 package com.vilce.springboot_vue.module.article.service.impl;
 
-import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.module.article.mapper.JotterStatisticsMapper;
 import com.vilce.springboot_vue.module.article.model.vo.ArticleLabel;
 import com.vilce.springboot_vue.module.article.model.vo.ArticleType;
 import com.vilce.springboot_vue.module.article.service.JotterStatisticsService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Description: Description
@@ -32,8 +28,6 @@ public class JotterStatisticsServiceImpl implements JotterStatisticsService {
     private StringRedisTemplate redisTemplate;
 
     private static final String ARTICLE = "com.vilce.springbootVue.article:";
-    @Value("${spring.vilce.redis.normal.time}")
-    private int redisTimeOut;
 
     /**
      * 统计文章数量
@@ -42,14 +36,7 @@ public class JotterStatisticsServiceImpl implements JotterStatisticsService {
      */
     @Override
     public Integer countArticle() {
-        String keyStr = StringUtils.join(ARTICLE, "countArticle");
-        String cacheStr = redisTemplate.opsForValue().get(keyStr);
-        if (StringUtils.isNotEmpty(cacheStr)) {
-            return JSONUtils.toJavaBean(cacheStr, Integer.class);
-        }
-        Integer count = jotterStatisticsMapper.countArticle();
-        redisTemplate.opsForValue().set(keyStr, JSONUtils.toJSONString(count), redisTimeOut, TimeUnit.SECONDS);
-        return count;
+        return jotterStatisticsMapper.countArticle();
     }
 
     /**
@@ -59,14 +46,7 @@ public class JotterStatisticsServiceImpl implements JotterStatisticsService {
      */
     @Override
     public List<ArticleType> statisticsTypes() {
-        String keyStr = StringUtils.join(ARTICLE, "statisticsTypes");
-        String cacheStr = redisTemplate.opsForValue().get(keyStr);
-        if (StringUtils.isNotEmpty(cacheStr)) {
-            return JSONUtils.toJavaBean(cacheStr, List.class, ArticleType.class);
-        }
-        List<ArticleType> articleTypeList = jotterStatisticsMapper.statisticsTypes();
-        redisTemplate.opsForValue().set(keyStr, JSONUtils.toJSONString(articleTypeList), redisTimeOut, TimeUnit.SECONDS);
-        return articleTypeList;
+        return jotterStatisticsMapper.statisticsTypes();
     }
 
     /**
@@ -76,11 +56,6 @@ public class JotterStatisticsServiceImpl implements JotterStatisticsService {
      */
     @Override
     public List<ArticleLabel> statisticsLabels() {
-        String keyStr = StringUtils.join(ARTICLE, "statisticsLabels");
-        String cacheStr = redisTemplate.opsForValue().get(keyStr);
-        if (StringUtils.isNotEmpty(cacheStr)) {
-            return JSONUtils.toJavaBean(cacheStr, List.class, ArticleLabel.class);
-        }
         // 获取所有的标签
         List<String> labels = jotterStatisticsMapper.getAllLabels();
         // 将标签进行拆分
@@ -91,8 +66,6 @@ public class JotterStatisticsServiceImpl implements JotterStatisticsService {
                 labelList.add(strs[i]);
             }
         });
-        List<ArticleLabel> articleLabels = ArticleLabel.statisticsLabels(labelList);
-        redisTemplate.opsForValue().set(keyStr, JSONUtils.toJSONString(articleLabels), redisTimeOut, TimeUnit.SECONDS);
-        return articleLabels;
+        return ArticleLabel.statisticsLabels(labelList);
     }
 }

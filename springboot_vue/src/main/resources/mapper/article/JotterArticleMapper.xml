@@ -31,6 +31,7 @@
     <update id="updateArticle"  parameterType="com.vilce.springboot_vue.module.article.model.po.JotterArticle" >
         UPDATE jotter_article
         SET article_title=#{article_title},
+            article_type=#{article_type},
             article_content_html=#{article_content_html},
             article_content_md=#{article_content_md},
             article_abstract=#{article_abstract},
@@ -45,11 +46,67 @@
 		WHERE article_type = #{type}
     </select>
 
+    <select id="getArticleByLabel" resultType="com.vilce.springboot_vue.module.article.model.po.JotterArticle" >
+		SELECT *
+		FROM jotter_article
+		WHERE article_label LIKE #{label}
+    </select>
+
     <select id="searchArticle" resultType="com.vilce.springboot_vue.module.article.model.po.JotterArticle" >
 		SELECT *
 		FROM jotter_article
 		WHERE article_title LIKE #{searchStr}
 		OR article_content_md LIKE #{searchStr}
 		OR article_abstract LIKE #{searchStr}
+    </select>
+
+    <select id="countArticle" resultType="java.lang.Integer" >
+		SELECT COUNT(*)
+		FROM jotter_article
+    </select>
+
+    <select id="statisticsTypes" resultType="com.vilce.springboot_vue.module.article.model.vo.ArticleType">
+        SELECT article_type AS type,
+               COUNT(article_type) AS num
+        FROM jotter_article
+        GROUP BY article_type
+        ORDER BY num DESC
+    </select>
+
+    <select id="statisticsLabels" resultType="com.vilce.springboot_vue.module.article.model.vo.ArticleLabel">
+        SELECT article_label AS label,
+               COUNT(article_label) AS num
+        FROM article_label
+        GROUP BY article_label
+        ORDER BY num DESC
+        LIMIT 10
+    </select>
+
+    <select id="getAllLabels" resultType="java.lang.String">
+        SELECT article_label
+        FROM jotter_article
+    </select>
+
+    <delete id="deleteArticleLabel" parameterType="java.lang.Integer">
+        DELETE FROM article_label
+        WHERE article_id=#{articleId}
+    </delete>
+
+    <insert id="addArticleLabel">
+        INSERT INTO article_label
+        (article_id, article_label)
+        VALUES (#{articleId}, #{label})
+    </insert>
+
+    <select id="findArticleLabel" resultType="java.lang.String">
+        SELECT article_label
+        FROM article_label
+        WHERE article_id=#{articleId}
+    </select>
+
+    <select id="getArticleIdByLabel" resultType="java.lang.Integer">
+        SELECT DISTINCT article_id
+        FROM article_label
+        WHERE article_label=#{article_label}
     </select>
 </mapper>

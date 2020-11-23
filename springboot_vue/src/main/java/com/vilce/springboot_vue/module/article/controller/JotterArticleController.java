@@ -3,6 +3,7 @@ package com.vilce.springboot_vue.module.article.controller;
 import com.vilce.common.autoconfig.redis.annotation.RedisFilter;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
 import com.vilce.springboot_vue.module.article.service.JotterArticleService;
 import io.swagger.annotations.Api;
@@ -63,9 +64,23 @@ public class JotterArticleController {
     }
 
     @RedisFilter
+    @GetMapping("getArticleByLabel")
+    @ApiOperation(value = "获取某标签文章")
+    public List<JotterArticleRes> getArticleByLabel(String label) {
+        return jotterArticleService.getArticleByLabel(label);
+    }
+
+    @RedisFilter
     @GetMapping("search")
     @ApiOperation(value = "模糊查询文章")
     public List<JotterArticleRes> searchArticle(String searchStr) {
         return jotterArticleService.searchArticle(searchStr);
+    }
+
+    @RedisFilter
+    @GetMapping("statistics")
+    @ApiOperation(value = "统计文章")
+    public ArticleStatistic statisticsArticle() {
+        return jotterArticleService.statisticsArticle();
     }
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Description: 文章
@@ -25,7 +26,7 @@ public class JotterArticleRes implements Serializable {
     @ApiModelProperty(value = "文章类型", example = "随笔")
     private String type;
     @ApiModelProperty(value = "文章标签", example = "java")
-    private String[] label;
+    private List<String> label;
     @ApiModelProperty(value = "文章标题",example = "示例")
     private String title;
     @ApiModelProperty(value = "文章html",example = "示例")
@@ -51,7 +52,7 @@ public class JotterArticleRes implements Serializable {
         JotterArticleRes jotterArticleRes = new JotterArticleRes();
         jotterArticleRes.setId(article.getId());
         jotterArticleRes.setType(article.getArticle_type());
-        jotterArticleRes.setLabel(article.getArticle_label().split(";"));
+        jotterArticleRes.setLabel(article.getArticle_label());
         jotterArticleRes.setTitle(article.getArticle_title());
         jotterArticleRes.setContentHtml(article.getArticle_content_html());
         jotterArticleRes.setContentMd(article.getArticle_content_md());

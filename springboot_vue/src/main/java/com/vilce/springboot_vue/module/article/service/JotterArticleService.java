@@ -2,6 +2,7 @@ package com.vilce.springboot_vue.module.article.service;
 
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
 
 import java.util.List;
@@ -57,10 +58,25 @@ public interface JotterArticleService {
     List<JotterArticleRes> getArticleByType(String type);
 
     /**
+     * 获取某标签文章
+     *
+     * @param label 标签
+     * @return
+     */
+    List<JotterArticleRes> getArticleByLabel(String label);
+
+    /**
      * 模糊查询文章
      *
      * @param searchStr 查询字符串
      * @return
      */
     List<JotterArticleRes> searchArticle(String searchStr);
+
+    /**
+     * 统计文章
+     *
+     * @return
+     */
+    ArticleStatistic statisticsArticle();
 }

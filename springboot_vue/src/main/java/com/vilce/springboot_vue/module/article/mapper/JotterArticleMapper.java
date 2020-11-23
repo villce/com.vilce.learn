@@ -1,6 +1,8 @@
 package com.vilce.springboot_vue.module.article.mapper;
 
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleLabel;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleType;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -65,10 +67,78 @@ public interface JotterArticleMapper {
     List<JotterArticle> getArticleByType(String type);
 
     /**
+     * 获取某标签文章
+     *
+     * @param label 标签
+     * @return
+     */
+    List<JotterArticle> getArticleByLabel(String label);
+
+    /**
      * 模糊查询文章
      *
      * @param searchStr 查询字符串
      * @return
      */
     List<JotterArticle> searchArticle(String searchStr);
+
+    /**
+     * 统计文章数
+     *
+     * @return
+     */
+    Integer countArticle();
+
+    /**
+     * 统计文章种类
+     *
+     * @return
+     */
+    List<ArticleType> statisticsTypes();
+
+    /**
+     * 统计文章标签
+     *
+     * @return
+     */
+    List<ArticleLabel> statisticsLabels();
+
+    /**
+     * 获取全部文章标签
+     *
+     * @return
+     */
+    List<String> getAllLabels();
+
+    /**
+     * 删除文章所有标签
+     *
+     * @param articleId 文章id
+     */
+    boolean deleteArticleLabel(int articleId);
+
+    /**
+     * 添加文章标签
+     *
+     * @param articleId 文章id
+     * @param label     标签
+     * @return
+     */
+    boolean addArticleLabel(int articleId, String label);
+
+    /**
+     * 获取文章标签
+     *
+     * @param articleId 文章id
+     * @return
+     */
+    List<String> findArticleLabel(int articleId);
+
+    /**
+     * 获取含有标签的所有文章id
+     *
+     * @param label 标签
+     * @return
+     */
+    List<Integer> getArticleIdByLabel(String label);
 }

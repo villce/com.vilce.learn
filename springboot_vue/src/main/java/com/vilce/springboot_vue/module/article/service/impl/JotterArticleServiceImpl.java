@@ -5,6 +5,7 @@ import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.module.article.mapper.JotterArticleMapper;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
 import com.vilce.springboot_vue.module.article.service.JotterArticleService;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -57,6 +59,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     @Override
     public JotterArticleRes findArticleById(int id) {
         JotterArticle article = jotterArticleMapper.findArticleById(id);
+        article.setArticle_label(jotterArticleMapper.findArticleLabel(id));
         JotterArticleRes articleRes = JotterArticleRes.create(article);
         return articleRes;
     }
@@ -71,8 +74,11 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     public BaseResponse addOrUpdate(JotterArticle article) {
         BaseResponse baseResponse = null;
         if (article.getId() != 0) {
-            // 文章id不为空，更新文章
-            if (jotterArticleMapper.updateArticle(article)) {
+            // 文章id不为空，更新文章(先更新文章内容，再更新文章标签，标签更新需要先删除所有文章标签，再插入新的标签)
+            if (jotterArticleMapper.updateArticle(article) && jotterArticleMapper.deleteArticleLabel(article.getId())) {
+                article.getArticle_label().forEach(label->{
+                    jotterArticleMapper.addArticleLabel(article.getId(), label);
+                });
                 baseResponse = BaseResponse.buildResponse(0, "更新文章成功！");
             } else {
                 throw new BasicException(ResultStatus.ERROR.getStatus(), "更新文章失败!");
@@ -80,6 +86,9 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         } else {
             // 如果文章id为空，此时添加文章
             if (jotterArticleMapper.addArticle(article)) {
+                article.getArticle_label().forEach(label->{
+                    jotterArticleMapper.addArticleLabel(article.getId(), label);
+                });
                 baseResponse = BaseResponse.buildResponse(0, "添加文章成功！");
             } else {
                 throw new BasicException(ResultStatus.ERROR.getStatus(), "添加文章失败!");
@@ -97,8 +106,9 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @param id
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse deleteArticle(int id) {
-        if (jotterArticleMapper.deleteArticleById(id)) {
+        if (jotterArticleMapper.deleteArticleById(id) && jotterArticleMapper.deleteArticleLabel(id)) {
             // 删除所有相关缓存
             Set<String> keys = redisTemplate.keys(ARTICLE + "*");
             redisTemplate.delete(keys);
@@ -121,6 +131,22 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     }
 
     /**
+     * 获取某标签文章
+     *
+     * @param label 标签
+     * @return
+     */
+    @Override
+    public List<JotterArticleRes> getArticleByLabel(String label) {
+        List<Integer> articleIdList = jotterArticleMapper.getArticleIdByLabel(label);
+        List<JotterArticleRes> articleResList = new LinkedList<>();
+        articleIdList.forEach(articleId->{
+            articleResList.add(findArticleById(articleId));
+        });
+        return articleResList;
+    }
+
+    /**
      * 模糊查询文章
      *
      * @param searchStr 查询字符串
@@ -133,6 +159,22 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     }
 
     /**
+     * 统计文章
+     *
+     * @return
+     */
+    @Override
+    public ArticleStatistic statisticsArticle() {
+        ArticleStatistic articleStatistic = new ArticleStatistic();
+        articleStatistic.setArticleNum(jotterArticleMapper.countArticle());
+        articleStatistic.setArticleTypes(jotterArticleMapper.statisticsTypes());
+        articleStatistic.setTypeNum(articleStatistic.getArticleTypes().size());
+        articleStatistic.setArticleLabels(jotterArticleMapper.statisticsLabels());
+        articleStatistic.setLabelNum(articleStatistic.getArticleLabels().size());
+        return articleStatistic;
+    }
+
+    /**
      * 转换数据库中的返回对象
      *
      * @param articleList 数据库返回文章队列
@@ -141,6 +183,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     public List<JotterArticleRes> converArticleResList(List<JotterArticle> articleList) {
         List<JotterArticleRes> articleResList = new ArrayList<>();
         articleList.forEach(article -> {
+            article.setArticle_label(jotterArticleMapper.findArticleLabel(article.getId()));
             JotterArticleRes articleRes = JotterArticleRes.create(article);
             articleResList.add(articleRes);
         });

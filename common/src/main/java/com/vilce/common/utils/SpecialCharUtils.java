@@ -11,4 +11,5 @@ package com.vilce.common.utils;
 public class SpecialCharUtils {
     public static final String LEFT_SLASH = "/";
     public static final String SEMICOLON = ":";
+    public static final String PERCENT_SIGN = "%";
 }

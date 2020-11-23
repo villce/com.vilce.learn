@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 文章
@@ -22,7 +23,7 @@ public class JotterArticle {
     @ApiModelProperty(value = "文章类型", example = "随笔")
     private String article_type;
     @ApiModelProperty(value = "文章标签", example = "java")
-    private String article_label;
+    private List<String> article_label;
     @ApiModelProperty(value = "文章标题",example = "示例")
     private String article_title;
     @ApiModelProperty(value = "文章html",example = "示例")

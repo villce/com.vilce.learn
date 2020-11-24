@@ -1,3 +1,4 @@
 # 服务端口
 server.port=8003
 lcz.test=中文测试
+spring.vilce.env=pre

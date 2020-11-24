@@ -19,6 +19,9 @@ spring:
         acl-token: ${JAVA_CONSULACLTOKEN}
         # 健康检查失败多长时间后，取消注册
         health-check-critical-timeout: 30s
+        server-list-query-tags:
+          # 在调用consul-provider 服务时, 使用 tag1 对应的实例
+          consul-provider: pre
       host: ${JAVA_LOCALIP}
       port: 8500
   vilce:

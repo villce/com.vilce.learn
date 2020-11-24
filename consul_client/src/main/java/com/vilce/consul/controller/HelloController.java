@@ -1,8 +1,13 @@
 package com.vilce.consul.controller;
 
+import com.vilce.consul.service.TestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Description: Description
@@ -13,13 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version: 1.0
  */
 @RestController
+@RequestMapping("/test")
 public class HelloController {
+
+    @Autowired
+    private TestService testService;
 
     @Value("${lcz.test}")
     private String str;
 
-    @RequestMapping("/hello")
+    @RequestMapping("hello")
     public String hello() {
         return str;
+    }
+
+    @RequestMapping("activity")
+    public List<ServiceInstance> activity() {
+        return testService.activity();
     }
 }

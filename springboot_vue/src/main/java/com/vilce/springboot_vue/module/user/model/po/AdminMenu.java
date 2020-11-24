@@ -1,4 +1,4 @@
-package com.vilce.springboot_vue.module.user.model;
+package com.vilce.springboot_vue.module.user.model.po;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @Description: 菜单栏
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.springboot_vue.module.user.model.AdminMenu
+ * @Package: com.vilce.springboot_vue.module.user.model.po.AdminMenu
  * @Author: 雷才哲
  * @Date: 2020/8/25 16:36
  * @Version: 1.0

@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.module.user.service;
 
-import com.vilce.springboot_vue.module.user.model.AdminPermission;
+import com.vilce.springboot_vue.module.user.model.po.AdminPermission;
 
 import java.util.List;
 import java.util.Set;

@@ -1,10 +1,10 @@
 package com.vilce.springboot_vue.module.user.service.impl;
 
 import com.vilce.springboot_vue.module.user.mapper.AdminMenuMapper;
-import com.vilce.springboot_vue.module.user.model.AdminMenu;
-import com.vilce.springboot_vue.module.user.model.AdminRoleMenu;
-import com.vilce.springboot_vue.module.user.model.AdminUserRole;
-import com.vilce.springboot_vue.module.user.model.User;
+import com.vilce.springboot_vue.module.user.model.po.AdminUser;
+import com.vilce.springboot_vue.module.user.model.po.AdminMenu;
+import com.vilce.springboot_vue.module.user.model.po.AdminRoleMenu;
+import com.vilce.springboot_vue.module.user.model.po.AdminUserRole;
 import com.vilce.springboot_vue.module.user.service.AdminMenuService;
 import com.vilce.springboot_vue.module.user.service.AdminRoleMenuService;
 import com.vilce.springboot_vue.module.user.service.AdminUserRoleService;
@@ -56,7 +56,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     public List<AdminMenu> getMenusByCurrentUser() {
         // 获取当前用户
         String username = SecurityUtils.getSubject().getPrincipal().toString();
-        User user = userService.getUserByUsername(username);
+        AdminUser user = userService.getUserByUsername(username);
 
         // 获取用户角色
         List<AdminUserRole> userRoleList = adminUserRoleService.getUserRoleByUid(user.getId());

@@ -1,7 +1,8 @@
 package com.vilce.springboot_vue.module.user.service;
 
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.springboot_vue.module.user.model.User;
+import com.vilce.springboot_vue.module.user.model.po.AdminUser;
+import com.vilce.springboot_vue.module.user.model.vo.UserReq;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface UserService {
      *
      * @return
      */
-    List<User> listAllUsers();
+    List<AdminUser> listAllUsers();
 
     /**
      * 根据用户名获取用户
@@ -28,7 +29,7 @@ public interface UserService {
      * @param username
      * @return
      */
-    User getUserByUsername(String username);
+    AdminUser getUserByUsername(String username);
 
     /**
      * 更新用户状态信息
@@ -36,7 +37,7 @@ public interface UserService {
      * @param requestUser
      * @return
      */
-    BaseResponse updateUserStatus(User requestUser);
+    BaseResponse updateUserStatus(AdminUser requestUser);
 
     /**
      * 更新用户密码
@@ -44,7 +45,7 @@ public interface UserService {
      * @param requestUser
      * @return
      */
-    BaseResponse updatePassword(User requestUser);
+    BaseResponse updatePassword(AdminUser requestUser);
 
     /**
      * 更新用户基础信息
@@ -52,13 +53,13 @@ public interface UserService {
      * @param requestUser
      * @return
      */
-    BaseResponse editUser(User requestUser);
+    BaseResponse editUser(AdminUser requestUser);
 
     /**
      * 添加用户
      *
-     * @param user
+     * @param userReq
      * @return
      */
-    BaseResponse addUser(User user);
+    BaseResponse addUser(UserReq userReq);
 }

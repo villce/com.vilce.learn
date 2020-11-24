@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.module.user.controller;
 
-import com.vilce.springboot_vue.module.user.model.AdminMenu;
+import com.vilce.springboot_vue.module.user.model.po.AdminMenu;
 import com.vilce.springboot_vue.module.user.service.AdminMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

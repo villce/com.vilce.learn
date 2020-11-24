@@ -1,8 +1,8 @@
 package com.vilce.springboot_vue.module.user.service;
 
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.springboot_vue.module.user.model.AdminRole;
-import com.vilce.springboot_vue.module.user.model.AdminUserRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminUserRole;
 
 import java.util.List;
 
@@ -32,4 +32,13 @@ public interface AdminUserRoleService {
      * @return
      */
     List<AdminUserRole> getUserRoleByUid(int uid);
+
+    /**
+     * 添加用户角色
+     *
+     * @param uid 用户id
+     * @param rid 角色id
+     * @return
+     */
+    boolean addUserRole(int uid, int rid);
 }

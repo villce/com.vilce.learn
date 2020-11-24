@@ -2,10 +2,10 @@ package com.vilce.springboot_vue.module.user.service.impl;
 
 import com.vilce.springboot_vue.module.user.mapper.AdminPermissionMapper;
 import com.vilce.springboot_vue.module.user.mapper.AdminRolePermissionMapper;
-import com.vilce.springboot_vue.module.user.model.AdminPermission;
-import com.vilce.springboot_vue.module.user.model.AdminRolePermission;
-import com.vilce.springboot_vue.module.user.model.AdminUserRole;
-import com.vilce.springboot_vue.module.user.model.User;
+import com.vilce.springboot_vue.module.user.model.po.AdminPermission;
+import com.vilce.springboot_vue.module.user.model.po.AdminRolePermission;
+import com.vilce.springboot_vue.module.user.model.po.AdminUserRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminUser;
 import com.vilce.springboot_vue.module.user.service.AdminPermissionService;
 import com.vilce.springboot_vue.module.user.service.AdminRolePermissionService;
 import com.vilce.springboot_vue.module.user.service.AdminUserRoleService;
@@ -95,7 +95,7 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     @Override
     public Set<String> listPermissionURLsByUser(String username) {
         // 根据用户名获取用户信息
-        User user = userService.getUserByUsername(username);
+        AdminUser user = userService.getUserByUsername(username);
         // 根据用户id获取用户角色
         List<AdminUserRole> userRoleList = adminUserRoleService.getUserRoleByUid(user.getId());
         List<AdminPermission> perms = new LinkedList<>();

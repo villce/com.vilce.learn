@@ -3,7 +3,8 @@ package com.vilce.springboot_vue.module.user.controller;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.springboot_vue.module.user.model.User;
+import com.vilce.springboot_vue.module.user.model.po.AdminUser;
+import com.vilce.springboot_vue.module.user.model.vo.UserReq;
 import com.vilce.springboot_vue.module.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,9 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
+
+import java.security.Principal;
+import java.util.Objects;
 
 /**
  * @Description: 登录相关API
@@ -34,21 +38,18 @@ public class LoginController {
 
     @PostMapping("in")
     @ApiOperation(value = "用户登录")
-    public BaseResponse login(@RequestBody User requestUser) {
-        BaseResponse baseResponse;
-        String username = requestUser.getUsername();
-        username = HtmlUtils.htmlEscape(username);
-
+    public AdminUser login(@RequestBody UserReq userReq) {
+        String username = userReq.getUsername();
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, requestUser.getPassword());
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, userReq.getPassword());
         usernamePasswordToken.setRememberMe(true);
         try {
             subject.login(usernamePasswordToken);
-            User user = userService.getUserByUsername(username);
+            AdminUser user = userService.getUserByUsername(username);
             if (!user.isEnabled()) {
                 throw new BasicException(ResultStatus.ERROR.getStatus(), "该用户已被禁用");
             } else {
-                return BaseResponse.buildResponse(0, username);
+                return user;
             }
         } catch (IncorrectCredentialsException e) {
             throw new BasicException(ResultStatus.ERROR.getStatus(), "密码错误");
@@ -59,13 +60,8 @@ public class LoginController {
 
     @PostMapping("register")
     @ApiOperation(value = "用户注册")
-    public BaseResponse register(@RequestBody User user) {
-        return userService.addUser(user);
-    }
-
-    @GetMapping("test")
-    public String test() {
-        return "test";
+    public BaseResponse register(@RequestBody UserReq userReq) {
+        return userService.addUser(userReq);
     }
 
     @GetMapping("out")
@@ -77,8 +73,21 @@ public class LoginController {
     }
 
     @GetMapping("authentication")
-    @ApiOperation("身份验证")
+    @ApiOperation(value = "身份验证")
     public String authentication() {
         return "身份认证成功";
+    }
+
+    @GetMapping("currentUser")
+    @ApiOperation(value = "获取当前用户信息")
+    public AdminUser currentUser() {
+        // 获取当前用户
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        if (Objects.nonNull(principal)) {
+            String username = principal.toString();
+            return userService.getUserByUsername(username);
+        }else {
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "用户未登录！");
+        }
     }
 }

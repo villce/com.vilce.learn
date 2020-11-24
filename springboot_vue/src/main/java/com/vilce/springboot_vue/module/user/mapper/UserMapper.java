@@ -1,6 +1,7 @@
 package com.vilce.springboot_vue.module.user.mapper;
 
-import com.vilce.springboot_vue.module.user.model.User;
+import com.vilce.springboot_vue.module.user.model.po.AdminUser;
+import com.vilce.springboot_vue.module.user.model.vo.UserReq;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -19,17 +20,17 @@ public interface UserMapper {
     /**
      * 添加用户
      *
-     * @param user
+     * @param userReq
      * @return
      */
-    boolean addUser(User user);
+    boolean addUser(UserReq userReq);
 
     /**
      * 获取所有的用户
      *
      * @return
      */
-    List<User> findAll();
+    List<AdminUser> findAll();
 
     /**
      * 根据用户名获取用户
@@ -37,7 +38,7 @@ public interface UserMapper {
      * @param username
      * @return
      */
-    User getUserByUsername(String username);
+    AdminUser getUserByUsername(String username);
 
     /**
      * 更新用户基础信息
@@ -45,7 +46,7 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    boolean updateUserInfo(User user);
+    boolean updateUserInfo(AdminUser user);
 
     /**
      * 更新用户状态信息
@@ -53,7 +54,7 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    boolean updateUserStatus(User user);
+    boolean updateUserStatus(AdminUser user);
 
     /**
      * 更新用户密码信息
@@ -61,5 +62,5 @@ public interface UserMapper {
      * @param requestUser
      * @return
      */
-    boolean updatePassword(User requestUser);
+    boolean updatePassword(AdminUser requestUser);
 }

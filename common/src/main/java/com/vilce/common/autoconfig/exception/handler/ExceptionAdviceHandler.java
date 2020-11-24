@@ -28,6 +28,7 @@ import java.lang.reflect.UndeclaredThrowableException;
  */
 //忽略所有警示
 @SuppressWarnings("all")
+@RestControllerAdvice
 public class ExceptionAdviceHandler {
 
     /**

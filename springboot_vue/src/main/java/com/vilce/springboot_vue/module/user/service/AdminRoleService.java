@@ -1,7 +1,7 @@
 package com.vilce.springboot_vue.module.user.service;
 
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.springboot_vue.module.user.model.AdminRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminRole;
 
 import java.util.List;
 

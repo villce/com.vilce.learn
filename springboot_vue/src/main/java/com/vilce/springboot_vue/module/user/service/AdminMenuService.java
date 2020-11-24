@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.module.user.service;
 
-import com.vilce.springboot_vue.module.user.model.AdminMenu;
+import com.vilce.springboot_vue.module.user.model.po.AdminMenu;
 
 import java.util.List;
 

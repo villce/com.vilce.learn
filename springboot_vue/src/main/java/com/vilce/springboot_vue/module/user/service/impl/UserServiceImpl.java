@@ -3,9 +3,11 @@ package com.vilce.springboot_vue.module.user.service.impl;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
+import com.vilce.springboot_vue.module.user.mapper.AdminUserRoleMapper;
 import com.vilce.springboot_vue.module.user.mapper.UserMapper;
-import com.vilce.springboot_vue.module.user.model.AdminRole;
-import com.vilce.springboot_vue.module.user.model.User;
+import com.vilce.springboot_vue.module.user.model.po.AdminRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminUser;
+import com.vilce.springboot_vue.module.user.model.vo.UserReq;
 import com.vilce.springboot_vue.module.user.service.AdminRoleService;
 import com.vilce.springboot_vue.module.user.service.AdminUserRoleService;
 import com.vilce.springboot_vue.module.user.service.UserService;
@@ -43,9 +45,9 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public List<User> listAllUsers() {
+    public List<AdminUser> listAllUsers() {
         // 获取所有用户信息
-        List<User> userList = userMapper.findAll();
+        List<AdminUser> userList = userMapper.findAll();
         // 获取用户对应的角色信息
         userList.forEach(u -> {
             List<AdminRole> roles = adminRoleService.getRolesByUserId(u.getId());
@@ -61,37 +63,28 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User getUserByUsername(String username) {
+    public AdminUser getUserByUsername(String username) {
         return userMapper.getUserByUsername(username);
     }
 
     /**
      * 添加用户
      *
-     * @param user
+     * @param userReq
      * @return
      */
     @Override
-    public BaseResponse addUser(User user) {
-        String username = user.getUsername();
-        String name = user.getName();
-        String phone = user.getPhone();
-        String email = user.getEmail();
-        String password = user.getPassword();
+    public BaseResponse addUser(UserReq userReq) {
+        String username = userReq.getUsername();
+        String password = userReq.getPassword();
 
         username = HtmlUtils.htmlEscape(username);
-        user.setUsername(username);
-        name = HtmlUtils.htmlEscape(name);
-        user.setName(name);
-        phone = HtmlUtils.htmlEscape(phone);
-        user.setPhone(phone);
-        email = HtmlUtils.htmlEscape(email);
-        user.setEmail(email);
-        user.setEnabled(true);
+        userReq.setUsername(username);
+        userReq.setEnabled(true);
         if (username.equals("") || password.equals("")) {
             throw new BasicException(ResultStatus.ERROR.getStatus(), "用户名和密码不能为空!");
         }
-        User userFind = userMapper.getUserByUsername(username);
+        AdminUser userFind = userMapper.getUserByUsername(username);
         if (ObjectUtils.isNotEmpty(userFind)) {
             throw new BasicException(ResultStatus.ERROR.getStatus(), "用户已存在!");
         }
@@ -100,10 +93,10 @@ public class UserServiceImpl implements UserService {
         int times = 2;
         String encodedPassword = new SimpleHash("md5", password, salt, times).toString();
 
-        user.setSalt(salt);
-        user.setPassword(encodedPassword);
-
-        if (userMapper.addUser(user)) {
+        userReq.setSalt(salt);
+        userReq.setPassword(encodedPassword);
+        // 注册用户，同步添加游客权限
+        if (userMapper.addUser(userReq) && adminUserRoleService.addUserRole(userReq.getId(), 3)) {
             return BaseResponse.buildResponse(0, "注册成功！");
         } else {
             throw new BasicException(ResultStatus.ERROR.getStatus(), "注册失败，未知错误！");
@@ -116,7 +109,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
-    public BaseResponse updateUserStatus(User user) {
+    public BaseResponse updateUserStatus(AdminUser user) {
         if (userMapper.updateUserStatus(user)) {
             return BaseResponse.buildResponse(0, "更新用户状态成功！");
         } else {
@@ -131,7 +124,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public BaseResponse updatePassword(User requestUser) {
+    public BaseResponse updatePassword(AdminUser requestUser) {
         String salt = new SecureRandomNumberGenerator().nextBytes().toString();
         int times = 2;
         requestUser.setSalt(salt);
@@ -151,7 +144,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BaseResponse editUser(User requestUser) {
+    public BaseResponse editUser(AdminUser requestUser) {
         if (userMapper.updateUserInfo(requestUser)) {
             int uid = userMapper.getUserByUsername(requestUser.getUsername()).getId();
             BaseResponse baseResponse = adminUserRoleService.updateRoleChanges(uid, requestUser.getRoles());

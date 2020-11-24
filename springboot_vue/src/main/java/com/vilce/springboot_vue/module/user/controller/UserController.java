@@ -1,7 +1,7 @@
 package com.vilce.springboot_vue.module.user.controller;
 
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.springboot_vue.module.user.model.User;
+import com.vilce.springboot_vue.module.user.model.po.AdminUser;
 import com.vilce.springboot_vue.module.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,25 +29,25 @@ public class UserController {
 
     @GetMapping("getAllUsers")
     @ApiOperation(value = "列出所有用户信息")
-    public List<User> listAllUsers() {
+    public List<AdminUser> listAllUsers() {
         return userService.listAllUsers();
     }
 
     @PutMapping("updateUserStatus")
     @ApiOperation(value = "更新用户状态信息")
-    public BaseResponse updateUserStatus(@RequestBody @Valid User requestUser) {
+    public BaseResponse updateUserStatus(@RequestBody @Valid AdminUser requestUser) {
         return  userService.updateUserStatus(requestUser);
     }
 
     @PutMapping("resetPassword")
     @ApiOperation(value = "重置密码")
-    public BaseResponse resetPassword(@RequestBody @Valid User requestUser) {
+    public BaseResponse resetPassword(@RequestBody @Valid AdminUser requestUser) {
         return userService.updatePassword(requestUser);
     }
 
     @PutMapping("editUser")
     @ApiOperation(value = "更新用户基础信息")
-    public BaseResponse editUser(@RequestBody @Valid User requestUser) {
+    public BaseResponse editUser(@RequestBody @Valid AdminUser requestUser) {
         return userService.editUser(requestUser);
     }
 }

@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.module.user.mapper;
 
-import com.vilce.springboot_vue.module.user.model.AdminRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminRole;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

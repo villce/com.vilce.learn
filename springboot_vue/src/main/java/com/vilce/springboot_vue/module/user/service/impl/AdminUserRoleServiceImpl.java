@@ -4,8 +4,8 @@ import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.module.user.mapper.AdminUserRoleMapper;
-import com.vilce.springboot_vue.module.user.model.AdminRole;
-import com.vilce.springboot_vue.module.user.model.AdminUserRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminUserRole;
 import com.vilce.springboot_vue.module.user.service.AdminUserRoleService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +61,17 @@ public class AdminUserRoleServiceImpl implements AdminUserRoleService {
             }
         }
         return BaseResponse.buildResponse(0, "更新用户角色信息成功！");
+    }
+
+    /**
+     * 添加用户角色
+     *
+     * @param uid 用户id
+     * @param rid 角色id
+     * @return
+     */
+    @Override
+    public boolean addUserRole(int uid, int rid) {
+        return adminUserRoleMapper.addUserRole(uid, rid);
     }
 }

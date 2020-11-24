@@ -42,7 +42,7 @@ VALUES ('1', '/admin', 'AdminIndex', '首页', 'el-icon-s-home', 'AdminIndex', '
 INSERT INTO `admin_menu`
 VALUES ('2', '/admin/dashboard', 'DashboardAdmin', '运行情况', null, 'dashboard/admin/index', '1');
 INSERT INTO `admin_menu`
-VALUES ('3', '/admin', 'User', '用户管理', 'el-icon-user', 'AdminIndex', '0');
+VALUES ('3', '/admin', 'AdminUser', '用户管理', 'el-icon-user', 'AdminIndex', '0');
 INSERT INTO `admin_menu`
 VALUES ('4', '/admin', 'Content', '内容管理', 'el-icon-tickets', 'AdminIndex', '0');
 INSERT INTO `admin_menu`
@@ -437,9 +437,7 @@ CREATE TABLE `admin_user`
     `username` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
     `password` varchar(255)                                            DEFAULT NULL COMMENT '用户密码',
     `salt`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '加密盐度',
-    `name`     varchar(255)                                            DEFAULT NULL COMMENT '用户中文名',
-    `phone`    varchar(255)                                            DEFAULT NULL COMMENT '手机号',
-    `email`    varchar(255)                                            DEFAULT NULL COMMENT '邮箱',
+    `icon`     varchar(255)                                            DEFAULT NULL COMMENT '用户头像',
     `enabled`  tinyint(1)                                              DEFAULT NULL COMMENT '用户状态：0-禁用，1-启用',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -450,13 +448,14 @@ CREATE TABLE `admin_user`
 -- Records of user
 -- ----------------------------
 INSERT INTO `admin_user`
-VALUES ('1', 'admin', '35b9529f89cfb9b848060ca576237e17', '8O+vDNr2sI3N82BI31fu1A==', '管理员', '12312312312',
-        'evan_nightly@163.com', '1');
+VALUES ('1', 'admin', '35b9529f89cfb9b848060ca576237e17', '8O+vDNr2sI3N82BI31fu1A==',
+        'http://127.0.0.1:8006/image/file/icon.jpg', '1');
 INSERT INTO `admin_user`
-VALUES ('2', 'test', '85087738b6c1e1d212683bfafc163853', 'JBba3j5qRykIPJQYTNNH9A==', '测试', '12312312312', '123@123.com',
+VALUES ('2', 'test', '85087738b6c1e1d212683bfafc163853', 'JBba3j5qRykIPJQYTNNH9A==', 'http://127.0.0.1:8006/image/file/icon.jpg',
         '1');
 INSERT INTO `admin_user`
-VALUES ('3', 'editor', '8583a2d965d6159edbf65c82d871fa3e', 'MZTe7Qwf9QgXBXrZzTIqJQ==', '编辑', null, null, '1');
+VALUES ('3', 'editor', '8583a2d965d6159edbf65c82d871fa3e', 'MZTe7Qwf9QgXBXrZzTIqJQ==',
+        'http://127.0.0.1:8006/image/file/icon.jpg', '1');
 
 -- ----------------------------
 -- Table structure for wage

@@ -1,8 +1,8 @@
 package com.vilce.springboot_vue.module.user.controller;
 
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.springboot_vue.module.user.model.AdminPermission;
-import com.vilce.springboot_vue.module.user.model.AdminRole;
+import com.vilce.springboot_vue.module.user.model.po.AdminPermission;
+import com.vilce.springboot_vue.module.user.model.po.AdminRole;
 import com.vilce.springboot_vue.module.user.service.AdminPermissionService;
 import com.vilce.springboot_vue.module.user.service.AdminRoleMenuService;
 import com.vilce.springboot_vue.module.user.service.AdminRoleService;

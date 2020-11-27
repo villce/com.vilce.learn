@@ -16,5 +16,5 @@ import java.util.List;
 public interface AsyncService {
     List<UserRes> asyncTest(User user);
 
-    String send(String name);
+    void send(String name);
 }

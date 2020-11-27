@@ -111,7 +111,7 @@ public class RedisAdviceInterceptor implements MethodInterceptor {
      * @return
      */
     private String getParam(MethodInvocation invocation) {
-        Map<String, Object> map = RequestUtils.getRequestParam(invocation);
+        Map<String, Object> map = RequestUtils.getParameterMap(RequestUtils.getRequest());
         return StringUtils.join(map.values(), "_");
     }
 }

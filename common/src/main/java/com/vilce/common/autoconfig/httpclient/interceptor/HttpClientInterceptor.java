@@ -46,8 +46,14 @@ public class HttpClientInterceptor implements ClientHttpRequestInterceptor {
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         //创建拦截日志信息
         AsyncLogHttpClient asyncLogHttpClient = new AsyncLogHttpClient();
-        //生成事物流水号
-        asyncLogHttpClient.settId(UUID.randomUUID().toString());
+        if (Objects.isNull(RequestUtils.getRequest().getAttribute("T_ID"))) {
+            String tId = UUID.randomUUID().toString();
+            RequestUtils.getRequest().setAttribute("T_ID", tId);
+            //生成事物流水号
+            asyncLogHttpClient.settId(tId);
+        }else {
+            asyncLogHttpClient.settId((String) RequestUtils.getRequest().getAttribute("T_ID"));
+        }
         //请求时间
         asyncLogHttpClient.setRequestTime(new Date());
         //请求URL

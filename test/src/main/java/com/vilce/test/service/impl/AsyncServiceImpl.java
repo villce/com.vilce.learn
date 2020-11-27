@@ -49,14 +49,14 @@ public class AsyncServiceImpl implements AsyncService {
         return userResList;
     }
 
-    @Async
+    @Async("asyncTaskExecutor")
     @Override
-    public String send(String name) {
+    public void send(String name) {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return name;
+        System.out.println(name);
     }
 }

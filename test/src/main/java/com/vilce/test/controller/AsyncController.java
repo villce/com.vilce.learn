@@ -38,7 +38,7 @@ public class AsyncController {
 
     @PostMapping("async_test1")
     @ApiOperation(value = "异步接口测试")
-    public String send(String name){
-        return asyncService.send(name);
+    public void send(String name){
+        asyncService.send(name);
     }
 }

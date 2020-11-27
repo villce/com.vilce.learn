@@ -119,6 +119,7 @@ public class VilceWebMvcAutoConfiguration implements WebMvcConfigurer, CommandLi
             registration.allowedHeaders(webProperties.getCors().getAllowedHeaders());
         } else {
             registration.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept");
+//            registration.allowedHeaders("*");
         }
         //浏览器是否应该发送凭据，如是否允许发送Cookie，true为允许
         if (BooleanUtils.isFalse(webProperties.getCors().isAllowCredentials())) {

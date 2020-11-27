@@ -15,4 +15,6 @@ public interface TestService {
      * @return
      */
     String text();
+
+    String log(String name);
 }

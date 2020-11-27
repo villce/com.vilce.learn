@@ -29,4 +29,9 @@ public class TestServiceImpl implements TestService {
         String responseStr = restTemplate.getForObject(url, String.class);
         return responseStr;
     }
+
+    @Override
+    public String log(String name) {
+        return name;
+    }
 }

@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.module.user.service.impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.springboot_vue.module.user.mapper.AdminMenuMapper;
 import com.vilce.springboot_vue.module.user.model.po.AdminUser;
 import com.vilce.springboot_vue.module.user.model.po.AdminMenu;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -55,7 +58,13 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     @Override
     public List<AdminMenu> getMenusByCurrentUser() {
         // 获取当前用户
-        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        String username = null;
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        if (Objects.nonNull(principal)) {
+            username = principal.toString();
+        }else {
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "用户未登录！");
+        }
         AdminUser user = userService.getUserByUsername(username);
 
         // 获取用户角色

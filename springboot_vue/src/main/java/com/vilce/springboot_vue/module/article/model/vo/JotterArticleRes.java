@@ -1,11 +1,13 @@
 package com.vilce.springboot_vue.module.article.model.vo;
 
+import com.vilce.common.utils.RegexUtils;
 import com.vilce.common.utils.TimeUtils;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -35,8 +37,6 @@ public class JotterArticleRes implements Serializable {
     private String contentMd;
     @ApiModelProperty(value = "文章摘要",example = "示例")
     private String introduction;
-    @ApiModelProperty(value = "文章封面地址",example = "d:/img/1.png")
-    private String cover;
     @ApiModelProperty(value = "文章发布时间",example = "2020.08.26 00:00:00")
     private String publishDate;
 
@@ -55,9 +55,10 @@ public class JotterArticleRes implements Serializable {
         jotterArticleRes.setLabel(article.getArticle_label());
         jotterArticleRes.setTitle(article.getArticle_title());
         jotterArticleRes.setContentHtml(article.getArticle_content_html());
-        jotterArticleRes.setContentMd(article.getArticle_content_md());
-        jotterArticleRes.setIntroduction(article.getArticle_abstract());
-        jotterArticleRes.setCover(article.getArticle_cover());
+        jotterArticleRes.setContentMd(article.getArticle_content_md().replaceAll("<more>", ""));
+        // 文章摘要需要自行截取，取前标识<more>之前的为摘要
+        String regex = "(.*?)<more>";
+        jotterArticleRes.setIntroduction(RegexUtils.getSubUtilSimple(article.getArticle_content_md(), regex));
         jotterArticleRes.setPublishDate(TimeUtils.dateToYMD(article.getArticle_date()));
         return jotterArticleRes;
     }

@@ -30,10 +30,6 @@ public class JotterArticle {
     private String article_content_html;
     @ApiModelProperty(value = "文章md",example = "示例")
     private String article_content_md;
-    @ApiModelProperty(value = "文章摘要",example = "示例")
-    private String article_abstract;
-    @ApiModelProperty(value = "文章封面地址",example = "d:/img/1.png")
-    private String article_cover;
     @ApiModelProperty(value = "文章发布时间",example = "2020.08.26")
     private Date article_date;
 }

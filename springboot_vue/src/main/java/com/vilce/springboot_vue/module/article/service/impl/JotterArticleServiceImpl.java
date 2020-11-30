@@ -46,7 +46,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      */
     @Override
     public List<JotterArticleRes> listArticles(int pageIndex, int pageSize) {
-        List<JotterArticle> articleList = jotterArticleMapper.findAll((pageIndex - 1) * pageSize, pageIndex * pageSize);
+        List<JotterArticle> articleList = jotterArticleMapper.findAll((pageIndex - 1) * pageSize, pageSize);
         return converArticleResList(articleList);
     }
 
@@ -76,7 +76,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         if (article.getId() != 0) {
             // 文章id不为空，更新文章(先更新文章内容，再更新文章标签，标签更新需要先删除所有文章标签，再插入新的标签)
             if (jotterArticleMapper.updateArticle(article) && jotterArticleMapper.deleteArticleLabel(article.getId())) {
-                article.getArticle_label().forEach(label->{
+                article.getArticle_label().forEach(label -> {
                     jotterArticleMapper.addArticleLabel(article.getId(), label);
                 });
                 baseResponse = BaseResponse.buildResponse(0, "更新文章成功！");
@@ -86,7 +86,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         } else {
             // 如果文章id为空，此时添加文章
             if (jotterArticleMapper.addArticle(article)) {
-                article.getArticle_label().forEach(label->{
+                article.getArticle_label().forEach(label -> {
                     jotterArticleMapper.addArticleLabel(article.getId(), label);
                 });
                 baseResponse = BaseResponse.buildResponse(0, "添加文章成功！");
@@ -140,7 +140,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     public List<JotterArticleRes> getArticleByLabel(String label) {
         List<Integer> articleIdList = jotterArticleMapper.getArticleIdByLabel(label);
         List<JotterArticleRes> articleResList = new LinkedList<>();
-        articleIdList.forEach(articleId->{
+        articleIdList.forEach(articleId -> {
             articleResList.add(findArticleById(articleId));
         });
         return articleResList;

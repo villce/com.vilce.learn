@@ -15,11 +15,11 @@
 		LIMIT #{page},#{size}
     </select>
 
-    <insert id="addArticle" parameterType="com.vilce.springboot_vue.module.article.model.po.JotterArticle" >
+    <insert id="addArticle" useGeneratedKeys="true" keyProperty="id" parameterType="com.vilce.springboot_vue.module.article.model.po.JotterArticle" >
 		INSERT INTO jotter_article
-		(article_title,article_content_html,article_content_md,article_abstract,article_cover,article_date)
+		(article_title,article_content_html,article_content_md,article_type,article_date)
 		VALUES
-		(#{article_title},#{article_content_html},#{article_content_md},#{article_abstract},#{article_cover},#{article_date})
+		(#{article_title},#{article_content_html},#{article_content_md},#{article_type},#{article_date})
     </insert>
 
     <delete id="deleteArticleById">
@@ -34,8 +34,6 @@
             article_type=#{article_type},
             article_content_html=#{article_content_html},
             article_content_md=#{article_content_md},
-            article_abstract=#{article_abstract},
-            article_cover=#{article_cover},
             article_date=#{article_date}
         WHERE id=#{id}
     </update>
@@ -57,7 +55,6 @@
 		FROM jotter_article
 		WHERE article_title LIKE #{searchStr}
 		OR article_content_md LIKE #{searchStr}
-		OR article_abstract LIKE #{searchStr}
     </select>
 
     <select id="countArticle" resultType="java.lang.Integer" >

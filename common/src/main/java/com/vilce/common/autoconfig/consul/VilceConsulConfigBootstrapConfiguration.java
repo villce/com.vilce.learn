@@ -2,15 +2,23 @@ package com.vilce.common.autoconfig.consul;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.vilce.common.model.log.utils.LoggerUtils;
+import com.vilce.common.utils.SpecialCharUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.cloud.consul.config.ConsulConfigBootstrapConfiguration;
 import org.springframework.cloud.consul.config.ConsulConfigProperties;
+import org.springframework.cloud.consul.discovery.ConsulDiscoveryProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
+
+import java.util.UUID;
 
 /**
  * @Description: Description
@@ -41,7 +49,7 @@ public class VilceConsulConfigBootstrapConfiguration implements InitializingBean
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        LoggerUtils.info(VilceConsulConfigBootstrapConfiguration.class, "【自动化配置】----springcloud config乱码解决组件初始化完成...");
+        LoggerUtils.info(VilceConsulConfigBootstrapConfiguration.class, "【自动化配置】---springcloud config乱码解决组件初始化完成...");
     }
 
 }

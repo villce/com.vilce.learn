@@ -23,6 +23,7 @@
         <module>security_oauth</module>
         <module>springboot_vue</module>
         <module>consul_client</module>
+        <module>admin</module>
     </modules>
 
     <dependencies>

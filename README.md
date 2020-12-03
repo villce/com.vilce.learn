@@ -21,3 +21,6 @@
   
 - `vuejs`：`springboot+vue`前端项目
   - `port`: `8007`
+  
+- `admin`：`springboot admin`服务管理项目
+  - `port`：`8008`

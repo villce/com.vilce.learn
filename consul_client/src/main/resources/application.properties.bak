@@ -2,3 +2,5 @@
 server.port=8003
 lcz.test=中文测试
 spring.vilce.env=pre
+management.server.port=7003
+management.endpoints.web.exposure.include=*

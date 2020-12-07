@@ -1,7 +1,5 @@
-package com.vilce.common.autoconfig.consul;
+package com.vilce.admin.config;
 
-import com.vilce.common.model.log.utils.LoggerUtils;
-import com.vilce.common.utils.SpecialCharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -22,7 +20,7 @@ import java.util.UUID;
 /**
  * @Description: Description
  * @ProjectName: com.vilce.learn
- * @Package: com.vilce.common.autoconfig.consul.VilceConsulAutoConfiguration
+ * @Package:  com.vilce.admin.config.VilceConsulAutoConfiguration
  * @Author: 雷才哲
  * @Date: 2020/12/1 11:04
  * @Version: 1.0
@@ -43,7 +41,7 @@ public class VilceConsulAutoConfiguration implements CommandLineRunner {
     public ConsulDiscoveryProperties consulDiscoveryProperties(InetUtils inetUtils) {
         ConsulDiscoveryProperties properties = new ConsulDiscoveryProperties(inetUtils);
         //自定义生成实例ID, 实例名称不可以以数字开头
-        properties.setInstanceId(StringUtils.join("vilce", SpecialCharUtils.LINE_THROUGH_CENTER, UUID.randomUUID().toString()));
+        properties.setInstanceId(StringUtils.join("vilce", "-", UUID.randomUUID().toString()));
         //表示注册服务时使用IP而不是hostname，默认：false
         properties.setPreferIpAddress(true);
         //IP地址
@@ -54,6 +52,5 @@ public class VilceConsulAutoConfiguration implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        LoggerUtils.info(VilceConsulConfigBootstrapConfiguration.class, "【自动化配置】---consul注册serverId组件初始化完成...");
     }
 }

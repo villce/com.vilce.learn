@@ -1,0 +1,3 @@
+# 自动化配置
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.vilce.admin.config.VilceServerDiscoveryAutoConfiguration,\
+  com.vilce.admin.config.VilceConsulAutoConfiguration

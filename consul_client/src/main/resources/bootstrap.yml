@@ -25,7 +25,7 @@ spring:
         management-suffix: monitor
         management-metadata: {
           "swaggerPort":"8003",
-          "swaggerUri":"/doc.html"
+          "serviceUrl":"doc.html"
         }
       host: ${JAVA_LOCALIP}
       port: 8500

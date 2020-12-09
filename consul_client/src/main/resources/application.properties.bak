@@ -1,6 +1,8 @@
 # 服务端口
 server.port=8003
+swagger.enabled=true
 lcz.test=中文测试
 spring.vilce.env=pre
 management.server.port=7003
 management.endpoints.web.exposure.include=*
+spring.vilce.consulUrl=http://127.0.0.1:8500/

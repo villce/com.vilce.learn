@@ -8,6 +8,7 @@ import de.codecentric.boot.admin.server.domain.values.Registration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -52,18 +53,16 @@ public class VilceServiceInstanceConverter implements ServiceInstanceConverter {
     public Registration convert(ServiceInstance instance) {
         LOGGER.debug("Converting service '{}' running at '{}' with metadata {}", instance.getServiceId(),
                 instance.getUri(), instance.getMetadata());
-        Registration.Builder builder = Registration.create(instance.getServiceId(), getHealthUrl(instance).toString());
-        String serviceUrl = getSwagger(instance);
-        Registration registration = builder.managementUrl(getManagementUrl(instance).toString()).serviceUrl(serviceUrl)
+        return Registration.create(instance.getServiceId(), getHealthUrl(instance).toString())
+                .managementUrl(getManagementUrl(instance).toString()).serviceUrl(getHomeUrl(instance))
                 .metadata(getMetadata(instance)).build();
-        return registration;
     }
 
-    protected String getSwagger(ServiceInstance instance) {
-        String swaggerScheme = this.getManagementScheme(instance);
-        String swaggerHost = this.getManagementHost(instance);
-        String swaggerPort = StringUtils.join(instance.getMetadata().get("swaggerPort"), instance.getMetadata().get("swaggerUri"));
-        String swaggerUrl = StringUtils.join(swaggerScheme, "://", swaggerHost, ":", swaggerPort);
+    protected String getHomeUrl(ServiceInstance instance) {
+        String serviceScheme = this.getManagementScheme(instance);
+        String serviceHost = this.getManagementHost(instance);
+        String servicePort = StringUtils.join(instance.getMetadata().get("swaggerPort"), instance.getMetadata().get("serviceUrl"));
+        String swaggerUrl = StringUtils.join(serviceScheme, "://", serviceHost, ":/", servicePort);
         return swaggerUrl;
     }
 

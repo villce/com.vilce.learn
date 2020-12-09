@@ -24,7 +24,7 @@ spring:
           consul-provider: pre
         management-suffix: monitor
         management-metadata: {
-          "swaggerPort":"8003",
+          "servicePort":"8003",
           "serviceUrl":"doc.html"
         }
       host: ${JAVA_LOCALIP}

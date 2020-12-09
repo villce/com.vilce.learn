@@ -58,7 +58,7 @@ public class ConsulServiceImpl implements ConsulService {
                 .setTags(null)
                 .setPassing(false)
                 .setQueryParams(null)
-                .setToken(null)
+                .setToken("05435c6d-ae01-f534-5bb1-e4cbc1eaeb1f")
                 .build();
         List<HealthService> response = consulClient.getHealthServices(serviceName, request).getValue();
         for(HealthService service : response) {

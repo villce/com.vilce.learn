@@ -61,9 +61,11 @@ public class VilceServiceInstanceConverter implements ServiceInstanceConverter {
     protected String getHomeUrl(ServiceInstance instance) {
         String serviceScheme = this.getManagementScheme(instance);
         String serviceHost = this.getManagementHost(instance);
-        String servicePort = StringUtils.join(instance.getMetadata().get("swaggerPort"), instance.getMetadata().get("serviceUrl"));
-        String swaggerUrl = StringUtils.join(serviceScheme, "://", serviceHost, ":/", servicePort);
-        return swaggerUrl;
+        String servicePort = instance.getMetadata().get("servicePort");
+        String servicePath = instance.getMetadata().get("serviceUrl");
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
+        String serviceUrl = builder.scheme(serviceScheme).host(serviceHost).port(servicePort).path(servicePath).build().toUri().toString();
+        return serviceUrl;
     }
 
     protected URI getHealthUrl(ServiceInstance instance) {

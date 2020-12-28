@@ -107,11 +107,28 @@ public class RedisAdviceInterceptor implements MethodInterceptor {
     /**
      * 获取入参字段信息
      *
-     * @param invocation
      * @return
      */
     private String getParam(MethodInvocation invocation) {
-        Map<String, Object> map = RequestUtils.getParameterMap(RequestUtils.getRequest());
-        return StringUtils.join(map.values(), "_");
+        String params = null;
+        Object[] objects = invocation.getArguments();
+        Method method = invocation.getMethod();
+        Parameter[] parameters = method.getParameters();
+        if (ArrayUtils.isEmpty(parameters)) {
+            return null;
+        }
+        for (int i = 0; i < parameters.length; i++) {
+            // 默认所有使用RedisFilter的入参都继承BaseRequest2
+            if (objects[i] instanceof BaseRequest) {
+                Map<String, Object> map = JSONUtils.toJavaBean(JSONUtils.toJSONString(objects[i]), Map.class);
+                map.remove("systemInfo");
+                if (StringUtils.isEmpty(params)) {
+                    params = StringUtils.join(map.values(), "_");
+                } else {
+                    params = StringUtils.join(params, ":",  StringUtils.join(map.values(), "_"));
+                }
+            }
+        }
+        return params;
     }
 }

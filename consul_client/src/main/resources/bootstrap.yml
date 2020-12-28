@@ -23,10 +23,6 @@ spring:
           # 在调用consul-provider 服务时, 使用 tag1 对应的实例
           consul-provider: pre
         management-suffix: monitor
-        management-metadata: {
-          "servicePort":"8003",
-          "serviceUrl":"doc.html"
-        }
       host: ${JAVA_LOCALIP}
       port: 8500
   vilce:

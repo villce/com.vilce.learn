@@ -5,11 +5,10 @@ import java.util.Map;
 
 import de.codecentric.boot.admin.server.cloud.discovery.ServiceInstanceConverter;
 import de.codecentric.boot.admin.server.domain.values.Registration;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static java.util.Collections.emptyMap;
@@ -23,6 +22,7 @@ import static org.springframework.util.StringUtils.isEmpty;
  * @Date: 2020/12/7 17:09
  * @Version: 1.0
  */
+@Configuration
 public class VilceServiceInstanceConverter implements ServiceInstanceConverter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VilceServiceInstanceConverter.class);
@@ -61,8 +61,8 @@ public class VilceServiceInstanceConverter implements ServiceInstanceConverter {
     protected String getHomeUrl(ServiceInstance instance) {
         String serviceScheme = this.getManagementScheme(instance);
         String serviceHost = this.getManagementHost(instance);
-        String servicePort = instance.getMetadata().get("servicePort");
-        String servicePath = instance.getMetadata().get("serviceUrl");
+        int servicePort = getServiceUrl(instance).getPort() + 1000;
+        String servicePath = "doc.html";
         UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
         String serviceUrl = builder.scheme(serviceScheme).host(serviceHost).port(servicePort).path(servicePath).build().toUri().toString();
         return serviceUrl;

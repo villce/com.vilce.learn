@@ -24,6 +24,7 @@
         <module>springboot_vue</module>
         <module>consul_client</module>
         <module>admin</module>
+        <module>gateway</module>
     </modules>
 
     <dependencies>

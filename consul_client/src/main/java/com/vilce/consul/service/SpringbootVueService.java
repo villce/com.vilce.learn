@@ -4,6 +4,7 @@ import com.vilce.common.model.po.BaseResponse;
 import com.vilce.consul.config.feign.FeignConfiguration;
 import com.vilce.consul.model.po.JotterArticleRes;
 import com.vilce.consul.model.po.WageOrderRes;
+//import com.vilce.consul.service.impl.SpringbootVueServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

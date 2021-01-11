@@ -2,14 +2,20 @@ version: "3"
 services:
   springboot_vue:
     build: /vilce/application/springbootVue
-    image: mydockerhub.com:5000/springboot_vue:${tag}
+    image: mydockerhub.com:5000/springboot_vue:${VUE_TAG}
     container_name: springboot_vue
+    restart: always
     ports:
       - "8006:8006"
+      - "7006:7006"
     volumes:
       - /vilce/application/springbootVue/config:/vilce/application/springbootVue/config
-      - /vilce/application/springbootVue/springboot_log:/vilce/application/springbootVue/springboot_log
+      - /vilce/application/springbootVue/logs:/vilce/application/springbootVue/logs
       - /vilce/img:/vilce/img
+    environment:
+      - JAVA_CONSULACLTOKEN=84699e05-9275-9ad1-4365-0fefea945cc1
+      - JAVA_LOCALIP=192.168.209.128
+      - JAVA_APPLICATIONPORT=8006
 
   vuejs:
     build: /vilce/application/vuejs

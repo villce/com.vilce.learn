@@ -6,6 +6,8 @@ import com.vilce.common.model.po.BaseResponse;
 import com.vilce.consul.model.po.JotterArticleRes;
 import com.vilce.consul.model.po.WageOrderRes;
 import com.vilce.consul.service.SpringbootVueService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,18 +27,21 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/springbootVue")
+@Api(tags = "SpringBootVue接口调度控制器")
 public class SpringbootVueController {
 
     @Autowired
     private SpringbootVueService springbootVueService;
 
     @GetMapping("getAllWageOrder")
-    public List<WageOrderRes> hello() {
+    @ApiOperation(value = "获取所有工资条")
+    public List<WageOrderRes> getAllWageOrder() {
         BaseResponse<List<WageOrderRes>> response = springbootVueService.getAllWageOrder();
         return response.getData();
     }
 
     @GetMapping("listArticles/{pageIndex}/{pageSize}")
+    @ApiOperation(value = "分页获取文章")
     public List<JotterArticleRes> listArticles(@PathVariable int pageIndex,@PathVariable int pageSize) {
         BaseResponse<List<JotterArticleRes>> response = springbootVueService.listArticles(pageIndex, pageSize);
         if (response.getStatus() == ResultStatus.OK.getStatus()) {

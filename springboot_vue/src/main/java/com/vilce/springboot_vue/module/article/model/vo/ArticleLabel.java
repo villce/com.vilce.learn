@@ -2,7 +2,6 @@ package com.vilce.springboot_vue.module.article.model.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 import java.util.*;
 
@@ -14,7 +13,6 @@ import java.util.*;
  * @Date: 2020/11/18 14:02
  * @Version: 1.0
  */
-@Data
 @ApiModel(value = "文章标签")
 public class ArticleLabel {
     @ApiModelProperty(value = "标签名")
@@ -48,5 +46,21 @@ public class ArticleLabel {
         });
         Collections.sort(articleLabels, Comparator.comparing(ArticleLabel::getNum, Collections.reverseOrder()));
         return articleLabels;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }

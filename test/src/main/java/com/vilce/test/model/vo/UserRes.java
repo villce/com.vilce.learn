@@ -1,7 +1,6 @@
 package com.vilce.test.model.vo;
 
 import io.swagger.annotations.ApiModel;
-import lombok.Data;
 
 /**
  * @Description: Description
@@ -11,9 +10,24 @@ import lombok.Data;
  * @Date: 2019/11/13 15:49
  * @Version: 1.0
  */
-@Data
 @ApiModel("用户")
 public class UserRes {
     private String name;
     private Integer age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 }

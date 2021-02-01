@@ -2,7 +2,6 @@ package com.vilce.springboot_vue.module.user.model.po;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * @Description: 角色权限
@@ -12,7 +11,6 @@ import lombok.Data;
  * @Date: 2020/8/25 16:36
  * @Version: 1.0
  */
-@Data
 @ApiModel(value = "角色权限")
 public class AdminRolePermission {
     @ApiModelProperty(value = "角色权限id",example = "0")
@@ -21,4 +19,28 @@ public class AdminRolePermission {
     private int rid;
     @ApiModelProperty(value = "权限pid",example = "0")
     private int pid;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRid() {
+        return rid;
+    }
+
+    public void setRid(int rid) {
+        this.rid = rid;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
 }

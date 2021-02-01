@@ -1,7 +1,6 @@
 package com.vilce.rabbitmq.model.vo;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * @Description: Description
@@ -11,8 +10,15 @@ import lombok.Data;
  * @Date: 2019/11/1 16:12
  * @Version: 1.0
  */
-@Data
 public class MsgStatus {
     @ApiModelProperty("消息发送状态")
     private String msgStatus;
+
+    public String getMsgStatus() {
+        return msgStatus;
+    }
+
+    public void setMsgStatus(String msgStatus) {
+        this.msgStatus = msgStatus;
+    }
 }

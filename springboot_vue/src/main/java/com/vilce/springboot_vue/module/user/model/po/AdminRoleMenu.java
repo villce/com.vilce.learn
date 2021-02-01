@@ -2,7 +2,6 @@ package com.vilce.springboot_vue.module.user.model.po;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * @Description: 角色菜单栏
@@ -12,7 +11,6 @@ import lombok.Data;
  * @Date: 2020/8/25 16:36
  * @Version: 1.0
  */
-@Data
 @ApiModel(value = "角色菜单")
 public class AdminRoleMenu {
 
@@ -22,4 +20,28 @@ public class AdminRoleMenu {
     private int rid;
     @ApiModelProperty(value = "菜单mid",example = "0")
     private int mid;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRid() {
+        return rid;
+    }
+
+    public void setRid(int rid) {
+        this.rid = rid;
+    }
+
+    public int getMid() {
+        return mid;
+    }
+
+    public void setMid(int mid) {
+        this.mid = mid;
+    }
 }

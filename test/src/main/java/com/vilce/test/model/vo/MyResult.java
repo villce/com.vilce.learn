@@ -1,7 +1,5 @@
 package com.vilce.test.model.vo;
 
-import lombok.Data;
-
 import java.util.List;
 
 /**
@@ -12,7 +10,6 @@ import java.util.List;
  * @Date: 2019/11/25 16:07
  * @Version: 1.0
  */
-@Data
 public class MyResult {
     private Integer status;
     private String msg;
@@ -30,5 +27,29 @@ public class MyResult {
 
     public static MyResult Error(Integer status, String msg) {
         return new MyResult(status, msg, null);
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public List<Object> getData() {
+        return data;
+    }
+
+    public void setData(List<Object> data) {
+        this.data = data;
     }
 }

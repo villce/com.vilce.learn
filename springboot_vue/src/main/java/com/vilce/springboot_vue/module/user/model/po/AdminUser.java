@@ -1,11 +1,8 @@
 package com.vilce.springboot_vue.module.user.model.po;
 
-import com.vilce.springboot_vue.module.user.model.po.AdminRole;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
-import javax.validation.constraints.Pattern;
 import java.util.List;
 
 /**
@@ -16,7 +13,6 @@ import java.util.List;
  * @Date: 2019/12/20 16:36
  * @Version: 1.0
  */
-@Data
 @ApiModel(value = "用户")
 public class AdminUser {
     @ApiModelProperty(value = "用户id",example = "0")
@@ -33,4 +29,60 @@ public class AdminUser {
     private boolean enabled;
     @ApiModelProperty(value = "用户角色",example = "[]")
     private List<AdminRole> roles;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<AdminRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<AdminRole> roles) {
+        this.roles = roles;
+    }
 }

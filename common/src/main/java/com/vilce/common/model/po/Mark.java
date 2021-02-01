@@ -2,7 +2,6 @@ package com.vilce.common.model.po;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * @Description: 水印参数
@@ -13,7 +12,6 @@ import lombok.Data;
  * @Version: 1.0
  */
 @ApiModel(value = "水印参数")
-@Data
 public class Mark {
     @ApiModelProperty("水印旋转角度")
     private Integer degree;
@@ -23,4 +21,36 @@ public class Mark {
     private String fileName;
     @ApiModelProperty("水印是否铺满")
     private boolean paved;
+
+    public Integer getDegree() {
+        return degree;
+    }
+
+    public void setDegree(Integer degree) {
+        this.degree = degree;
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public boolean isPaved() {
+        return paved;
+    }
+
+    public void setPaved(boolean paved) {
+        this.paved = paved;
+    }
 }

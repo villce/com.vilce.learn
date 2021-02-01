@@ -1,7 +1,5 @@
 package com.vilce.test.model.po;
 
-import lombok.Data;
-
 /**
  * @Description: Description
  * @ProjectName: com.vilce.learn
@@ -10,7 +8,6 @@ import lombok.Data;
  * @Date: 2019/11/13 15:48
  * @Version: 1.0
  */
-@Data
 public class User {
     private String name;
     private Integer age;
@@ -19,6 +16,38 @@ public class User {
 
     public User(String name,String password) {
         this.name = name;
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 }

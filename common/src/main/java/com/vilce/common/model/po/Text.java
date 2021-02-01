@@ -2,7 +2,6 @@ package com.vilce.common.model.po;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * @Description: 文字对象
@@ -13,7 +12,6 @@ import lombok.Data;
  * @Version: 1.0
  */
 @ApiModel(value = "文字")
-@Data
 public class Text extends Mark {
     @ApiModelProperty("水印文字，多行请换行输入")
     private String word;
@@ -25,4 +23,44 @@ public class Text extends Mark {
     private double changeX;
     @ApiModelProperty("y轴偏移量")
     private double changeY;
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public int getWordSize() {
+        return wordSize;
+    }
+
+    public void setWordSize(int wordSize) {
+        this.wordSize = wordSize;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public double getChangeX() {
+        return changeX;
+    }
+
+    public void setChangeX(double changeX) {
+        this.changeX = changeX;
+    }
+
+    public double getChangeY() {
+        return changeY;
+    }
+
+    public void setChangeY(double changeY) {
+        this.changeY = changeY;
+    }
 }

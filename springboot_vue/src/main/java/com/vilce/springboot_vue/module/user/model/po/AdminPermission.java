@@ -2,7 +2,6 @@ package com.vilce.springboot_vue.module.user.model.po;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * @Description: 权限
@@ -12,7 +11,6 @@ import lombok.Data;
  * @Date: 2020/8/25 16:36
  * @Version: 1.0
  */
-@Data
 @ApiModel(value = "权限")
 public class AdminPermission {
 
@@ -24,4 +22,36 @@ public class AdminPermission {
     private String desc_;
     @ApiModelProperty(value = "触发权限检查路径",example = "/user/delete")
     private String url;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc_() {
+        return desc_;
+    }
+
+    public void setDesc_(String desc_) {
+        this.desc_ = desc_;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

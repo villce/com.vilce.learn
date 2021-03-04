@@ -33,6 +33,12 @@ public class UserController {
         return userService.listAllUsers();
     }
 
+    @GetMapping("findUser/{userId}")
+    @ApiOperation(value = "获取指定用户信息")
+    public AdminUser findUser(@PathVariable int userId) {
+        return userService.findUser(userId);
+    }
+
     @PutMapping("updateUserStatus")
     @ApiOperation(value = "更新用户状态信息")
     public BaseResponse updateUserStatus(@RequestBody @Valid AdminUser requestUser) {

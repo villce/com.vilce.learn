@@ -57,6 +57,20 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 获取指定用户信息
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public AdminUser findUser(int userId) {
+        AdminUser user = userMapper.getUserById(userId);
+        List<AdminRole> roles = adminRoleService.getRolesByUserId(user.getId());
+        user.setRoles(roles);
+        return user;
+    }
+
+    /**
      * 根据用户名获取用户
      *
      * @param username
@@ -145,16 +159,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse editUser(AdminUser requestUser) {
-        if (userMapper.updateUserInfo(requestUser)) {
-            int uid = userMapper.getUserByUsername(requestUser.getUsername()).getId();
-            BaseResponse baseResponse = adminUserRoleService.updateRoleChanges(uid, requestUser.getRoles());
-            if (baseResponse.getStatus() == 0) {
-                return BaseResponse.buildResponse(0, "更新用户信息成功！");
-            } else {
-                throw new BasicException(ResultStatus.ERROR.getStatus(), "更新用户信息失败！");
-            }
+        // 更新用户名或头像
+        userMapper.updateUserInfo(requestUser);
+        BaseResponse baseResponse = adminUserRoleService.updateRoleChanges(requestUser.getId(), requestUser.getRoles());
+        if (baseResponse.getStatus() == 0) {
+            return BaseResponse.buildResponse(0, "更新用户信息成功！");
         } else {
-            throw new BasicException(ResultStatus.ERROR.getStatus(), "更新用户基础信息失败！");
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "更新用户信息失败！");
         }
     }
 }

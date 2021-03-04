@@ -13,6 +13,12 @@
 		WHERE username=#{username}
     </select>
 
+	<select id="getUserById" resultType="com.vilce.springboot_vue.module.user.model.po.AdminUser" >
+		SELECT *
+		FROM admin_user
+		WHERE id=#{userId}
+	</select>
+
     <insert id="addUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.vilce.springboot_vue.module.user.model.po.AdminUser" >
 		INSERT INTO admin_user (username,password,salt,icon,enabled)
 		VALUES (#{username},
@@ -24,10 +30,9 @@
 
     <update id="updateUserInfo" parameterType="com.vilce.springboot_vue.module.user.model.po.AdminUser" >
         UPDATE admin_user
-		SET name=#{name},
-		    phone=#{phone},
-		    email=#{email}
-		WHERE username=#{username}
+		SET username=#{username},
+		    icon=#{icon}
+		WHERE id=#{id}
     </update>
 
     <update id="updateUserStatus" parameterType="com.vilce.springboot_vue.module.user.model.po.AdminUser" >

@@ -41,6 +41,14 @@ public interface UserMapper {
     AdminUser getUserByUsername(String username);
 
     /**
+     * 根据ID获取用户
+     *
+     * @param userId 用户ID
+     * @return
+     */
+    AdminUser getUserById(int userId);
+
+    /**
      * 更新用户基础信息
      *
      * @param user

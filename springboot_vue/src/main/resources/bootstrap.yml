@@ -3,28 +3,26 @@ spring:
     name: @project.name@
   cloud:
     consul:
+      host: ${JAVA_CONSULIP}
+      port: 8500
       config:
         enabled: true
         prefix: @project.name@
         defaultContext: @project.version@
-        watch:
-          enabled: false
-          delay: 1000
         format: properties
         data-key: data
+        acl-token: ${JAVA_CONSULACLTOKEN}
         profile-separator: '/'
-        acl-token: ${JAVA_CONSULACLTOKEN}
+        watch:
+          delay: 10000
+          enabled: false
       discovery:
-        prefer-ip-address: true
         acl-token: ${JAVA_CONSULACLTOKEN}
-        # 健康检查失败多长时间后，取消注册
-        health-check-critical-timeout: 30s
-        server-list-query-tags:
-          # 在调用consul-provider 服务时, 使用 tag1 对应的实例
-          consul-provider: pre
+        prefer-ip-address: true
         management-suffix: monitor
-      host: ${JAVA_LOCALIP}
-      port: 8500
+        ip-address: ${JAVA_APPLICATIONIP}
+        port: ${JAVA_APPLICATIONPORT}
+        instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
   vilce:
     token:
       system-number: @project.name@

@@ -24,6 +24,14 @@ public interface UserService {
     List<AdminUser> listAllUsers();
 
     /**
+     * 获取指定用户信息
+     *
+     * @param userId
+     * @return
+     */
+    AdminUser findUser(int userId);
+
+    /**
      * 根据用户名获取用户
      *
      * @param username

@@ -26,20 +26,20 @@ public class ImageServiceImpl implements ImageService {
 
     @Value("${covers.url}")
     private String coversUrl;
-    @Value("${image.url}")
-    private String imageUrl;
+    private static final String imageUrl = "https://cdn.jsdelivr.net/gh/villce/img/";
 
     @Override
     public String coversUpload(MultipartFile file) {
-        File imageFolder = new File(coversUrl);
-        File f = new File(imageFolder, DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss") + file.getOriginalFilename()
+        String date = DateFormatUtils.format(new Date(), "yyyy-MM");
+        File imageFolder = new File(StringUtils.join(coversUrl, "/", date));
+        File f = new File(imageFolder, DateFormatUtils.format(new Date(), "yyyyMMddhhmmss") + file.getOriginalFilename()
                 .substring(file.getOriginalFilename().length() - 4));
         if (!f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
         }
         try {
             file.transferTo(f);
-            String imgURL = StringUtils.join(imageUrl, "/image/file/", f.getName());
+            String imgURL = StringUtils.join(imageUrl, date, "/", f.getName());
             return imgURL;
         } catch (IOException e) {
             e.printStackTrace();

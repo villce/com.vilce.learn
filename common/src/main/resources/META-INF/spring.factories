@@ -12,5 +12,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.vilce.common.
   com.vilce.common.autoconfig.redis.RedisAutoConfiguration,\
   com.vilce.common.autoconfig.web.VilceWebMvcAutoConfiguration,\
   com.vilce.common.autoconfig.threadpool.AsyncThreadPoolAutoConfiguration,\
-  com.vilce.common.autoconfig.redis.advice.RedisAdviceAutoConfigure,\
-  com.vilce.common.autoconfig.consul.VilceConsulAutoConfiguration
+  com.vilce.common.autoconfig.redis.advice.RedisAdviceAutoConfigure

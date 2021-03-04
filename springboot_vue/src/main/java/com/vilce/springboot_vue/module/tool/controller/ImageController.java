@@ -27,7 +27,7 @@ public class ImageController {
     private ImageService imageService;
 
     @PostMapping("coversUpload")
-    @ApiOperation(value = "上传封面图片")
+    @ApiOperation(value = "上传图片")
     public String coversUpload(MultipartFile file) {
         return imageService.coversUpload(file);
     }

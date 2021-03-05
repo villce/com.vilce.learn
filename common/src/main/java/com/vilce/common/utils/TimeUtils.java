@@ -2,9 +2,11 @@ package com.vilce.common.utils;
 
 import com.vilce.common.model.enums.DateEnum;
 import com.vilce.common.model.log.utils.LoggerUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
+import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -181,5 +183,24 @@ public class TimeUtils {
             LoggerUtils.error(TimeUtils.class,time+"转换失败");
             return false;
         }
+    }
+
+    /**
+     * 字符串日期格式化
+     *
+     * @param dateStr        字符串日期
+     * @param originalFormat 原始日期格式
+     * @return 格式化后的日期
+     */
+    public static Date formatDate(String dateStr, String originalFormat) {
+        if (StringUtils.isNotEmpty(dateStr)) {
+            try {
+                Date date = DateUtils.parseDate(dateStr, originalFormat);
+                return date;
+            } catch (ParseException e) {
+                LoggerUtils.error(TimeUtils.class, "日期格式转换异常，" + e);
+            }
+        }
+        return null;
     }
 }

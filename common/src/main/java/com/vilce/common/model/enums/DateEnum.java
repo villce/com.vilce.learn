@@ -14,6 +14,7 @@ public enum DateEnum {
     YYYY_MM_DD_HH_MM("yyyy-MM-dd HH:mm"),
     YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd HH:mm:ss"),
     YYYY_MM_DD_HH_MM_SS_SSS("yyyy-MM-dd HH:mm:ss.SSS"),
+    YYYY_MM_DD_T_HH_MM_SS_SSS_Z("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),
     YYYY("yyyy"),
     YYYYMM("yyyyMM"),
     YYYYMMDD("yyyyMMdd"),

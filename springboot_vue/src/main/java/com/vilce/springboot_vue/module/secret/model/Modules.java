@@ -14,7 +14,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @ApiModel(value = "图片模块")
-public class Modules {
+public class Modules implements Comparable<Modules> {
     @ApiModelProperty(value = "系统物理主键")
     private int id;
     @ApiModelProperty(value = "模块日期")
@@ -35,6 +35,16 @@ public class Modules {
         this.id = id;
         this.modulesDate = modulesDate;
         this.modulesTitle = modulesTitle;
+    }
+
+    @Override
+    public int compareTo(Modules modules) {
+        // 按照时间排序
+        if (this.getModulesDate().compareTo(modules.getModulesDate()) > 0) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 
     public int getId() {

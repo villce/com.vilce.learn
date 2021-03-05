@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.module.tool.service.impl;
 
+import com.vilce.common.model.enums.DateEnum;
 import com.vilce.common.utils.SpecialCharUtils;
 import com.vilce.common.utils.io.FileUtils;
 import com.vilce.springboot_vue.module.tool.service.ImageService;
@@ -30,9 +31,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String coversUpload(MultipartFile file) {
-        String date = DateFormatUtils.format(new Date(), "yyyy-MM");
-        File imageFolder = new File(StringUtils.join(coversUrl, "/", date));
-        File f = new File(imageFolder, DateFormatUtils.format(new Date(), "yyyyMMddhhmmss") + file.getOriginalFilename()
+        String date = DateFormatUtils.format(new Date(), DateEnum.YYYY_MM.getFormat());
+        File imageFolder = new File(StringUtils.join(coversUrl, date));
+        File f = new File(imageFolder, DateFormatUtils.format(new Date(), DateEnum.YYYYMMDDHHMMSS.getFormat()) + file.getOriginalFilename()
                 .substring(file.getOriginalFilename().length() - 4));
         if (!f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
@@ -58,7 +59,7 @@ public class ImageServiceImpl implements ImageService {
         if (StringUtils.isNotEmpty(imageUrl)) {
             // 获取文件名
             String[] str = imageUrl.split(SpecialCharUtils.LEFT_SLASH);
-            File file = new File(StringUtils.join(coversUrl, str[str.length - 1]));
+            File file = new File(StringUtils.join(coversUrl, str[str.length - 2], "/", str[str.length - 1]));
             return FileUtils.deleteQuietly(file);
         }
         return false;

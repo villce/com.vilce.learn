@@ -29,7 +29,7 @@ public class SecretController {
 
     @PostMapping("editModules")
     @ApiOperation(value = "编辑图片模块")
-    public void createModules(@RequestBody ModulesReq req) {
+    public void editModules(@RequestBody ModulesReq req) {
         if (req.getId() == 0) {
             secretService.createModules(req.getModulesDate(), req.getModulesTitle(), req.getImgUrlList());
         }else {
@@ -47,5 +47,23 @@ public class SecretController {
     @ApiOperation(value = "分页获取图片模块")
     public ModulesRes getModules(@PathVariable int pageIndex, @PathVariable int pageSize) {
         return secretService.getModules(pageIndex, pageSize);
+    }
+
+    @GetMapping("findModules/{modulesId}")
+    @ApiOperation(value = "根据ID查询模块")
+    public Modules findModules(@PathVariable int modulesId) {
+        return secretService.findModules(modulesId);
+    }
+
+    @GetMapping("getNewModules/{pageSize}")
+    @ApiOperation(value = "获取最新的模块")
+    public ModulesRes getNewModules(@PathVariable int pageSize) {
+        return secretService.getNewModules(pageSize);
+    }
+
+    @GetMapping("timeLineGetModules/{pageIndex}/{pageSize}")
+    @ApiOperation(value = "时间轴分段获取模块")
+    public ModulesRes timeLineGetModules(@PathVariable int pageIndex, @PathVariable int pageSize) {
+        return secretService.timeLineGetModules(pageIndex, pageSize);
     }
 }

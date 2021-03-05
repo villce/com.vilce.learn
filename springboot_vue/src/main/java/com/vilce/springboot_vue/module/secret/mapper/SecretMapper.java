@@ -75,4 +75,28 @@ public interface SecretMapper {
      * @return
      */
     int countModules();
+
+    /**
+     * 根据ID查询模块
+     *
+     * @param modulesId 模块ID
+     * @return
+     */
+    Modules findModulesById(int modulesId);
+
+    /**
+     * 获取最新的模块信息
+     *
+     * @param num 获取量
+     * @return
+     */
+    List<Modules> getNewModules(int num);
+
+    /**
+     * 顺序获取模块信息
+     *
+     * @param num 获取量
+     * @return
+     */
+    List<Modules> getModulesASC(int num);
 }

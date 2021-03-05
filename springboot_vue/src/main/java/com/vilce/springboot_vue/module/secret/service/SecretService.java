@@ -1,5 +1,6 @@
 package com.vilce.springboot_vue.module.secret.service;
 
+import com.vilce.springboot_vue.module.secret.model.Modules;
 import com.vilce.springboot_vue.module.secret.model.ModulesRes;
 
 import java.util.List;
@@ -44,8 +45,33 @@ public interface SecretService {
      * 分页获取图片模块
      *
      * @param pageIndex 页码
-     * @param pageSize  页面数量
+     * @param pageSize  页面展示数量
      * @return
      */
     ModulesRes getModules(int pageIndex, int pageSize);
+
+    /**
+     * 根据ID查询模块
+     *
+     * @param modulesId 模块ID
+     * @return
+     */
+    Modules findModules(int modulesId);
+
+    /**
+     * 获取最新模块
+     *
+     * @param pageSize 获取量
+     * @return
+     */
+    ModulesRes getNewModules(int pageSize);
+
+    /**
+     * 时间轴分段获取模块
+     *
+     * @param pageIndex 当前段
+     * @param pageSize  页面展示数量
+     * @return
+     */
+    ModulesRes timeLineGetModules(int pageIndex, int pageSize);
 }

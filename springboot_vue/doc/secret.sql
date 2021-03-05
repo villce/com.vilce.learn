@@ -24,7 +24,7 @@ CREATE TABLE `secret_img`
 (
     `id`        int(11) NOT NULL AUTO_INCREMENT COMMENT '系统物理主键',
     `modules_id`      int(11)   NOT NULL COMMENT '模块ID',
-    `img_url`      varchar(64)  DEFAULT NULL COMMENT '图片地址',
+    `img_url`      varchar(255)  DEFAULT NULL COMMENT '图片地址',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 17

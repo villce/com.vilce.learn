@@ -27,7 +27,8 @@ public class ImageServiceImpl implements ImageService {
 
     @Value("${covers.url}")
     private String coversUrl;
-    private static final String imageUrl = "https://cdn.jsdelivr.net/gh/villce/img/";
+    @Value("${com.vilce.image.url}")
+    private String imageUrl;
 
     @Override
     public String coversUpload(MultipartFile file) {
@@ -40,7 +41,7 @@ public class ImageServiceImpl implements ImageService {
         }
         try {
             file.transferTo(f);
-            String imgURL = StringUtils.join(imageUrl, date, "/", f.getName());
+            String imgURL = StringUtils.join(imageUrl, f.getName());
             return imgURL;
         } catch (IOException e) {
             e.printStackTrace();

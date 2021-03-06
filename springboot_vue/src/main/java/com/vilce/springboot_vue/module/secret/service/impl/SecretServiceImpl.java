@@ -166,6 +166,7 @@ public class SecretServiceImpl implements SecretService {
         });
         Collections.sort(modulesList);
         modulesRes.setModulesList(modulesList);
+        modulesRes.setNum(secretMapper.countModules());
         return modulesRes;
     }
 
@@ -191,6 +192,7 @@ public class SecretServiceImpl implements SecretService {
             modules.setImgUrlList(imgUrlList);
         });
         modulesRes.setModulesList(modulesList);
+        modulesRes.setNum(secretMapper.countModules());
         return modulesRes;
     }
 }

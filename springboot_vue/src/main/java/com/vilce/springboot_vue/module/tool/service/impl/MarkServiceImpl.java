@@ -26,10 +26,6 @@ public class MarkServiceImpl implements MarkService {
 
     @Value("${covers.url}")
     private String DEFAULT_OUTPUT;
-    @Value("${image.type}")
-    private final String DEFAULT_TYPE = "png";
-    @Value("${image.url}")
-    private String imageUrl;
 
     private final int DEFAULT_WIDTH = 2040;
     private final int DEFAULT_HEIGHT = 1020;

@@ -41,7 +41,7 @@ public class ImageServiceImpl implements ImageService {
         }
         try {
             file.transferTo(f);
-            String imgURL = StringUtils.join(imageUrl, f.getName());
+            String imgURL = StringUtils.join(imageUrl, date, "/", f.getName());
             return imgURL;
         } catch (IOException e) {
             e.printStackTrace();

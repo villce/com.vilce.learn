@@ -5,14 +5,12 @@ import com.vilce.common.model.log.utils.LoggerUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.servlet.config.annotation.CorsRegistration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.Objects;
 
@@ -46,6 +44,15 @@ public class VilceWebMvcAutoConfiguration implements WebMvcConfigurer, CommandLi
 
     public VilceWebMvcAutoConfiguration(WebProperties webProperties) {
         this.webProperties = webProperties;
+    }
+
+    @Value("${covers.url}")
+    private String coversUrl;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // todo 暂时放在common包里，不然无法起作用
+        registry.addResourceHandler("/image/file/**").addResourceLocations("file:" + coversUrl);
     }
 
     /**

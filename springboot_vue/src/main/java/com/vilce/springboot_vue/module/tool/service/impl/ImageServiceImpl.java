@@ -33,6 +33,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public String coversUpload(MultipartFile file) {
         String date = DateFormatUtils.format(new Date(), DateEnum.YYYY_MM.getFormat());
+        String name = file.getOriginalFilename().substring(file.getOriginalFilename().length() - 4);
         File imageFolder = new File(StringUtils.join(coversUrl, date));
         File f = new File(imageFolder, DateFormatUtils.format(new Date(), DateEnum.YYYYMMDDHHMMSS.getFormat()) + file.getOriginalFilename()
                 .substring(file.getOriginalFilename().length() - 4));

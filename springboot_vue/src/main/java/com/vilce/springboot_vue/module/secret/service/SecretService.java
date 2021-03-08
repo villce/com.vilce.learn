@@ -2,6 +2,7 @@ package com.vilce.springboot_vue.module.secret.service;
 
 import com.vilce.springboot_vue.module.secret.model.Modules;
 import com.vilce.springboot_vue.module.secret.model.ModulesRes;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -74,4 +75,12 @@ public interface SecretService {
      * @return
      */
     ModulesRes timeLineGetModules(int pageIndex, int pageSize);
+
+    /**
+     * 上传图片
+     *
+     * @param file 图片
+     * @return
+     */
+    String coversUpload(MultipartFile file);
 }

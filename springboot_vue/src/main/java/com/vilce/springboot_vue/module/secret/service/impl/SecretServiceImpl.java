@@ -3,7 +3,6 @@ package com.vilce.springboot_vue.module.secret.service.impl;
 import com.vilce.common.model.enums.DateEnum;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.common.model.log.utils.LoggerUtils;
 import com.vilce.common.utils.TimeUtils;
 import com.vilce.springboot_vue.module.secret.mapper.SecretMapper;
 import com.vilce.springboot_vue.module.secret.model.Modules;
@@ -13,10 +12,15 @@ import com.vilce.springboot_vue.module.tool.service.ImageService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,8 +36,10 @@ public class SecretServiceImpl implements SecretService {
 
     @Autowired
     private SecretMapper secretMapper;
-    @Autowired
-    private ImageService imageService;
+    @Value("${covers.url}")
+    private String coversUrl;
+    @Value("${com.vilce.image.url}")
+    private String imageUrl;
 
     /**
      * 创建图片模块
@@ -51,9 +57,6 @@ public class SecretServiceImpl implements SecretService {
         if (StringUtils.isBlank(modulesTitle)) {
             throw new BasicException(ResultStatus.ERROR.getStatus(), "模块标题不能为空");
         }
-        modulesDate = DateFormatUtils.format(TimeUtils.formatDate(modulesDate,
-                DateEnum.YYYY_MM_DD_T_HH_MM_SS_SSS_Z.getFormat()),
-                DateEnum.YYYY_MM_DD_HH_MM_SS.getFormat());
         Modules modules = new Modules(modulesDate, modulesTitle);
         // 插入图片模块表
         secretMapper.createModules(modules);
@@ -80,13 +83,6 @@ public class SecretServiceImpl implements SecretService {
         if (StringUtils.isBlank(modulesTitle)) {
             throw new BasicException(ResultStatus.ERROR.getStatus(), "模块标题不能为空");
         }
-        try {
-            modulesDate = DateFormatUtils.format(TimeUtils.formatDate(modulesDate,
-                    DateEnum.YYYY_MM_DD_T_HH_MM_SS_SSS_Z.getFormat()),
-                    DateEnum.YYYY_MM_DD_HH_MM_SS.getFormat());
-        } catch (Exception e) {
-            LoggerUtils.info(SecretServiceImpl.class, "日期为：" + modulesDate);
-        }
         Modules modulesDto = new Modules(id, modulesDate, modulesTitle);
         // 更新图片模块表
         secretMapper.updateModules(modulesDto);
@@ -108,11 +104,6 @@ public class SecretServiceImpl implements SecretService {
     public void deleteModules(int modulesId) {
         // 删除图片模块
         secretMapper.deleteModules(modulesId);
-        List<String> imgUrlList = secretMapper.getModulesImg(modulesId);
-        imgUrlList.forEach(imgUrl -> {
-            // 删除模块图片
-            imageService.deleteImage(imgUrl);
-        });
         // 删除该模块所有图片地址
         secretMapper.deleteImg(modulesId);
     }
@@ -194,5 +185,31 @@ public class SecretServiceImpl implements SecretService {
         modulesRes.setModulesList(modulesList);
         modulesRes.setNum(secretMapper.countModules());
         return modulesRes;
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param file 图片
+     * @return
+     */
+    @Override
+    public String coversUpload(MultipartFile file) {
+        // 获取图片名称
+        String date = DateFormatUtils.format(TimeUtils.formatDate(file.getOriginalFilename().substring(0, 6),
+                DateEnum.YYYYMM.getFormat()), DateEnum.YYYY_MM.getFormat());
+        File imageFolder = new File(StringUtils.join(coversUrl, date));
+        File f = new File(imageFolder, file.getOriginalFilename());
+        if (!f.getParentFile().exists()) {
+            f.getParentFile().mkdirs();
+        }
+        try {
+            file.transferTo(f);
+            String imgURL = StringUtils.join(imageUrl, date, "/", f.getName());
+            return imgURL;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

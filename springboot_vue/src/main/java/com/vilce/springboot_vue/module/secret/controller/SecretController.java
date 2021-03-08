@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -65,5 +66,11 @@ public class SecretController {
     @ApiOperation(value = "时间轴分段获取模块")
     public ModulesRes timeLineGetModules(@PathVariable int pageIndex, @PathVariable int pageSize) {
         return secretService.timeLineGetModules(pageIndex, pageSize);
+    }
+
+    @PostMapping("coversUpload")
+    @ApiOperation(value = "上传图片")
+    public String coversUpload(MultipartFile file) {
+        return secretService.coversUpload(file);
     }
 }

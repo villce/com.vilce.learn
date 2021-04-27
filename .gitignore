@@ -5,10 +5,17 @@
 # Compiled class file
 *.class
 target/
+vue/node_modules/
+vue/dist/
 
 # Log file
 *.log
 logs/
+vue/npm-debug.log*
+vue/yarn-debug.log*
+vue/yarn-error.log*
+vue/test/unit/coverage/
+vue/test/e2e/reports/
 # BlueJ files
 *.ctxt
 
@@ -46,6 +53,11 @@ HELP.md
 *.iws
 *.iml
 *.ipr
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 
 ### NetBeans ###
 /nbproject/private/

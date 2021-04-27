@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.module.tool.controller;
 
+import com.vilce.common.model.po.Text;
+import com.vilce.springboot_vue.module.tool.model.ImageBackground;
 import com.vilce.springboot_vue.module.tool.service.ImageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,12 +21,18 @@ import org.springframework.web.multipart.MultipartFile;
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/image")
+@RequestMapping("image")
 @Api(tags = "图片控制器")
 public class ImageController {
 
     @Autowired
     private ImageService imageService;
+
+    @PostMapping("toolUpload")
+    @ApiOperation(value = "工具上传图片（伪上传）")
+    public String toolUpload(MultipartFile file) {
+        return imageService.toolUpload(file);
+    }
 
     @PostMapping("coversUpload")
     @ApiOperation(value = "上传图片")
@@ -33,8 +41,14 @@ public class ImageController {
     }
 
     @GetMapping("deleteImage")
-    @ApiOperation(value = "删除指定路径图片")
-    public boolean deleteImage(String imageUrl) {
-        return imageService.deleteImage(imageUrl);
+    @ApiOperation(value = "删除指定图片")
+    public boolean deleteImage(String imageName) {
+        return imageService.deleteImage(imageName);
+    }
+
+    @PostMapping("changBg")
+    @ApiOperation(value = "更改图片背景颜色")
+    public String changBg(MultipartFile sourceFile, ImageBackground background) {
+        return imageService.changBg(sourceFile, background.getWidth(), background.getHeight(), background.getColor());
     }
 }

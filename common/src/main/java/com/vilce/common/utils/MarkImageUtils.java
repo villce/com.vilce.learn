@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 /**
@@ -158,9 +159,9 @@ public class MarkImageUtils {
      * @param text       文字水印参数
      * @return
      */
-    public static byte[] markImageByMoreText(MultipartFile sourceFile, Text text) {
+    public static byte[] markImageByMoreText(InputStream sourceFile, Text text) {
         try {
-            Image img = ImageIO.read(sourceFile.getInputStream());
+            Image img = ImageIO.read(sourceFile);
             //图片宽
             int width = img.getWidth(null);
             //图片高
@@ -211,9 +212,9 @@ public class MarkImageUtils {
      * @param sourceFile 源图片
      * @param text       文字水印参数
      */
-    public static byte[] markImageBySingleText(MultipartFile sourceFile, Text text) {
+    public static byte[] markImageBySingleText(InputStream sourceFile, Text text) {
         try {
-            Image img = ImageIO.read(sourceFile.getInputStream());
+            Image img = ImageIO.read(sourceFile);
             int width = img.getWidth(null);
             int height = img.getHeight(null);
             //加水印
@@ -257,14 +258,14 @@ public class MarkImageUtils {
      * @param source 没有加水印的图片路径（如：F:/images/6.jpg）
      * @param mark   水印参数
      */
-    public static byte[] markImageByMoreIcon(MultipartFile icon, MultipartFile source, Mark mark) {
+    public static byte[] markImageByMoreIcon(InputStream icon, InputStream source, Mark mark) {
         try {
             //将icon加载到内存中
-            Image ic = ImageIO.read(icon.getInputStream());
+            Image ic = ImageIO.read(icon);
             //icon高度
             int icheight = ic.getHeight(null);
             //将源图片读到内存中
-            Image img = ImageIO.read(source.getInputStream());
+            Image img = ImageIO.read(source);
             //图片宽
             int width = img.getWidth(null);
             //图片高
@@ -326,14 +327,14 @@ public class MarkImageUtils {
      * @param source 没有加水印的图片路径（如：F:/images/6.jpg）
      * @param mark   水印参数
      */
-    public static byte[] markImageBySingleIcon(MultipartFile icon, MultipartFile source, Mark mark) {
+    public static byte[] markImageBySingleIcon(InputStream icon, InputStream source, Mark mark) {
         try {
             //将icon加载到内存中
-            Image ic = ImageIO.read(icon.getInputStream());
+            Image ic = ImageIO.read(icon);
             //icon高度
             int icheight = ic.getHeight(null);
             //将源图片读到内存中
-            Image img = ImageIO.read(source.getInputStream());
+            Image img = ImageIO.read(source);
             //图片宽
             int width = img.getWidth(null);
             //图片高

@@ -1,5 +1,7 @@
 package com.vilce.springboot_vue.module.tool.service.impl;
 
+import com.vilce.common.model.enums.ResultStatus;
+import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.Text;
 import com.vilce.common.utils.MarkImageUtils;
 import com.vilce.common.model.po.Mark;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 
@@ -71,10 +74,14 @@ public class MarkServiceImpl implements MarkService {
             text.setFileName(DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss"));
         }
         byte[] image = null;
-        if (text.isPaved()) {
-            image = MarkImageUtils.markImageByMoreText(sourceFile, text);
-        } else {
-            image = MarkImageUtils.markImageBySingleText(sourceFile, text);
+        try {
+            if (text.isPaved()) {
+                image = MarkImageUtils.markImageByMoreText(sourceFile.getInputStream(), text);
+            } else {
+                image = MarkImageUtils.markImageBySingleText(sourceFile.getInputStream(), text);
+            }
+        } catch (IOException e) {
+            throw new BasicException(190001, "图片异常");
         }
         Base64.Encoder encoder = Base64.getEncoder();
         String data = encoder.encodeToString(image);
@@ -98,10 +105,14 @@ public class MarkServiceImpl implements MarkService {
             mark.setFileName(DateFormatUtils.format(new Date(), "yyyy-MM-dd-hh-mm-ss"));
         }
         byte[] image = null;
-        if (mark.isPaved()) {
-            image = MarkImageUtils.markImageByMoreIcon(iconFile, sourceFile, mark);
-        } else {
-            image = MarkImageUtils.markImageBySingleIcon(iconFile, sourceFile, mark);
+        try {
+            if (mark.isPaved()) {
+                image = MarkImageUtils.markImageByMoreIcon(iconFile.getInputStream(), sourceFile.getInputStream(), mark);
+            } else {
+                image = MarkImageUtils.markImageBySingleIcon(iconFile.getInputStream(), sourceFile.getInputStream(), mark);
+            }
+        } catch (IOException e) {
+            throw new BasicException(190001, "图片异常");
         }
         Base64.Encoder encoder = Base64.getEncoder();
         String data = encoder.encodeToString(image);

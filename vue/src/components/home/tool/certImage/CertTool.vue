@@ -80,7 +80,8 @@
 </template>
 
 <script>
-  import { getBasicUrl, downloadImage } from "../../../../utils/basic";
+  import { downloadImage } from "../../../../utils/download";
+  import { getServer } from "../../../../utils/request";
 
   export default {
     name: "CertTool",
@@ -100,7 +101,7 @@
       }
     },
     mounted() {
-      this.coversUploadUrl = getBasicUrl() + '/image/toolUpload';
+      this.coversUploadUrl = getServer() + '/image/toolUpload';
     },
     methods: {
       handleRemove(file, fileList) {
@@ -147,14 +148,14 @@
         formData.append('width', this.width);
         formData.append('height', this.height);
         formData.append('color', this.color);
-        this.$axios.post('/image/changBg', formData).then(resp => {
-          if (resp && resp.data.status === 0) {
+        changBg(formData).then(resp => {
+          if (resp.status === 0) {
             this.$message({
               type: 'info',
-              message: resp.data.message
+              message: resp.message
             })
             //这里的data数据是后台返回来的，byte是params中的键值
-            this.certImg = 'data:image/png;base64,' + resp.data.data;
+            this.certImg = 'data:image/png;base64,' + resp.data;
             this.$emit('onSubmit')
             this.downloadDisabled = false
           }

@@ -3,7 +3,6 @@ package com.vilce.springboot_vue.module.user.service.impl;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
-import com.vilce.springboot_vue.module.user.mapper.AdminUserRoleMapper;
 import com.vilce.springboot_vue.module.user.mapper.UserMapper;
 import com.vilce.springboot_vue.module.user.model.po.AdminRole;
 import com.vilce.springboot_vue.module.user.model.po.AdminUser;
@@ -12,13 +11,18 @@ import com.vilce.springboot_vue.module.user.service.AdminRoleService;
 import com.vilce.springboot_vue.module.user.service.AdminUserRoleService;
 import com.vilce.springboot_vue.module.user.service.UserService;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.HtmlUtils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -118,6 +122,19 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 获取当前用户信息
+     *
+     * @return
+     */
+    @Override
+    public AdminUser currentUser(String username) {
+        if (StringUtils.isNotBlank(username)) {
+            return getUserByUsername(username);
+        }
+        return null;
+    }
+
+    /**
      * 更新用户状态信息
      *
      * @param user
@@ -167,5 +184,25 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new BasicException(ResultStatus.ERROR.getStatus(), "更新用户信息失败！");
         }
+    }
+
+    /**
+     * 获取cookie的值
+     * @param name
+     * @return
+     */
+    public String getCookie(String name) {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        Cookie[] cookies = request.getCookies();
+        if(null == cookies || cookies.length == 0) {
+            return null;
+        }
+        for(Cookie c : cookies) {
+            if(c.getName().equals(name)) {
+                return c.getValue();
+            }
+        }
+        return null;
     }
 }

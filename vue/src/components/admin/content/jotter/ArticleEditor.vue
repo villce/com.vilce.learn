@@ -67,6 +67,8 @@
 </template>
 
 <script>
+  import { saveArticle } from "../../../../api/article/article";
+
   export default {
     name: 'ArticleEditor',
     data() {
@@ -117,21 +119,20 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          console.info(this.dynamicTags);
-          console.info(this.article);
-          this.$axios.post('/article/saveArticle', {
-              id: this.article.id,
-              article_type: this.article.type,
-              article_label: this.dynamicTags,
-              article_title: this.article.title,
-              article_content_md: this.article.contentMd,
-              article_content_html: render,
-              article_date: new Date()
-            }).then(resp => {
-              if (resp && resp.data.status === 0) {
+          const articleReq = {
+            'id': this.article.id,
+            'article_type': this.article.type,
+            'article_label': this.dynamicTags,
+            'article_title': this.article.title,
+            'article_content_md': this.article.contentMd,
+            'article_content_html': render,
+            'article_date': new Date()
+          }
+          saveArticle(articleReq).then(resp => {
+              if (resp.status === 0) {
                 this.$message({
                   type: 'info',
-                  message: resp.data.message
+                  message: resp.message
                 })
               }
             })

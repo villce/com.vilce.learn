@@ -44,15 +44,15 @@ public class JotterArticleController {
     }
 
     @RedisFilter()
-    @GetMapping("getOneArticle")
+    @GetMapping("getOneArticle/{id}")
     @ApiOperation(value = "根据id获取文章")
-    public JotterArticleRes getOneArticle(int id) {
+    public JotterArticleRes getOneArticle(@PathVariable int id) {
         return jotterArticleService.findArticleById(id);
     }
 
-    @DeleteMapping("deleteArticle")
+    @GetMapping("deleteArticle/{id}")
     @ApiOperation(value = "根据id删除文章")
-    public BaseResponse deleteArticle(int id) {
+    public BaseResponse deleteArticle(@PathVariable int id) {
         return jotterArticleService.deleteArticle(id);
     }
 

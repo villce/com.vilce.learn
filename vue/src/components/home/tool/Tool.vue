@@ -35,6 +35,7 @@
 
 <script>
   import Header from '../../admin/Header';
+  import {currentUser} from "../../../api/user/login";
 
   export default {
     name: "Tool",
@@ -50,11 +51,12 @@
     },
     methods: {
       currentUser() {
-        var _this = this;
-        this.$axios.get('/login/currentUser').then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.userIcon = resp.data.data.icon;
-            _this.username = resp.data.data.username;
+        const username = this.$store.state.username;
+        currentUser(username).then(resp => {
+          if (resp.status === 0) {
+            if (resp.data !== null) {
+              this.userIcon = resp.data.icon;
+            }
           }
         })
       }

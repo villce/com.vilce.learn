@@ -94,6 +94,8 @@
 
 <script>
   import Heart from "./Heart";
+  import {currentUser} from "../../../api/user/login";
+  import {getNewModules, timeLineGetModules} from "../../../api/secret/secret";
 
   export default {
     name: "Secret",
@@ -117,11 +119,12 @@
     },
     methods: {
       currentUser() {
-        var _this = this;
-        this.$axios.get('/login/currentUser').then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.userIcon = resp.data.data.icon;
-            _this.username = resp.data.data.username;
+        const username = this.$store.state.username;
+        currentUser(username).then(resp => {
+          if (resp.status === 0) {
+            if (resp.data !== null) {
+              this.userIcon = resp.data.icon;
+            }
           }
         })
       },
@@ -132,9 +135,9 @@
         // 向左移动4个单位获取模块信息
         if (this.modulesIndex * this.pageSize < this.num) {
           var pageIndex = this.modulesIndex + 1;
-          this.$axios.get("/secret/timeLineGetModules/" + pageIndex + "/" + this.pageSize).then(resp => {
-            if (resp && resp.data.status === 0) {
-              this.modulesList = resp.data.data.modulesList;
+          timeLineGetModules(pageIndex, this.pageSize).then(resp => {
+            if (resp.status === 0) {
+              this.modulesList = resp.data.modulesList;
               this.modulesIndex = pageIndex;
             }
           })
@@ -144,19 +147,19 @@
         // 向左移动4个单位获取模块信息
         if (this.modulesIndex > 1) {
           var pageIndex = this.modulesIndex - 1;
-          this.$axios.get("/secret/timeLineGetModules/" + pageIndex + "/" + this.pageSize).then(resp => {
-            if (resp && resp.data.status === 0) {
-              this.modulesList = resp.data.data.modulesList;
+          timeLineGetModules(pageIndex, this.pageSize).then(resp => {
+            if (resp.status === 0) {
+              this.modulesList = resp.data.modulesList;
               this.modulesIndex = pageIndex;
             }
           })
         }
       },
       loadModules() {
-        this.$axios.get("/secret/getNewModules/" + this.pageSize).then(resp => {
-          if (resp && resp.data.status === 0) {
-            this.modulesList = resp.data.data.modulesList;
-            this.num = resp.data.data.num;
+        getNewModules(this.pageSize).then(resp => {
+          if (resp.status === 0) {
+            this.modulesList = resp.data.modulesList;
+            this.num = resp.data.num;
             this.modulesIndex = 5;
           }
         })

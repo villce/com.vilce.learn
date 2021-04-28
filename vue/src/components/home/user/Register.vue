@@ -22,6 +22,7 @@
   </body>
 </template>
 <script>
+  import { register } from "../../../api/user/login";
 export default{
   data () {
     return {
@@ -46,24 +47,22 @@ export default{
   },
   methods: {
     register () {
-      var _this = this;
       if (this.loginForm.password === this.loginForm.password2) {
-        this.$axios
-          .post('/login/register', {
-            username: this.loginForm.username,
-            password: this.loginForm.password,
-            name: this.loginForm.name,
-            phone: this.loginForm.phone,
-            email: this.loginForm.email
-          })
-          .then(resp => {
-            if (resp.data.status === 0) {
+        const userReq = {
+          'username': this.loginForm.username,
+          'password': this.loginForm.password,
+          'name': this.loginForm.name,
+          'phone': this.loginForm.phone,
+          'email': this.loginForm.email
+        }
+        register(userReq).then(resp => {
+            if (resp.status === 0) {
               this.$alert('注册成功', '提示', {
                 confirmButtonText: '确定'
               })
-              _this.$router.replace('/login')
+              this.$router.replace('/login')
             } else {
-              this.$alert(resp.data.message, '提示', {
+              this.$alert(resp.message, '提示', {
                 confirmButtonText: '确定'
               })
             }

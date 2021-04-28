@@ -67,6 +67,7 @@
 
 <script>
   import ArticleStatistics from './ArticleStatistics'
+  import {getArticleByLabel, getArticleByType, listArticles} from "../../../api/article/article";
   export default {
     name: 'Articles',
     components: {ArticleStatistics},
@@ -87,28 +88,25 @@
     },
     methods: {
       handleCurrentChange(page) {
-        var _this = this;
-        this.$axios.get('/article/listArticles/' + page + '/' + this.pageSize).then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.articles = resp.data.data
+        listArticles(page, this.pageSize).then(resp => {
+          if (resp.status === 0) {
+            this.articles = resp.data
           }
         })
       },
       getArticleByType(type) {
-        var _this = this;
-        this.$axios.get('/article/getArticleByType/?type=' + type).then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.articles = resp.data.data;
-            this.total = _this.articles.length;
+        getArticleByType(type).then(resp => {
+          if (resp.status === 0) {
+            this.articles = resp.data;
+            this.total = this.articles.length;
           }
         })
       },
       getArticleByLabel(label) {
-        var _this = this;
-        this.$axios.get('/article/getArticleByLabel/?label=' + label).then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.articles = resp.data.data;
-            this.total = _this.articles.length;
+        getArticleByLabel(label).then(resp => {
+          if (resp.status === 0) {
+            this.articles = resp.data;
+            this.total = this.articles.length;
           }
         })
       }

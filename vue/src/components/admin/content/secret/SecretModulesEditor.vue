@@ -50,6 +50,8 @@
 </template>
 
 <script>
+  import {editModules} from "../../../../api/secret/secret";
+
   export default {
     name: "SecretModulesEditor",
     data() {
@@ -91,16 +93,17 @@
         this.imgUrlList.push(response.data);
       },
       saveModules(modules) {
-        this.$axios.post("/secret/editModules", {
-          id: modules.id,
-          modulesDate: modules.modulesDate,
-          modulesTitle: modules.modulesTitle,
-          imgUrlList: this.imgUrlList
-        }).then(resp => {
-          if (resp && resp.data.status === 0) {
+        const moduleReq = {
+          'id': modules.id,
+          'modulesDate': modules.modulesDate,
+          'modulesTitle': modules.modulesTitle,
+          'imgUrlList': this.imgUrlList
+        }
+        editModules(moduleReq).then(resp => {
+          if (resp.status === 0) {
             this.$message({
               type: 'info',
-              message: resp.data.message
+              message: resp.message
             })
             this.$router.push(
               {
@@ -121,5 +124,5 @@
   }
 </script>
 
-<style scoped>
+<style>
 </style>

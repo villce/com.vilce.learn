@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import {addOrUpdateRole} from "../../../api/user/role";
+
 export default {
   name: 'RoleCreate',
   data () {
@@ -52,21 +54,19 @@ export default {
       }
     },
     createRole () {
-      this.$axios
-        .put('/role/addOrUpdateRole', {
-          name: this.roleForm.name,
-          name_zh: this.roleForm.name_zh
-        })
-        .then(resp => {
-          console.info("addOrUpdateRole")
-          if (resp.data.status === 0) {
-            this.$alert(resp.data.message, '提示', {
+      const roleReq = {
+        'name': this.roleForm.name,
+        'name_zh': this.roleForm.name_zh
+      }
+      addOrUpdateRole(roleReq).then(resp => {
+          if (resp.status === 0) {
+            this.$alert(resp.message, '提示', {
               confirmButtonText: '确定'
             })
             this.clear()
             this.$emit('onSubmit')
           } else {
-            this.$alert(resp.data.message, '提示', {
+            this.$alert(resp.message, '提示', {
               confirmButtonText: '确定'
             })
           }

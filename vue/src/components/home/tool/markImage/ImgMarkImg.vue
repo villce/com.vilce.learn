@@ -80,7 +80,9 @@
 </template>
 
 <script>
-  import {downloadImage, getBasicUrl} from "../../../../utils/basic";
+  import {downloadImage} from "../../../../utils/download";
+  import {getServer} from "../../../../utils/request";
+  import {imageToImage} from "../../../../api/tool/mark";
 
   export default {
     name: 'ImgWaterMark',
@@ -119,7 +121,7 @@
       }
     },
     mounted() {
-      this.coversUploadUrl = getBasicUrl() + '/image/toolUpload';
+      this.coversUploadUrl = getServer() + '/image/toolUpload';
     },
     methods: {
       changePaved() {
@@ -153,15 +155,14 @@
         formData.append('paved', this.form.paved);
         formData.append('changeX', this.form.changeX);
         formData.append('changeY', this.form.changeY);
-        this.$axios
-          .post('/mark/imageToImage', formData).then(resp => {
-          if (resp && resp.data.status === 0) {
+        imageToImage(formData).then(resp => {
+          if (resp.status === 0) {
             this.$message({
               type: 'info',
-              message: resp.data.message
+              message: resp.message
             })
             //这里的data数据是后台返回来的，byte是params中的键值
-            this.markImgSrc = 'data:image/png;base64,' + resp.data.data;
+            this.markImgSrc = 'data:image/png;base64,' + resp.data;
             this.$emit('onSubmit')
             this.downloadStatus = false
           }

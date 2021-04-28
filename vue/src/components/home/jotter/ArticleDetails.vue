@@ -64,6 +64,8 @@
 
 <script>
   import marked from "marked";
+  import {currentUser} from "../../../api/user/login";
+  import {getOneArticle, statistics} from "../../../api/article/article";
 
   let rendererMD = new marked.Renderer();
   marked.setOptions({
@@ -98,32 +100,32 @@
     },
     methods: {
       currentUser() {
-        var _this = this;
-        this.$axios.get('/login/currentUser').then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.circleUrl = resp.data.data.icon;
+        const username = this.$store.state.username;
+        currentUser(username).then(resp => {
+          if (resp.status === 0) {
+            if (resp.data !== null) {
+              this.circleUrl = resp.data.icon;
+            }
           }
         })
       },
       countArticles() {
-        var _this = this;
-        this.$axios.get('/article/statistics').then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.articleStatistic = resp.data.data;
-            this.total = _this.articleStatistic.articleNum;
+        statistics().then(resp => {
+          if (resp.status === 0) {
+            this.articleStatistic = resp.data;
+            this.total = this.articleStatistic.articleNum;
           }
         })
       },
       async getArticleDetail() {
         try {
-          var _this = this;
-          this.$axios.get('/article/getOneArticle?id=' + this.$route.query.id).then(resp => {
-            if (resp && resp.data.status === 0) {
-              this.article = resp.data.data;
+          getOneArticle(this.$route.query.id).then(resp => {
+            if (resp.status === 0) {
+              this.article = resp.data;
               this.html = this.article.contentMd;
               document.getElementsByTagName(
                 "title"
-              )[0].text = _this.article.title;
+              )[0].text = this.article.title;
               //文章内容获取后渲染目录，避免目录无法及时获取内容
               this.navList = this.handleNavTree();
               this.getDocsFirstLevels(0);

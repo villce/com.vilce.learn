@@ -78,6 +78,8 @@
 </template>
 
 <script>
+  import {deleteModules, findModules, getModules} from "../../../../api/secret/secret";
+
     export default {
       name: "SecretManagement",
       data () {
@@ -99,20 +101,18 @@
       },
       methods: {
         loadModules () {
-          var _this = this
-          this.$axios.get('/secret/getModules/1/' + this.pageSize ).then(resp => {
-            if (resp && resp.data.status === 0) {
-              _this.modules = resp.data.data.modulesList;
-              _this.total = resp.data.data.num;
+          getModules(1, this.pageSize).then(resp => {
+            if (resp.status === 0) {
+              this.modules = resp.data.modulesList;
+              this.total = resp.data.num;
             }
           })
         },
         handleCurrentChange(page) {
-          var _this = this;
-          this.$axios.get('/secret/getModules/' + page + '/' + this.pageSize).then(resp => {
-            if (resp && resp.data.status === 0) {
-              _this.modules = resp.data.data.modulesList;
-              _this.total = resp.data.data.num;
+          getModules(page, this.pageSize).then(resp => {
+            if (resp.status === 0) {
+              this.modules = resp.data.modulesList;
+              this.total = resp.data.num;
             }
           })
         },
@@ -124,13 +124,13 @@
           )
         },
         editModules (id) {
-          this.$axios.get('/secret/findModules/' + id).then(resp => {
-            if (resp && resp.data.status === 0) {
+          findModules(id).then(resp => {
+            if (resp.status === 0) {
               this.$router.push(
                 {
                   name: 'SecretModulesEditor',
                   params: {
-                    modules: resp.data.data
+                    modules: resp.data
                   }
                 }
               )
@@ -143,12 +143,11 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-              this.$axios
-                .get('/secret/deleteModules/' + id).then(resp => {
-                if (resp && resp.data.status === 0) {
+            deleteModules(id).then(resp => {
+                if (resp.status === 0) {
                   this.$message({
                     type: 'info',
-                    message: resp.data.message
+                    message: resp.message
                   })
                   this.loadModules()
                   _this.$router.replace('/admin/dashboard')
@@ -166,7 +165,7 @@
     }
 </script>
 
-<style scoped>
+<style>
   .add-link {
     margin: 18px 0 15px 10px;
     float: left;

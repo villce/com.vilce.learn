@@ -10,6 +10,7 @@
 
 <script>
   import {createRouter} from '../../router'
+  import {currentUser, logout} from "../../api/user/login";
 
   export default {
     name: 'Header',
@@ -24,23 +25,23 @@
     },
     methods: {
       currentUser() {
-        var _this = this;
-        this.$axios.get('/login/currentUser').then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.userIcon = resp.data.data.icon;
-            _this.username = resp.data.data.username;
+        const username = this.$store.state.username;
+        currentUser(username).then(resp => {
+          if (resp.status === 0) {
+            if (resp.data !== null) {
+              this.userIcon = resp.data.icon;
+            }
           }
         })
       },
       logout () {
-        var _this = this;
-        this.$axios.get('/login/out').then(resp => {
-          if (resp.data.status === 0) {
-            _this.$store.commit('logout');
-            _this.$router.replace('/index');
+        logout().then(resp => {
+          if (resp.status === 0) {
+            this.$store.commit('logout');
+            this.$router.replace('/index');
             // 清空路由，防止路由重复加载
             const newRouter = createRouter();
-            _this.$router.matcher = newRouter.matcher
+            this.$router.matcher = newRouter.matcher
           }
         }).catch(failResponse => {})
       }

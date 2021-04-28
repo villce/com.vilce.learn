@@ -104,6 +104,8 @@
 
 <script>
 import RoleCreate from './RoleCreate'
+import {addOrUpdateRole, getAllPermissions, listAllRolesInfo, updateRoleMenu} from "../../../api/user/role";
+import {get1RoleMenu} from "../../../api/user/menu";
 export default {
   name: 'UserRole',
   components: {RoleCreate},
@@ -135,26 +137,23 @@ export default {
   },
   methods: {
     listRoles () {
-      var _this = this
-      this.$axios.get('/role/listAllRolesInfo').then(resp => {
-        if (resp && resp.data.status === 0) {
-          _this.roles = resp.data.data
+      listAllRolesInfo().then(resp => {
+        if (resp.status === 0) {
+          this.roles = resp.data
         }
       })
     },
     listPerms () {
-      var _this = this
-      this.$axios.get('/role/getAllPermissions').then(resp => {
-        if (resp && resp.data.status === 0) {
-          _this.perms = resp.data.data
+      getAllPermissions().then(resp => {
+        if (resp.status === 0) {
+          this.perms = resp.data
         }
       })
     },
     listMenus () {
-      var _this = this
-      this.$axios.get('/menu/get1RoleMenu').then(resp => {
-        if (resp && resp.data.status === 0) {
-          _this.menus = resp.data.data
+      get1RoleMenu().then(resp => {
+        if (resp.status === 0) {
+          this.menus = resp.data
         }
       })
     },
@@ -165,11 +164,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$axios.put('/role/updateRoleStatus', {
-            enabled: value,
-            id: role.id
-          }).then(resp => {
-            if (resp && resp.data.status === 0) {
+          const roleReq = {
+            'enabled': value,
+            'id': role.id
+          }
+          updateRoleMenu(roleReq).then(resp => {
+            if (resp.status === 0) {
               if (value) {
                 this.$message('角色 [' + role.name_zh + '] 已启用')
               } else {
@@ -211,34 +211,36 @@ export default {
       }
     },
     onSubmit (role) {
-      let _this = this
       // 根据视图绑定的角色 id 向后端传送角色信息
       let perms = []
-      for (let i = 0; i < _this.selectedPermsIds.length; i++) {
-        for (let j = 0; j < _this.perms.length; j++) {
-          if (_this.selectedPermsIds[i] === _this.perms[j].id) {
-            perms.push(_this.perms[j])
+      for (let i = 0; i < this.selectedPermsIds.length; i++) {
+        for (let j = 0; j < this.perms.length; j++) {
+          if (this.selectedPermsIds[i] === this.perms[j].id) {
+            perms.push(this.perms[j])
           }
         }
       }
-      this.$axios.put('/role/addOrUpdateRole', {
-        id: role.id,
-        name: role.name,
-        name_zh: role.name_zh,
-        enabled: role.enabled,
-        perms: perms
-      }).then(resp => {
-        if (resp && resp.data.status === 0) {
-          this.$alert(resp.data.message)
+      const roleReq = {
+        'id': role.id,
+        'name': role.name,
+        'name_zh': role.name_zh,
+        'enabled': role.enabled,
+        'perms': perms
+      }
+      addOrUpdateRole(roleReq).then(resp => {
+        if (resp.status === 0) {
+          this.$alert(resp.message)
           this.dialogFormVisible = false
           this.listRoles()
         }
       })
-      this.$axios.put('/role/updateRoleMenu?rid=' + role.id, {
-        menusIds: this.$refs.tree.getCheckedKeys()
-      }).then(resp => {
-        if (resp && resp.data.status === 0) {
-          console.log(resp.data.message)
+      const menuReq = {
+        'rid': role.id,
+        'menusIds': this.$refs.tree.getCheckedKeys()
+      }
+      updateRoleMenu(menuReq).then(resp => {
+        if (resp.status === 0) {
+          console.log(resp.message)
         }
       })
     }

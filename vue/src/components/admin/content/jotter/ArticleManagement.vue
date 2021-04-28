@@ -77,7 +77,9 @@
 </template>
 
 <script>
-export default {
+  import { statistics, listArticles, deleteArticle} from "../../../../api/article/article";
+
+  export default {
   name: 'ArticleManagement',
   data () {
     return {
@@ -99,28 +101,24 @@ export default {
   },
   methods: {
     countArticles() {
-      var _this = this;
-      this.$axios.get('/article/statistics').then(resp => {
-        if (resp && resp.data.status === 0) {
-          _this.articleStatistic = resp.data.data;
-          _this.total = _this.articleStatistic.articleNum;
-          console.info(_this.total)
+      statistics().then(resp => {
+        if (resp.status === 0) {
+          this.articleStatistic = resp.data;
+          this.total = this.articleStatistic.articleNum;
         }
       })
     },
     loadArticles () {
-      var _this = this
-      this.$axios.get('/article/listArticles/1/' + this.pageSize ).then(resp => {
-        if (resp && resp.data.status === 0) {
-          _this.articles = resp.data.data;
+      listArticles(1, this.pageSize).then(resp => {
+        if (resp.status === 0) {
+          this.articles = resp.data;
         }
       })
     },
     handleCurrentChange(page) {
-      var _this = this;
-      this.$axios.get('/article/listArticles/' + page + '/' + this.pageSize).then(resp => {
-        if (resp && resp.data.status === 0) {
-          _this.articles = resp.data.data
+      listArticles(page, this.pageSize).then(resp => {
+        if (resp.status === 0) {
+          this.articles = resp.data
         }
       })
     },
@@ -151,12 +149,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-          this.$axios
-            .delete('/article/deleteArticle?id=' + id).then(resp => {
-            if (resp && resp.data.status === 0) {
+        deleteArticle(id).then(resp => {
+            if (resp.status === 0) {
               this.$message({
                 type: 'info',
-                message: resp.data.message
+                message: resp.message
               })
               this.loadArticles()
               _this.$router.replace('/admin/dashboard')

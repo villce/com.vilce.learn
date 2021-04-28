@@ -39,13 +39,13 @@ public class RoleController {
         return adminRoleService.listAllRolesWithPermsAndMenus();
     }
 
-    @PutMapping("updateRoleStatus")
+    @PostMapping("updateRoleStatus")
     @ApiOperation(value = "更改角色状态信息")
     public BaseResponse updateRoleStatus(@RequestBody AdminRole role) {
         return adminRoleService.updateRoleStatus(role);
     }
 
-    @PutMapping("addOrUpdateRole")
+    @PostMapping("addOrUpdateRole")
     @ApiOperation(value = "添加角色或更新角色及角色权限信息")
     public BaseResponse addOrUpdateRole(@RequestBody AdminRole role) {
         return adminRoleService.addOrUpdateRole(role);
@@ -57,7 +57,7 @@ public class RoleController {
         return adminPermissionService.getAllPermissions();
     }
 
-    @PutMapping("updateRoleMenu")
+    @PostMapping("updateRoleMenu")
     @ApiOperation(value = "更新角色菜单信息")
     public BaseResponse updateRoleMenu(@RequestParam int rid, @RequestBody Map<String, List<Integer>> menusIds) {
         return  adminRoleMenuService.updateRoleMenu(rid, menusIds);

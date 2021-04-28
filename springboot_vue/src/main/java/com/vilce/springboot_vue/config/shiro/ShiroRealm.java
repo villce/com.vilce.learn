@@ -16,13 +16,13 @@ import java.util.Set;
 
 /**
  * @Description: WJRealm配置
- * @ProjectName: com.vilce.learn
- * @Package: com.vilce.springboot_vue.config.shiro.WJRealm
+ * @ProjectName: operate
+ * @Package: com.eastmoney.emis.operate.config.shiro
  * @Author: 雷才哲
- * @Date: 2020/8/26 16:02
+ * @Date: 2021/3/22 下午1:36
  * @Version: 1.0
  */
-public class WJRealm extends AuthorizingRealm {
+public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userService;
@@ -30,7 +30,7 @@ public class WJRealm extends AuthorizingRealm {
     private AdminPermissionService adminPermissionService;
 
     /**
-     * 重写获取授权信息方法
+     * 重写角色权限配置
      *
      * @param principalCollection
      * @return
@@ -48,15 +48,15 @@ public class WJRealm extends AuthorizingRealm {
     }
 
     /**
-     * 获取认证信息，即根据 token 中的用户名从数据库中获取密码、盐等并返回
+     * 重写身份验证
      *
-     * @param token
+     * @param authenticationToken
      * @return
      * @throws AuthenticationException
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        String userName = token.getPrincipal().toString();
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        String userName = authenticationToken.getPrincipal().toString();
         AdminUser user = userService.getUserByUsername(userName);
         if (ObjectUtils.isEmpty(user)) {
             throw new UnknownAccountException();

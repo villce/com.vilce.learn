@@ -108,6 +108,8 @@
 <script>
   import BulkRegistration from './BulkRegistration'
   import ImgUpload from '../content/ImgUpload'
+  import {editUser, findUserById, getAllUsers, resetPassword, updateUserStatus} from "../../../api/user/user";
+  import {listAllRolesInfo} from "../../../api/user/role";
   export default {
     name: 'UserProfile',
     components: {BulkRegistration, ImgUpload},
@@ -131,29 +133,27 @@
     },
     methods: {
       listUsers() {
-        var _this = this
-        this.$axios.get('/user/getAllUsers').then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.users = resp.data.data
+        getAllUsers().then(resp => {
+          if (resp.status === 0) {
+            this.users = resp.data
           }
         })
       },
       listRoles() {
-        var _this = this
-        this.$axios.get('/role/listAllRolesInfo').then(resp => {
-          console.info("listAllRolesInfo")
-          if (resp && resp.data.status === 0) {
-            _this.roles = resp.data.data
+        listAllRolesInfo().then(resp => {
+          if (resp.status === 0) {
+            this.roles = resp.data
           }
         })
       },
       commitStatusChange(value, user) {
         if (user.username !== 'admin') {
-          this.$axios.put('/user/updateUserStatus', {
-            enabled: value,
-            username: user.username
-          }).then(resp => {
-            if (resp && resp.data.status === 0) {
+          const userReq = {
+            'enabled': value,
+            'username': user.username
+          }
+          updateUserStatus(userReq).then(resp => {
+            if (resp.status === 0) {
               if (value) {
                 this.$message('用户 [' + user.username + '] 已启用')
               } else {
@@ -167,38 +167,37 @@
         }
       },
       onSubmit(user) {
-        let _this = this
         // 根据视图绑定的角色 id 向后端传送角色信息
         let roles = []
-        for (let i = 0; i < _this.selectedRolesIds.length; i++) {
-          for (let j = 0; j < _this.roles.length; j++) {
-            if (_this.selectedRolesIds[i] === _this.roles[j].id) {
-              roles.push(_this.roles[j])
+        for (let i = 0; i < this.selectedRolesIds.length; i++) {
+          for (let j = 0; j < this.roles.length; j++) {
+            if (this.selectedRolesIds[i] === this.roles[j].id) {
+              roles.push(this.roles[j])
             }
           }
         }
-        // 根据视图绑定的角色 id 向后端传送角色信息
-        this.$axios.put('/user/editUser', {
-          id: user.id,
-          username: user.username,
-          icon: user.icon,
-          roles: roles
-        }).then(resp => {
-          if (resp && resp.data.status === 0) {
+        const userReq = {
+          'id': user.id,
+          'username': user.username,
+          'icon': user.icon,
+          'roles': roles
+        }
+        editUser(userReq).then(resp => {
+          if (resp.status === 0) {
             this.$alert('用户信息修改成功')
             this.dialogFormVisible = false
             // 修改角色后重新请求用户信息，实现视图更新
             this.listUsers()
           } else {
-            this.$alert(resp.data.message)
+            this.$alert(resp.message)
           }
         })
       },
       editUser(userId) {
-        this.$axios.get('/user/findUser/' + userId).then(resp => {
-          if (resp && resp.data.status === 0) {
+        findUserById(userId).then(resp => {
+          if (resp.status === 0) {
             this.dialogFormVisible = true
-            this.selectedUser = resp.data.data
+            this.selectedUser = resp.data
             let roleIds = []
             for (let i = 0; i < this.selectedUser.roles.length; i++) {
               roleIds.push(this.selectedUser.roles[i].id)
@@ -208,10 +207,11 @@
         })
       },
       resetPassword(username) {
-        this.$axios.put('/user/resetPassword', {
-          username: username
-        }).then(resp => {
-          if (resp && resp.data.status === 0) {
+        const userReq = {
+          'username': username
+        }
+        resetPassword(userReq).then(resp => {
+          if (resp.status === 0) {
             this.$alert('密码已重置为 123')
           }
         })

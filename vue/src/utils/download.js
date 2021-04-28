@@ -1,29 +1,5 @@
 import { parseTime } from "./index";
 
-const ServerConfig = {
-  local: 'http://localhost:8006/api',
-  dev: 'http://10.10.181.121:8125',
-  test: 'http://10.10.86.229:8128',
-  prod: 'http://180.163.42.201:38116',
-  production: 'http://180.163.42.198:8116'
-}
-
-export function getBasicUrl() {
-  if (
-    location.href.indexOf('10.10.181.121') > -1
-  ) {
-    return ServerConfig.dev
-  } else if (location.href.indexOf('10.10.86.229') > -1) {
-    return ServerConfig.test
-  } else if (location.href.indexOf('wgtradetest.eastmoney.com') > -1) {
-    return ServerConfig.prod
-  } else if (location.href.indexOf('180.163.42.164') > -1) {
-    return ServerConfig.production
-  } else if (location.href.indexOf('localhost') > -1) {
-    return ServerConfig.local
-  }
-}
-
 export function downloadImage(imgSrc) {
   //实例化一个img对象
   const img = new Image();

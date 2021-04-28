@@ -5,7 +5,7 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import 'echarts/theme/macarons.js'
 import store from './store'
-
+import { authentication } from './api/user/login'
 import {
   Pagination,
   Dialog,
@@ -65,6 +65,7 @@ import {
   DatePicker, Collapse, CollapseItem, RadioGroup, RadioButton, Radio,
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import {getUserMenu} from "./api/user/menu";
 
 Vue.use(Pagination)
 Vue.use(Dialog)
@@ -141,8 +142,6 @@ Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
 
 var axios = require('axios')
-axios.defaults.baseURL = "http://localhost:8006/api"
-// axios.defaults.baseURL = "http://Vilce-SpringBoot-Vue/api"
 // 使请求带上凭证信息
 axios.defaults.withCredentials = true
 
@@ -163,7 +162,7 @@ router.beforeEach((to, from, next) => {
   // 如果前端没有登录信息则直接拦截，如果有则判断后端是否正常登录（防止构造参数绕过）
   if (to.meta.requireAuth) {
     if (store.state.username) {
-      axios.get('/login/authentication').then(resp => {
+      authentication().then(resp => {
         if (resp) {
           next()
         }
@@ -198,9 +197,9 @@ const initAdminMenu = (router, store) => {
   if (store.state.adminMenus.length > 0) {
     return
   }
-  axios.get('/menu/getUserMenu').then(resp => {
-    if (resp && resp.data.status === 0) {
-      var fmtRoutes = formatRoutes(resp.data.data)
+  getUserMenu().then(resp => {
+    if (resp.status === 0) {
+      var fmtRoutes = formatRoutes(resp.data)
       router.addRoutes(fmtRoutes)
       store.commit('initAdminMenu', fmtRoutes)
     }
@@ -210,7 +209,6 @@ const initAdminMenu = (router, store) => {
 const formatRoutes = (routes) => {
   let fmtRoutes = []
   routes.forEach(route => {
-    console.info(route)
     if (route.children) {
       route.children = formatRoutes(route.children)
     }

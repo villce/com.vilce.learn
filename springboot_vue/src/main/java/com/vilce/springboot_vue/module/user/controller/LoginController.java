@@ -80,14 +80,7 @@ public class LoginController {
 
     @GetMapping("currentUser")
     @ApiOperation(value = "获取当前用户信息")
-    public AdminUser currentUser() {
-        // 获取当前用户
-        Object principal = SecurityUtils.getSubject().getPrincipal();
-        if (Objects.nonNull(principal)) {
-            String username = principal.toString();
-            return userService.getUserByUsername(username);
-        }else {
-            throw new BasicException(ResultStatus.ERROR.getStatus(), "用户未登录！");
-        }
+    public AdminUser currentUser(String username) {
+        return userService.currentUser(username);
     }
 }

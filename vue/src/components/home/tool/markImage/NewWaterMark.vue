@@ -79,7 +79,8 @@
 </template>
 
 <script>
-  import {downloadImage} from "../../../../utils/basic";
+  import {downloadImage} from "../../../../utils/download";
+  import {newMarkImg} from "../../../../api/tool/mark";
 
   export default {
     name: 'NewWaterMark',
@@ -124,23 +125,23 @@
         }
       },
       markNew() {
-        this.$axios
-          .post('/mark/new', {
-            word: this.form.word,
-            wordSize: this.form.wordSize,
-            color: this.form.color,
-            degree: this.form.degree,
-            paved: this.form.paved,
-            changeX: this.form.changeX,
-            changeY: this.form.changeY
-          }).then(resp => {
-          if (resp && resp.data.status === 0) {
+        const imageReq = {
+          'word': this.form.word,
+          'wordSize': this.form.wordSize,
+          'color': this.form.color,
+          'degree': this.form.degree,
+          'paved': this.form.paved,
+          'changeX': this.form.changeX,
+          'changeY': this.form.changeY
+        }
+        newMarkImg(imageReq).then(resp => {
+          if (resp.status === 0) {
             this.$message({
               type: 'info',
-              message: resp.data.message
+              message: resp.message
             })
             //这里的data数据是后台返回来的，byte是params中的键值
-            this.markNewSrc = 'data:image/png;base64,' + resp.data.data;
+            this.markNewSrc = 'data:image/png;base64,' + resp.data;
             this.$emit('onSubmit')
             this.downloadStatus = false
           }

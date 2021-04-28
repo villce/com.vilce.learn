@@ -39,9 +39,9 @@ public class WageController {
         return wageService.addOrUpdateWageOrder(wageOrder);
     }
 
-    @GetMapping("deleteWageOrder")
+    @GetMapping("deleteWageOrder/{id}")
     @ApiOperation(value = "删除工资条信息")
-    public BaseResponse deleteWageOrder(int id){
+    public BaseResponse deleteWageOrder(@PathVariable int id){
         return wageService.deleteWageOrder(id);
     }
 }

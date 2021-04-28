@@ -21,7 +21,8 @@
   </body>
 </template>
 <script>
-export default{
+  import { login } from "../../../api/user/login";
+  export default{
   data () {
     return {
       rules: {
@@ -38,26 +39,23 @@ export default{
   },
   methods: {
     login () {
-      var _this = this
-      this.$axios
-        .post('/login/in', {
-          username: this.loginForm.username,
-          password: this.loginForm.password
-        })
-        .then(resp => {
-          if (resp.data.status === 0) {
-            var username = resp.data.data.username;
+      const userReq = {
+        'username': this.loginForm.username,
+        'password': this.loginForm.password
+      }
+      login(userReq).then(resp => {
+          if (resp.status === 0) {
+            var username = resp.data.username;
             // 父子组件信息传递，提示已登录的用户
-            _this.$store.commit('login', username);
-            var path = _this.$route.query.redirect;
-            _this.$router.replace({path: path === '/' || path === undefined ? '/admin' : path})
+            this.$store.commit('login', username);
+            var path = this.$route.query.redirect;
+            this.$router.replace({path: path === '/' || path === undefined ? '/admin' : path})
           } else {
-            this.$alert(resp.data.message, '提示', {
+            this.$alert(resp.message, '提示', {
               confirmButtonText: '确定'
             })
           }
-        })
-        .catch(failResponse => {})
+      })
     }
   }
 }

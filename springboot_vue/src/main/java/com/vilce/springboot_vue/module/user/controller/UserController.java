@@ -39,19 +39,19 @@ public class UserController {
         return userService.findUser(userId);
     }
 
-    @PutMapping("updateUserStatus")
+    @PostMapping("updateUserStatus")
     @ApiOperation(value = "更新用户状态信息")
     public BaseResponse updateUserStatus(@RequestBody @Valid AdminUser requestUser) {
         return  userService.updateUserStatus(requestUser);
     }
 
-    @PutMapping("resetPassword")
+    @PostMapping("resetPassword")
     @ApiOperation(value = "重置密码")
     public BaseResponse resetPassword(@RequestBody @Valid AdminUser requestUser) {
         return userService.updatePassword(requestUser);
     }
 
-    @PutMapping("editUser")
+    @PostMapping("editUser")
     @ApiOperation(value = "更新用户基础信息")
     public BaseResponse editUser(@RequestBody @Valid AdminUser requestUser) {
         return userService.editUser(requestUser);

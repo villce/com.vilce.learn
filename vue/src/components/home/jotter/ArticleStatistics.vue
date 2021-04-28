@@ -19,6 +19,9 @@
 </template>
 
 <script>
+  import {currentUser} from "../../../api/user/login";
+  import {listArticles, statistics} from "../../../api/article/article";
+
   export default {
     name: "ArticleStatistics",
     data() {
@@ -36,24 +39,27 @@
     },
     methods: {
       currentUser() {
-        this.$axios.get('/login/currentUser').then(resp => {
-          if (resp && resp.data.status === 0) {
-            this.circleUrl = resp.data.data.icon;
+        const username = this.$store.state.username;
+        currentUser(username).then(resp => {
+          if (resp.status === 0) {
+            if (resp.data !== null) {
+              this.circleUrl = resp.data.icon;
+            }
           }
         })
       },
       countArticles() {
-        this.$axios.get('/article/statistics').then(resp => {
-          if (resp && resp.data.status === 0) {
-            this.articleStatistic = resp.data.data;
+        statistics().then(resp => {
+          if (resp.status === 0) {
+            this.articleStatistic = resp.data;
             this.total = this.articleStatistic.articleNum;
           }
         })
       },
       loadArticles() {
-        this.$axios.get('/article/listArticles/1/' + this.pageSize).then(resp => {
-          if (resp && resp.data.status === 0) {
-            this.articles = resp.data.data
+        listArticles(1, this.pageSize).then(resp => {
+          if (resp.status === 0) {
+            this.articles = resp.data
           }
         })
       }

@@ -41,6 +41,8 @@
 </template>
 
 <script>
+  import {currentUser} from "../api/user/login";
+
   export default {
     data() {
       return {
@@ -52,10 +54,12 @@
     },
     methods: {
       currentUser() {
-        var _this = this;
-        this.$axios.get('/login/currentUser').then(resp => {
-          if (resp && resp.data.status === 0) {
-            _this.circleUrl = resp.data.data.icon;
+        const username = this.$store.state.username;
+        currentUser(username).then(resp => {
+          if (resp.status === 0) {
+            if (resp.data !== null) {
+              this.circleUrl = resp.data.icon;
+            }
           }
         })
       },

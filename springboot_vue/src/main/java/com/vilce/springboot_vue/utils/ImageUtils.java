@@ -1,15 +1,10 @@
 package com.vilce.springboot_vue.utils;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.common.model.po.Mark;
 import com.vilce.common.utils.FileUtils;
-import com.vilce.common.utils.MarkImageUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -22,8 +17,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Description: 图片工具
@@ -137,9 +130,7 @@ public class ImageUtils {
             tag.getGraphics().drawImage(image.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0, null);
             //创建文件输出流
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            //将图片按JPEG压缩，保存到out中
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-            encoder.encode(tag);
+            ImageIO.write(tag,"jpeg",out);
             return out.toByteArray();
         } catch (Exception ef) {
             throw new BasicException(ResultStatus.DATA_EXCEPTION.getStatus(), "图片压缩失败！");

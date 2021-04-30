@@ -1,30 +1,52 @@
 <template>
   <div style="height:100%;width:100%">
-    <el-row :gutter="5" type="flex" justify="center">
-      <el-col :span="3">
-        <el-card class="articles-title" shadow="always">
+    <el-container>
+      <el-aside style="width: 250px;margin-left: 100px">
+        <el-card shadow="always" style="text-align: center">
           <el-row slot="header" class="clearfix">
-            <span>vilce</span>
+            <span style="font-size: 30px">
+              <strong>vilce</strong>
+            </span>
           </el-row>
           <el-row type="flex" justify="center">
             <a class="block" href="/index">
-              <el-avatar :size="70" :src="circleUrl" style="margin-bottom: 5px"></el-avatar>
+              <el-avatar :size="70" :src="circleUrl" style="margin-bottom: 10px"></el-avatar>
             </a>
           </el-row>
-          <el-row class="index" style="text-align: center">
-            <el-link>博客<br>{{articleStatistic.articleNum}}</el-link>
-            <el-divider direction="vertical"></el-divider>
-            <el-link>分类<br>{{articleStatistic.typeNum}}</el-link>
-            <el-divider direction="vertical"></el-divider>
-            <el-link>标签<br>{{articleStatistic.labelNum}}</el-link>
+          <el-row style="font-size: 15px;margin-left: 40px">
+            <el-col :span="30">
+              <router-link class="article-link" :to="{path:'/jotter'}">
+                <el-row>博客</el-row>
+                <el-row>{{articleStatistic.articleNum}}</el-row>
+              </router-link>
+            </el-col>
+            <el-col :span="30">
+              <el-divider direction="vertical"></el-divider>
+            </el-col>
+            <el-col :span="30">
+              <router-link class="article-link" :to="{path:'/jotter'}">
+                <el-row>分类</el-row>
+                <el-row>{{articleStatistic.typeNum}}</el-row>
+              </router-link>
+            </el-col>
+            <el-col :span="30">
+              <el-divider direction="vertical"></el-divider>
+            </el-col>
+            <el-col :span="30">
+              <router-link class="article-link" :to="{path:'/jotter'}">
+                <el-row>标签</el-row>
+                <el-row>{{articleStatistic.labelNum}}</el-row>
+              </router-link>
+            </el-col>
           </el-row>
         </el-card>
         <br>
-        <el-card class="link_cover">
+        <el-card>
           <div class="py-4 links">
             <h3 class="pl-3 pb-3">目录</h3>
             <ul>
               <li
+                style="text-align: left"
                 v-for="(nav, index) in navList"
                 :key="index"
                 :class="{ on: activeIndex === index }"
@@ -47,9 +69,9 @@
             </ul>
           </div>
         </el-card>
-      </el-col>
-      <el-col :span="3" class="articles-area">
-        <el-card style="width:85%;text-align: left">
+      </el-aside>
+      <el-main style="margin-top: -20px;margin-left: 50px">
+        <el-card style="width:90%;text-align: left">
           <div class="body">
             <div
               class="content markdown-body"
@@ -57,8 +79,8 @@
               v-html="compiledMarkdown"></div>
           </div>
         </el-card>
-      </el-col>
-    </el-row>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
@@ -100,8 +122,7 @@
     },
     methods: {
       currentUser() {
-        const username = this.$store.state.username;
-        currentUser(username).then(resp => {
+        currentUser().then(resp => {
           if (resp.status === 0) {
             if (resp.data !== null) {
               this.circleUrl = resp.data.icon;
@@ -164,17 +185,6 @@
           this.docsSecondLevels = secondLevels;
         }
       },
-      docsScroll() {
-        if (this.titleClickScroll) {
-          return;
-        }
-        let scrollTop = this.$refs.helpDocs.scrollTop;
-        let firstLevelIndex = this.getLevelActiveIndex(scrollTop, this.docsFirstLevels);
-        this.currentClick(firstLevelIndex);
-
-        let secondLevelIndex = this.getLevelActiveIndex(scrollTop, this.docsSecondLevels);
-        this.childrenCurrentClick(secondLevelIndex)
-      },
       getLevelActiveIndex(scrollTop, docsLevels) {
         let currentIdx = null;
         let nowActive = docsLevels.some((currentValue, index) => {
@@ -224,7 +234,7 @@
           return item;
         }));
       },
-      // 将一级二级标题数据处理成树结构
+      // 将除一级标题外数据处理成树结构
       handleNavTree() {
         let navs = this.getTitle(this.content);
         let navLevel = [1, 2, 3, 4, 5, 6];
@@ -247,7 +257,6 @@
             });
           }
         });
-        console.info(retNavs);
         return retNavs;
       },
       find(arr, condition) {
@@ -309,17 +318,9 @@
 
 <style scoped>
   @import "../../../styles/markdown.css";
-  .text {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  .articles-title {
-    width: 200px;
-  }
-  .articles-area {
-    width: 1000px;
-  }
-  .link_cover {
-    width: 200px;
+
+  .article-link {
+    text-decoration: none;
+    color: #606266;
   }
 </style>

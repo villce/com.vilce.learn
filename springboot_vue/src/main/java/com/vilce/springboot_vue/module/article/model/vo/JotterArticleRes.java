@@ -19,7 +19,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @ApiModel(value = "文章")
-public class JotterArticleRes implements Serializable {
+public class JotterArticleRes implements Serializable,Comparable<JotterArticleRes> {
     @ApiModelProperty(value = "文章id",example = "0")
     private int id;
     @ApiModelProperty(value = "文章类型", example = "随笔")
@@ -58,6 +58,22 @@ public class JotterArticleRes implements Serializable {
         jotterArticleRes.setIntroduction(RegexUtils.getSubUtilSimple(article.getArticle_content_md(), regex));
         jotterArticleRes.setPublishDate(TimeUtils.dateToYMD(article.getArticle_date()));
         return jotterArticleRes;
+    }
+
+    /**
+     * 排序时使用绑定时间
+     *
+     * @param res
+     * @return
+     */
+    @Override
+    public int compareTo(JotterArticleRes res) {
+        // 按照发布时间排序
+        if (this.getPublishDate().compareTo(res.getPublishDate()) > 0) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 
     public int getId() {

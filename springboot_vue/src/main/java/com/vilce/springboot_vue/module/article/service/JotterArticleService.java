@@ -3,6 +3,7 @@ package com.vilce.springboot_vue.module.article.service;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
 import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
+import com.vilce.springboot_vue.module.article.model.vo.JotterArticlePage;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public interface JotterArticleService {
      * @param pageSize  每页数量
      * @return
      */
-    List<JotterArticleRes> listArticles(int pageIndex, int pageSize);
+    JotterArticlePage listArticles(int pageIndex, int pageSize);
 
     /**
      * 根据id获取文章信息
@@ -55,7 +56,7 @@ public interface JotterArticleService {
      * @param type 类别
      * @return
      */
-    List<JotterArticleRes> getArticleByType(String type);
+    JotterArticlePage getArticleByType(int pageIndex, int pageSize, String type);
 
     /**
      * 获取某标签文章
@@ -63,7 +64,7 @@ public interface JotterArticleService {
      * @param label 标签
      * @return
      */
-    List<JotterArticleRes> getArticleByLabel(String label);
+    JotterArticlePage getArticleByLabel(int pageIndex, int pageSize, String label);
 
     /**
      * 模糊查询文章
@@ -71,7 +72,7 @@ public interface JotterArticleService {
      * @param searchStr 查询字符串
      * @return
      */
-    List<JotterArticleRes> searchArticle(String searchStr);
+    JotterArticlePage searchArticle(int pageIndex, int pageSize, String searchStr);
 
     /**
      * 统计文章

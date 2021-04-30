@@ -76,5 +76,5 @@ public interface UserService {
      *
      * @return
      */
-    AdminUser currentUser(String username);
+    AdminUser currentUser();
 }

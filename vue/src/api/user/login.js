@@ -26,11 +26,10 @@ export function authentication() {
   })
 }
 
-export function currentUser(username) {
+export function currentUser() {
   return request({
     url: '/login/currentUser',
-    method: 'get',
-    params: { 'username': username }
+    method: 'get'
   })
 }
 

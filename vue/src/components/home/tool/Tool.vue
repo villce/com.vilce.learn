@@ -51,8 +51,7 @@
     },
     methods: {
       currentUser() {
-        const username = this.$store.state.username;
-        currentUser(username).then(resp => {
+        currentUser().then(resp => {
           if (resp.status === 0) {
             if (resp.data !== null) {
               this.userIcon = resp.data.icon;

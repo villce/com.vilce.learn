@@ -127,7 +127,8 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public AdminUser currentUser(String username) {
+    public AdminUser currentUser() {
+        String username = getCookie("vilce_token");
         if (StringUtils.isNotBlank(username)) {
             return getUserByUsername(username);
         }

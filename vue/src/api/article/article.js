@@ -9,18 +9,18 @@ export function deleteArticle(id) {
 }
 
 // 获取某标签文章
-export function getArticleByLabel(label) {
+export function getArticleByLabel(pageIndex, pageSize, label) {
   return request({
-    url: '/article/getArticleByLabel',
+    url: '/article/getArticleByLabel/' + pageIndex + '/' + pageSize,
     method: 'get',
     params: {label}
   })
 }
 
 // 获取某类文章
-export function getArticleByType(type) {
+export function getArticleByType(pageIndex, pageSize, type) {
   return request({
-    url: '/article/getArticleByType',
+    url: '/article/getArticleByType/' + pageIndex + '/' + pageSize,
     method: 'get',
     params: {type}
   })

@@ -4,6 +4,7 @@ import com.vilce.common.autoconfig.redis.annotation.RedisFilter;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
 import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
+import com.vilce.springboot_vue.module.article.model.vo.JotterArticlePage;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
 import com.vilce.springboot_vue.module.article.service.JotterArticleService;
 import io.swagger.annotations.Api;
@@ -36,14 +37,12 @@ public class JotterArticleController {
         return jotterArticleService.addOrUpdate(article);
     }
 
-    @RedisFilter
     @GetMapping("listArticles/{pageIndex}/{pageSize}")
     @ApiOperation(value = "分页展示文章信息")
-    public List<JotterArticleRes> listArticles(@PathVariable int pageIndex,@PathVariable int pageSize) {
+    public JotterArticlePage listArticles(@PathVariable int pageIndex, @PathVariable int pageSize) {
         return jotterArticleService.listArticles(pageIndex, pageSize);
     }
 
-    @RedisFilter()
     @GetMapping("getOneArticle/{id}")
     @ApiOperation(value = "根据id获取文章")
     public JotterArticleRes getOneArticle(@PathVariable int id) {
@@ -56,28 +55,24 @@ public class JotterArticleController {
         return jotterArticleService.deleteArticle(id);
     }
 
-    @RedisFilter
-    @GetMapping("getArticleByType")
-    @ApiOperation(value = "获取某类文章")
-    public List<JotterArticleRes> getArticleByType(String type) {
-        return jotterArticleService.getArticleByType(type);
+    @GetMapping("getArticleByType/{pageIndex}/{pageSize}")
+    @ApiOperation(value = "分页获取某类文章")
+    public JotterArticlePage getArticleByType(@PathVariable int pageIndex, @PathVariable int pageSize, String type) {
+        return jotterArticleService.getArticleByType(pageIndex, pageSize, type);
     }
 
-    @RedisFilter
-    @GetMapping("getArticleByLabel")
-    @ApiOperation(value = "获取某标签文章")
-    public List<JotterArticleRes> getArticleByLabel(String label) {
-        return jotterArticleService.getArticleByLabel(label);
+    @GetMapping("getArticleByLabel/{pageIndex}/{pageSize}")
+    @ApiOperation(value = "分页获取某标签文章")
+    public JotterArticlePage getArticleByLabel(@PathVariable int pageIndex, @PathVariable int pageSize, String label) {
+        return jotterArticleService.getArticleByLabel(pageIndex, pageSize, label);
     }
 
-    @RedisFilter
-    @GetMapping("search")
+    @GetMapping("search/{pageIndex}/{pageSize}")
     @ApiOperation(value = "模糊查询文章")
-    public List<JotterArticleRes> searchArticle(String searchStr) {
-        return jotterArticleService.searchArticle(searchStr);
+    public JotterArticlePage searchArticle(@PathVariable int pageIndex, @PathVariable int pageSize, String searchStr) {
+        return jotterArticleService.searchArticle(pageIndex, pageSize, searchStr);
     }
 
-    @RedisFilter
     @GetMapping("statistics")
     @ApiOperation(value = "统计文章")
     public ArticleStatistic statisticsArticle() {

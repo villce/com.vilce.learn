@@ -1,23 +1,25 @@
 package com.vilce.springboot_vue.module.article.service.impl;
 
+import com.google.common.collect.Lists;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
+import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.module.article.mapper.JotterArticleMapper;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
 import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
+import com.vilce.springboot_vue.module.article.model.vo.JotterArticlePage;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
 import com.vilce.springboot_vue.module.article.service.JotterArticleService;
+import com.vilce.springboot_vue.utils.PageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description: 文章相关服务实现
@@ -35,7 +37,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    private static final String ARTICLE = "com.vilce.springbootVue.article:";
+    private static final String ARTICLE = "com:vilce:springbootVue:article:";
 
     /**
      * 分页获取文章
@@ -45,9 +47,13 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @return
      */
     @Override
-    public List<JotterArticleRes> listArticles(int pageIndex, int pageSize) {
+    public JotterArticlePage listArticles(int pageIndex, int pageSize) {
+        JotterArticlePage jotterArticlePage = new JotterArticlePage();
         List<JotterArticle> articleList = jotterArticleMapper.findAll((pageIndex - 1) * pageSize, pageSize);
-        return converArticleResList(articleList);
+        List<JotterArticleRes> articleResList = convertArticleResList(articleList);
+        jotterArticlePage.setArticleResList(articleResList);
+        jotterArticlePage.setArticleNum(jotterArticleMapper.countArticle());
+        return jotterArticlePage;
     }
 
     /**
@@ -125,9 +131,13 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @return
      */
     @Override
-    public List<JotterArticleRes> getArticleByType(String type) {
-        List<JotterArticle> articleList = jotterArticleMapper.getArticleByType(type);
-        return converArticleResList(articleList);
+    public JotterArticlePage getArticleByType(int pageIndex, int pageSize, String type) {
+        JotterArticlePage jotterArticlePage = new JotterArticlePage();
+        List<JotterArticle> articleList = jotterArticleMapper.getArticleByType((pageIndex - 1) * pageSize, pageSize, type);
+        List<JotterArticleRes> articleResList = convertArticleResList(articleList);
+        jotterArticlePage.setArticleResList(articleResList);
+        jotterArticlePage.setArticleNum(jotterArticleMapper.countArticleByType(type));
+        return jotterArticlePage;
     }
 
     /**
@@ -137,13 +147,24 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @return
      */
     @Override
-    public List<JotterArticleRes> getArticleByLabel(String label) {
-        List<Integer> articleIdList = jotterArticleMapper.getArticleIdByLabel(label);
-        List<JotterArticleRes> articleResList = new LinkedList<>();
-        articleIdList.forEach(articleId -> {
-            articleResList.add(findArticleById(articleId));
-        });
-        return articleResList;
+    public JotterArticlePage getArticleByLabel(int pageIndex, int pageSize, String label) {
+        JotterArticlePage jotterArticlePage = new JotterArticlePage();
+        List<JotterArticleRes> articleResList = Lists.newLinkedList();
+        String redisKey = StringUtils.join(ARTICLE, label);
+        String redisStr = redisTemplate.opsForValue().get(redisKey);
+        if (StringUtils.isNotBlank(redisStr)) {
+            articleResList = JSONUtils.toJavaBean(redisStr, List.class, JotterArticleRes.class);
+        } else {
+            List<Integer> articleIdList = jotterArticleMapper.getArticleIdByLabel(label);
+            for (Integer articleId : articleIdList) {
+                articleResList.add(findArticleById(articleId));
+            }
+            Collections.sort(articleResList);
+            redisTemplate.opsForValue().set(ARTICLE, JSONUtils.toJSONString(articleResList), 300, TimeUnit.SECONDS);
+        }
+        jotterArticlePage.setArticleResList(PageUtil.startPage(articleResList, pageIndex, pageSize));
+        jotterArticlePage.setArticleNum(articleResList.size());
+        return jotterArticlePage;
     }
 
     /**
@@ -153,9 +174,14 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @return
      */
     @Override
-    public List<JotterArticleRes> searchArticle(String searchStr) {
-        List<JotterArticle> articleList = jotterArticleMapper.searchArticle(StringUtils.join("%", searchStr, "%"));
-        return converArticleResList(articleList);
+    public JotterArticlePage searchArticle(int pageIndex, int pageSize, String searchStr) {
+        JotterArticlePage jotterArticlePage = new JotterArticlePage();
+        List<JotterArticle> articleList = jotterArticleMapper.searchArticle((pageIndex - 1) * pageSize, pageSize,
+                StringUtils.join("%", searchStr, "%"));
+        List<JotterArticleRes> articleResList = convertArticleResList(articleList);
+        jotterArticlePage.setArticleResList(articleResList);
+        jotterArticlePage.setArticleNum(jotterArticleMapper.countArticleByStr(searchStr));
+        return jotterArticlePage;
     }
 
     /**
@@ -180,7 +206,7 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @param articleList 数据库返回文章队列
      * @return
      */
-    public List<JotterArticleRes> converArticleResList(List<JotterArticle> articleList) {
+    public List<JotterArticleRes> convertArticleResList(List<JotterArticle> articleList) {
         List<JotterArticleRes> articleResList = new ArrayList<>();
         articleList.forEach(article -> {
             article.setArticle_label(jotterArticleMapper.findArticleLabel(article.getId()));

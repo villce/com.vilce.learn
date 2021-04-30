@@ -29,11 +29,11 @@ public interface JotterArticleMapper {
     /**
      * 分页获取全部的文章，并按id顺序排列
      *
-     * @param page
+     * @param start
      * @param size
      * @return
      */
-    List<JotterArticle> findAll(int page, int size);
+    List<JotterArticle> findAll(int start, int size);
 
     /**
      * 根据id删除文章
@@ -64,7 +64,14 @@ public interface JotterArticleMapper {
      * @param type 类别
      * @return
      */
-    List<JotterArticle> getArticleByType(String type);
+    List<JotterArticle> getArticleByType(int start, int size, String type);
+
+    /**
+     * 根据文章种类统计数量
+     *
+     * @return
+     */
+    int countArticleByType(String type);
 
     /**
      * 获取某标签文章
@@ -80,14 +87,21 @@ public interface JotterArticleMapper {
      * @param searchStr 查询字符串
      * @return
      */
-    List<JotterArticle> searchArticle(String searchStr);
+    List<JotterArticle> searchArticle(int pageIndex, int pageSize, String searchStr);
+
+    /**
+     * 统计模糊查询数量
+     *
+     * @return
+     */
+    int countArticleByStr(String searchStr);
 
     /**
      * 统计文章数
      *
      * @return
      */
-    Integer countArticle();
+    int countArticle();
 
     /**
      * 统计文章种类

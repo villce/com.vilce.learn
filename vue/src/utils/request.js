@@ -5,7 +5,7 @@ import { getToken } from './auth'
 
 const ServerConfig = {
   local: 'http://localhost:8006/api',
-  dev: 'http://10.10.181.121:8125',
+  dev: 'http://42.192.39.179:8006/api',
   test: 'http://10.10.86.229:8128',
   prod: 'http://180.163.42.201:38116',
   production: 'http://180.163.42.198:8116'
@@ -92,7 +92,7 @@ export default service
 
 export function getServer() {
   if (
-    location.href.indexOf('10.10.181.121') > -1
+    location.href.indexOf('42.192.39.179') > -1
   ) {
     return ServerConfig.dev
   } else if (location.href.indexOf('10.10.86.229') > -1) {

@@ -80,7 +80,7 @@ public class LoginController {
 
     @GetMapping("currentUser")
     @ApiOperation(value = "获取当前用户信息")
-    public AdminUser currentUser() {
-        return userService.currentUser();
+    public AdminUser currentUser(String username) {
+        return userService.currentUser(username);
     }
 }

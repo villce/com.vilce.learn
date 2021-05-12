@@ -1,6 +1,5 @@
 <template>
   <div class="heart">
-    <span style="float: right;font-size: 20px;color: #000000;margin-top: 35px">{{days}}天</span>
   </div>
 </template>
 
@@ -10,23 +9,6 @@
     data() {
       return {
         days: 0
-      }
-    },
-    mounted() {
-      this.dateDiffer();
-    },
-    methods: {
-      dateDiffer(){
-        var date_start = "2019-03-01"
-        //date1结束时间
-        let date1 = new Date(date_start);
-        //date2当前时间
-        let date2 = new Date();
-        date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-        date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
-        const diff = date2.getTime() - date1.getTime(); //目标时间减去当前时间
-        const diffDate = diff / (24 * 60 * 60 * 1000);  //计算当前时间与结束时间之间相差天数
-        this.days = diffDate;
       }
     }
   }

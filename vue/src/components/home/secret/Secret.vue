@@ -23,11 +23,11 @@
               <el-col :span="6">
                 <Heart style="zoom: 20%"></Heart>
               </el-col>
-              <el-col :span="6" style="font-size: 18px;margin-top: 20px">
+              <el-col :span="6" style="font-size: 18px;margin-top: 20px;margin-left: 10px">
                 <span>CSM</span>
               </el-col>
             </el-row>
-            <el-row style="float: left;font-size: 20px;margin-top: -5px;margin-left: 65px">
+            <el-row style="float: left;font-size: 20px;margin-top: -5px;margin-left: 50px">
               <span>{{days}}天</span>
             </el-row>
           </el-col>

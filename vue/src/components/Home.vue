@@ -9,24 +9,27 @@
       <el-row :gutter="10" type="flex" justify="center">
         <el-col :span="4" class="center-card">
           <el-card shadow="always" @click.native="handleJotter">
-            <img src="../assets/img/hzw/name/2.jpg" class="image">
-            <div style="padding: 10px;">
+<!--            <img src="../assets/img/hzw/name/2.jpg" class="image">-->
+            <div style="padding: 10px;font-size: 30px">
+              <i class="el-icon-s-platform"></i>
               <span>博客</span>
             </div>
           </el-card>
         </el-col>
         <el-col :span="4" class="center-card">
           <el-card shadow="always" @click.native="handleTool">
-            <img src="../assets/img/hzw/name/4.jpg" class="image">
-            <div style="padding: 10px;">
+<!--            <img src="../assets/img/hzw/name/4.jpg" class="image">-->
+            <div style="padding: 10px;;font-size: 30px">
+              <i class="el-icon-s-cooperation"></i>
               <span>工具</span>
             </div>
           </el-card>
         </el-col>
         <el-col :span="4" class="center-card">
           <el-card shadow="always" @click.native="handleSecret">
-            <img src="../assets/img/hzw/name/5.jpg" class="image">
-            <div style="padding: 10px;">
+<!--            <img src="../assets/img/hzw/name/5.jpg" class="image">-->
+            <div style="padding: 10px;;font-size: 30px">
+              <i class="el-icon-camera-solid"></i>
               <span>秘密花园</span>
             </div>
           </el-card>

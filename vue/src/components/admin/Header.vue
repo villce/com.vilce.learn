@@ -1,6 +1,6 @@
 <template>
   <el-card class="admin-header">
-    <a href="/index">
+    <a href="/">
       <img :src="userIcon" alt="" width="55px" style="float: left;margin-top: -5px;">
     </a>
     <span style="font-size: 32px;font-weight: bold;position:absolute;left: 100px">{{username}}</span>

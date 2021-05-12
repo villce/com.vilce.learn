@@ -2,36 +2,18 @@
   <!--时间线-->
   <div class="timeLine">
     <el-container>
-      <el-header
-        style="height: 80px;">
-        <el-row :gutter="20">
-          <el-col :span="4">
-            <a href="/index">
-              <el-avatar :size="70" :src="userIcon" width="55px" style="float: left;margin-top: 15px"></el-avatar>
-            </a>
-          </el-col>
-          <el-col :span="16">
-            <div style="font-size: 30px;margin-top: 25px;">
-              {{modulesList[timeIndex].modulesTitle}}
-            </div>
-          </el-col>
-          <el-col :span="4">
-            <el-row>
-              <el-col :span="6" style="font-size: 18px;margin-top: 20px">
-                <span>LCZ</span>
-              </el-col>
-              <el-col :span="6">
-                <Heart style="zoom: 20%"></Heart>
-              </el-col>
-              <el-col :span="6" style="font-size: 18px;margin-top: 20px;margin-left: 10px">
-                <span>CSM</span>
-              </el-col>
-            </el-row>
-            <el-row style="float: left;font-size: 20px;margin-top: -5px;margin-left: 50px">
-              <span>{{days}}天</span>
-            </el-row>
-          </el-col>
-        </el-row>
+      <el-header style="height: 80px;">
+        <div style="float: left">
+          <a href="/">
+            <el-avatar :size="70" :src="userIcon" width="55px" style="float: left;margin-top: 15px"></el-avatar>
+          </a>
+        </div>
+        <div style="font-size: 30px;margin-top: 25px;text-align: center">
+          {{modulesList[timeIndex].modulesTitle}}
+        </div>
+        <div style="float: right;margin-top: -80px">
+          <Heart></Heart>
+        </div>
       </el-header>
       <el-main style="">
         <div class="content">
@@ -114,7 +96,6 @@
     },
     mounted() {
       this.currentUser();
-      this.dateDiffer();
       this.loadModules();
     },
     methods: {
@@ -163,18 +144,6 @@
             this.modulesIndex = 5;
           }
         })
-      },
-      dateDiffer() {
-        var date_start = "2019-03-01"
-        //date1结束时间
-        let date1 = new Date(date_start);
-        //date2当前时间
-        let date2 = new Date();
-        date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-        date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
-        const diff = date2.getTime() - date1.getTime(); //目标时间减去当前时间
-        const diffDate = diff / (24 * 60 * 60 * 1000);  //计算当前时间与结束时间之间相差天数
-        this.days = diffDate;
       }
     }
   }

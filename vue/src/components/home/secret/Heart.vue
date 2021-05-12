@@ -1,6 +1,23 @@
 <template>
-  <div class="heart">
-  </div>
+  <el-container>
+    <el-main>
+      <el-row>
+        <el-col :span="6" style="text-align: left">
+          <span>LCZ</span>
+        </el-col>
+        <el-col :span="10" class="heart" style="zoom: 20%">
+        </el-col>
+        <el-col :span="6"  style="text-align: right">
+          <span >CSM</span>
+        </el-col>
+      </el-row>
+    </el-main>
+    <el-footer>
+      <el-row style="text-align: center;margin-top: -30px">
+        <span>{{days}}天</span>
+      </el-row>
+    </el-footer>
+  </el-container>
 </template>
 
 <script>
@@ -9,6 +26,23 @@
     data() {
       return {
         days: 0
+      }
+    },
+    mounted() {
+      this.dateDiffer();
+    },
+    methods: {
+      dateDiffer(){
+        var date_start = "2019-03-01"
+        //date1结束时间
+        let date1 = new Date(date_start);
+        //date2当前时间
+        let date2 = new Date();
+        date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+        date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+        const diff = date2.getTime() - date1.getTime(); //目标时间减去当前时间
+        const diffDate = diff / (24 * 60 * 60 * 1000);  //计算当前时间与结束时间之间相差天数
+        this.days = diffDate;
       }
     }
   }

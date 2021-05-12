@@ -9,7 +9,7 @@
             </span>
           </el-row>
           <el-row type="flex" justify="center">
-            <a class="block" href="/index">
+            <a class="block" href="/login">
               <el-avatar :size="70" :src="circleUrl" style="margin-bottom: 10px"></el-avatar>
             </a>
           </el-row>
@@ -38,6 +38,15 @@
                 <el-row>{{articleStatistic.labelNum}}</el-row>
               </router-link>
             </el-col>
+          </el-row>
+          <br>
+          <el-row style="font-size: 15px">
+            <router-link :to="{path:'/tool'}" class="article-link">
+              <span>工具</span>
+            </router-link>
+            <router-link :to="{path:'/secret'}" class="article-link">
+              <span>私密</span>
+            </router-link>
           </el-row>
         </el-card>
         <br>

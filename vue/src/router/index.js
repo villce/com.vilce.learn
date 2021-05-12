@@ -8,19 +8,8 @@ export const constantRoutes = [
   {
     path: '/',
     name: 'Default',
-    redirect: '/home',
+    redirect: '/jotter',
     component: Home
-  },
-  {
-    // home页面并不需要被访问，只是作为其它组件的父组件
-    path: '/home',
-    name: 'Home',
-    component: () => import('../components/Home')
-  },
-  {
-    path: '/index',
-    name: 'Index',
-    component: () => import('../components/Home')
   },
   {
     path: '/tool',

@@ -1,43 +1,39 @@
 <template>
-  <body id="home">
-  <div style="height:100%;width:100%" class="home">
-    <el-row type="flex" justify="center">
-      <el-col :span="15" class="user">
-        <div class="block">
-          <el-avatar :size="70" :src="circleUrl" @click.native="handleAdmin"></el-avatar>
-        </div>
-      </el-col>
-    </el-row>
-    <br>
-    <el-row :gutter="10" type="flex" justify="center">
-      <el-col :span="4" class="center-card">
-        <el-card shadow="always" @click.native="handleJotter">
-          <img src="../assets/img/hzw/name/2.jpg" class="image">
-          <div style="padding: 10px;">
-            <span>博客</span>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="4" class="center-card">
-        <el-card shadow="always" @click.native="handleTool">
-          <img src="../assets/img/hzw/name/4.jpg" class="image">
-          <div style="padding: 10px;">
-            <span>工具</span>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="4" class="center-card">
-        <el-card shadow="always" @click.native="handleSecret">
-          <img src="../assets/img/hzw/name/5.jpg" class="image">
-          <div style="padding: 10px;">
-            <span>秘密花园</span>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-    <br>
-  </div>
-  </body>
+  <el-container class="home">
+    <el-header style="text-align: center;height: 100px; margin-top: 100px">
+      <div class="block">
+        <el-avatar :size="70" :src="circleUrl" @click.native="handleAdmin"></el-avatar>
+      </div>
+    </el-header>
+    <el-main>
+      <el-row :gutter="10" type="flex" justify="center">
+        <el-col :span="4" class="center-card">
+          <el-card shadow="always" @click.native="handleJotter">
+            <img src="../assets/img/hzw/name/2.jpg" class="image">
+            <div style="padding: 10px;">
+              <span>博客</span>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="4" class="center-card">
+          <el-card shadow="always" @click.native="handleTool">
+            <img src="../assets/img/hzw/name/4.jpg" class="image">
+            <div style="padding: 10px;">
+              <span>工具</span>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="4" class="center-card">
+          <el-card shadow="always" @click.native="handleSecret">
+            <img src="../assets/img/hzw/name/5.jpg" class="image">
+            <div style="padding: 10px;">
+              <span>秘密花园</span>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -80,27 +76,17 @@
 </script>
 
 <style scoped>
-  #home {
-    background: url("../assets/img/hzw/noFace/1.jpg") no-repeat;
-    background-position: center;
-    position: fixed;
-    width: 100%;
+  .home {
+    background-color: #283443;
     height: 100%;
+    width: 100%;
     background-size: cover;
-  }
-
-  body {
-    margin: 0;
+    position: fixed;
   }
 
   .image {
     width: 100%;
     display: block;
-  }
-
-  .user {
-    margin-bottom: 80px;
-    margin-top: 80px;
   }
 
   .center-card {

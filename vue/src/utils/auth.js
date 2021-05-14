@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'operate_token'
+const TokenKey = 'vilce_token'
 
 export function getToken() {
   return Cookies.get(TokenKey)

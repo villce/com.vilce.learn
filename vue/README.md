@@ -1,37 +1,90 @@
-# vilce网页搭建
-## 版本功能迭代
-- 1.0.0
+# vue-admin-template
 
-&emsp;&emsp;模拟【白卷】搭建了前后端分离项目，其中包含了基础的笔记、图书馆、以及管理系统。
-- 1.0.1
+English | [简体中文](README-zh.md)
 
-&emsp;&emsp;添加了水印工具页面，包含透明图片文字水印、图片添加文字水印、图片添加图片水印。
-- 2.0.0
+> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
 
-&emsp;&emsp;尝试对页面进行大幅度调整，搭建完全属于自己风格的网页：
-- 首页更换，模块化展示功能（完成）
-- 笔记更换为博客
-  - 展示部分（完成）
-  - 管理部分（待定）
-- 删除无用的图书馆功能（完成）
-- 工具模块
-  - 水印工具（完成）
-  - 证件照工具 （完成）
-- 用户登录注册改版
-  - 删除不必要信息（完成）
-  - 添加密码限制（完成）
-- 管理系统改版
-  - 整体风格（待定）
-  - 功能切分（待定）
-  - 其他功能（待定）
-- 秘密花园模块
-  - 展示部分（待定）
-  - 管理部分（待定）
-```$xslt
-1、文章目录生成跳转
-2、文章详细页面添加跳转回首页
+**Live demo:** http://panjiachen.github.io/vue-admin-template
+
+
+**The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
+
+## Build Setup
+
+```bash
+# clone the project
+git clone https://github.com/PanJiaChen/vue-admin-template.git
+
+# enter the project directory
+cd vue-admin-template
+
+# install dependency
+npm install
+
+# develop
+npm run dev
 ```
 
-## 待修复问题
-1. 登录后未手动退出，重启项目后进入管理后台存在用户信息但是无权限问题，并没有跳转到登录界面
-2. 图片上传调用地址依旧是写死了，每次改动都得手动改写多处地方 （解决）
+This will automatically open http://localhost:9528
+
+## Build
+
+```bash
+# build for test environment
+npm run build:stage
+
+# build for production environment
+npm run build:prod
+```
+
+## Advanced
+
+```bash
+# preview the release environment effect
+npm run preview
+
+# preview the release environment effect + static resource analysis
+npm run preview -- --report
+
+# code format check
+npm run lint
+
+# code format check and auto fix
+npm run lint -- --fix
+```
+
+Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
+
+## Demo
+
+![demo](https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif)
+
+## Extra
+
+If you want router permission && generate menu by user roles , you can use this branch [permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
+
+For `typescript` version, you can use [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
+
+## Related Project
+
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+
+- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+
+- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
+
+- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
+
+## Browsers support
+
+Modern browsers and Internet Explorer 10+.
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
+| --------- | --------- | --------- | --------- |
+| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
+
+## License
+
+[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
+
+Copyright (c) 2017-present PanJiaChen

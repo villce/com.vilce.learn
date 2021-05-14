@@ -82,7 +82,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public AdminUser getUserByUsername(String username) {
-        return userMapper.getUserByUsername(username);
+        AdminUser adminUser = userMapper.getUserByUsername(username);
+        List<AdminRole> roles = adminRoleService.getRolesByUserId(adminUser.getId());
+        adminUser.setRoles(roles);
+        return adminUser;
     }
 
     /**
@@ -127,7 +130,8 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public AdminUser currentUser(String username) {
+    public AdminUser currentUser() {
+        String username = getCookie("vilce_token");
         if (StringUtils.isNotBlank(username)) {
             return getUserByUsername(username);
         }

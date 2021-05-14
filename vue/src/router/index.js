@@ -1,111 +1,107 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../components/Home'
 
 Vue.use(Router)
 
-export const constantRoutes = [
-  {
-    path: '/',
-    name: 'Default',
-    redirect: '/jotter',
-    component: Home
-  },
-  {
-    path: '/tool',
-    name: 'Tool',
-    component: () => import('../components/home/tool/Tool'),
-    children: [
-      {
-        path: '/tool/markTool',
-        name: 'MarkTool',
-        component: () => import('../components/home/tool/markImage/MarkTool')
-      },
-      {
-        path: '/tool/certTool',
-        name: 'CertTool',
-        component: () => import('../components/home/tool/certImage/CertTool')
-      }
-    ]
-  },
-  {
-    path: '/secret',
-    name: 'Secret',
-    component: () => import('../components/home/secret/Secret')
-  },
-  {
-    path: '/jotter',
-    name: 'Jotter',
-    component: () => import('../components/home/jotter/Articles')
-  },
-  {
-    path: '/jotter/article',
-    name: 'Article',
-    component: () => import('../components/home/jotter/ArticleDetails')
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../components/home/user/Login')
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: () => import('../components/home/user/Register')
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: () => import('../components/admin/AdminIndex'),
-    meta: {
-      requireAuth: true
-    },
-    children: [
-      {
-        path: '/admin/dashboard',
-        name: 'Dashboard',
-        component: () => import('../components/admin/dashboard/admin/index'),
-        meta: {
-          requireAuth: true
-        }
-      },
-      {
-        path: '/admin/content/articleEditor',
-        name: 'ArticleEditor',
-        component: () => import('../components/admin/content/jotter/ArticleEditor'),
-        meta: {
-          requireAuth: true
-        }
-      },
-      {
-        path: '/admin/content/secretModulesEditor',
-        name: 'SecretModulesEditor',
-        component: () => import('../components/admin/content/secret/SecretModulesEditor'),
-        meta: {
-          requireAuth: true
-        }
-      },
-    ]
-  },
-  {
-    path: '*',
-    component: () => import('../components/pages/Error404')
+/* Layout */
+import Layout from '@/views/layout/index'
+
+/* Router Modules */
+import {articleRouter, articleDetailsRouter} from "@/router/modules/article";
+import secretRouter from "@/router/modules/secret"
+import {contentRouter, userRouter, toolRouter} from "@/router/modules/admin";
+
+/**
+ * Note: sub-menu only appear when route children.length >= 1
+ * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
+ *
+ * hidden: true                   if set true, item will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu
+ *                                if not set alwaysShow, when item has more than one children route,
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * meta : {
+    roles: ['admin','editor']    control the page roles (you can set multiple roles)
+    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
+    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
+    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
+    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
   }
+ */
+
+/**
+ * constantRoutes
+ * a base page that does not have permission requirements
+ * all roles can be accessed
+ */
+export const constantRoutes = [
+    {
+        path: '/redirect',
+        component: Layout,
+        hidden: true,
+        children: [
+            {
+                path: '/redirect/:path(.*)',
+                component: () => import('@/views/redirect/index')
+            }
+        ]
+    },
+    {
+        path: '/login',
+        component: () => import('@/views/login/Login'),
+        hidden: true
+    },
+    {
+        path: '/auth-redirect',
+        component: () => import('@/views/login/auth-redirect'),
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: () => import('@/views/404'),
+        hidden: true
+    },
+    {
+        path: '/layout',
+        component: Layout,
+        redirect: '/index',
+        children: [{
+            path: 'index',
+            name: 'Index',
+            component: () => import('@/views/dashboard/index'),
+            meta: {title: '首页', icon: 'el-icon-s-home', affix: true}
+        }]
+    },
+    articleRouter,
+    articleDetailsRouter,
+    secretRouter
 ]
 
-// 用于创建默认路由
-export const createRouter = () => new Router({
-  mode: 'history',
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+    userRouter,
+    contentRouter,
+    toolRouter,
+    // 404 page must be placed at the end !!!
+    {path: '*', redirect: '/404', hidden: true}
+]
+
+const createRouter = () => new Router({
+    mode: 'history', // require service support
+    scrollBehavior: () => ({y: 0}),
+    routes: constantRoutes
 })
 
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher // reset router
 }
 
 export default router

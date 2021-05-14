@@ -1,8 +1,8 @@
-import request from '../../utils/request'
+import {vilceServiceApi} from '@/utils/request'
 
 // 更改图片背景颜色
 export function changBg(data) {
-  return request({
+  return vilceServiceApi({
     url: '/image/changBg',
     method: 'post',
     data
@@ -11,7 +11,7 @@ export function changBg(data) {
 
 // 上传图片
 export function coversUpload(data) {
-  return request({
+  return vilceServiceApi({
     url: '/image/coversUpload',
     method: 'post',
     data

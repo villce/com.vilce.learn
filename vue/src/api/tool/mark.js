@@ -1,8 +1,8 @@
-import request from '../../utils/request'
+import {vilceServiceApi} from '@/utils/request'
 
 // 给图片加图片水印
 export function imageToImage(data) {
-  return request({
+  return vilceServiceApi({
     url: '/mark/imageToImage',
     method: 'post',
     data
@@ -11,7 +11,7 @@ export function imageToImage(data) {
 
 // 生成透明水印图片
 export function newMarkImg(data) {
-  return request({
+  return vilceServiceApi({
     url: '/mark/new',
     method: 'post',
     data

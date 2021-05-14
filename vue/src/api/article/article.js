@@ -1,8 +1,8 @@
-import request from '../../utils/request'
+import {vilceServiceApi} from '@/utils/request'
 
 // 根据ID删除文章
 export function deleteArticle(id) {
-  return request({
+  return vilceServiceApi({
     url: '/article/deleteArticle/' + id,
     method: 'get'
   })
@@ -10,7 +10,7 @@ export function deleteArticle(id) {
 
 // 获取某标签文章
 export function getArticleByLabel(pageIndex, pageSize, label) {
-  return request({
+  return vilceServiceApi({
     url: '/article/getArticleByLabel/' + pageIndex + '/' + pageSize,
     method: 'get',
     params: {label}
@@ -19,7 +19,7 @@ export function getArticleByLabel(pageIndex, pageSize, label) {
 
 // 获取某类文章
 export function getArticleByType(pageIndex, pageSize, type) {
-  return request({
+  return vilceServiceApi({
     url: '/article/getArticleByType/' + pageIndex + '/' + pageSize,
     method: 'get',
     params: {type}
@@ -28,7 +28,7 @@ export function getArticleByType(pageIndex, pageSize, type) {
 
 // 根据ID获取文章
 export function getOneArticle(id) {
-  return request({
+  return vilceServiceApi({
     url: '/article/getOneArticle/' + id,
     method: 'get'
   })
@@ -36,7 +36,7 @@ export function getOneArticle(id) {
 
 // 分页展示文章信息
 export function listArticles(pageIndex, pageSize) {
-  return request({
+  return vilceServiceApi({
     url: '/article/listArticles/' + pageIndex + '/' + pageSize,
     method: 'get'
   })
@@ -44,7 +44,7 @@ export function listArticles(pageIndex, pageSize) {
 
 // 添加或更新文章信息
 export function saveArticle(data) {
-  return request({
+  return vilceServiceApi({
     url: '/article/saveArticle',
     method: 'post',
     data
@@ -53,7 +53,7 @@ export function saveArticle(data) {
 
 // 模糊查询文章
 export function search(searchStr) {
-  return request({
+  return vilceServiceApi({
     url: '/article/search',
     method: 'get',
     params: { searchStr }
@@ -62,7 +62,7 @@ export function search(searchStr) {
 
 // 模糊查询文章
 export function statistics() {
-  return request({
+  return vilceServiceApi({
     url: '/article/statistics',
     method: 'get'
   })

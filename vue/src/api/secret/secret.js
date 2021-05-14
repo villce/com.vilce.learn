@@ -1,8 +1,8 @@
-import request from '../../utils/request'
+import {vilceServiceApi} from '@/utils/request'
 
 // 上传私密图片
 export function uploadSecretImg(data) {
-  return request({
+  return vilceServiceApi({
     url: '/secret/coversUpload',
     method: 'post',
     data
@@ -11,7 +11,7 @@ export function uploadSecretImg(data) {
 
 // 删除图片模块
 export function deleteModules(modulesId) {
-  return request({
+  return vilceServiceApi({
     url: '/secret/deleteModules/' + modulesId,
     method: 'get'
   })
@@ -19,7 +19,7 @@ export function deleteModules(modulesId) {
 
 // 编辑图片模块
 export function editModules(data) {
-  return request({
+  return vilceServiceApi({
     url: '/secret/editModules',
     method: 'post',
     data
@@ -28,7 +28,7 @@ export function editModules(data) {
 
 // 根据ID查询模块
 export function findModules(modulesId) {
-  return request({
+  return vilceServiceApi({
     url: '/secret/findModules/' + modulesId,
     method: 'get'
   })
@@ -36,7 +36,7 @@ export function findModules(modulesId) {
 
 // 分页获取图片模块
 export function getModules(pageIndex, pageSize) {
-  return request({
+  return vilceServiceApi({
     url: '/secret/getModules/' + pageIndex + '/' + pageSize,
     method: 'get'
   })
@@ -44,7 +44,7 @@ export function getModules(pageIndex, pageSize) {
 
 // 获取最新图片模块
 export function getNewModules(pageSize) {
-  return request({
+  return vilceServiceApi({
     url: '/secret/getNewModules/' + pageSize,
     method: 'get'
   })
@@ -52,7 +52,7 @@ export function getNewModules(pageSize) {
 
 // 获取最新图片模块
 export function timeLineGetModules(pageIndex, pageSize) {
-  return request({
+  return vilceServiceApi({
     url: '/secret/timeLineGetModules/' + pageIndex + '/' + pageSize,
     method: 'get'
   })

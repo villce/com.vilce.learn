@@ -55,6 +55,7 @@ const actions = {
             } else {
               accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
             }
+            console.info(accessedRoutes)
           }
       );
       commit('SET_ROUTES', accessedRoutes)

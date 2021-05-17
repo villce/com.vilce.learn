@@ -17,14 +17,6 @@ export function register(data) {
   })
 }
 
-export function getInfo(username) {
-  return vilceServiceApi({
-    url: '/login/currentUser',
-    method: 'get',
-    params: { 'username': username }
-  })
-}
-
 export function logout() {
   return vilceServiceApi({
     url: '/login/out',

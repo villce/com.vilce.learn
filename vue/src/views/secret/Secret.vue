@@ -11,7 +11,7 @@
             {{modulesTitle}}
           </span>
         </div>
-        <div style="float: right;margin-top: -70px">
+        <div style="float: right;margin-top: -70px;margin-right: -30px">
           <Heart></Heart>
         </div>
       </el-header>
@@ -33,20 +33,20 @@
         </div>
       </el-main>
       <el-footer>
-        <el-card style="height: 130px">
+        <el-card>
           <div class="my_timeline_prev">
             <img
-              style="zoom: 20%;margin-top: 150px;"
-              :src="leftUrl"
-              @click="moveLeft"
-              class="my_timeline_node"/>
+                    style="zoom: 20%;margin-top: 150px;"
+                    :src="leftUrl"
+                    @click="moveLeft"
+                    class="my_timeline_node"/>
           </div>
           <div class="my_timeline_next">
             <img
-              style="zoom: 20%;margin-top: 150px;"
-              :src="rightUrl"
-              @click="moveRight"
-              class="my_timeline_node"/>
+                    style="zoom: 20%;margin-top: 150px;"
+                    :src="rightUrl"
+                    @click="moveRight"
+                    class="my_timeline_node"/>
           </div>
           <div class="ul_box">
             <ul class="my_timeline" ref="mytimeline">
@@ -58,8 +58,8 @@
                      :class="{active: index == timeIndex}"></div>
                 <!--线-->
                 <div
-                  :style="{width: index === 4 ? '0%':'100%'}"
-                  class="my_timeline_item_line">
+                        :style="{width: index === 4 ? '0%':'100%'}"
+                        class="my_timeline_item_line">
                 </div>
                 <!--标注-->
                 <div class="my_timeline_item_content" :style="{color: '#999', fontSize: '18px'}">

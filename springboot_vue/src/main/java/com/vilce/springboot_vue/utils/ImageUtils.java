@@ -110,7 +110,7 @@ public class ImageUtils {
      * @param height    高
      * @param rate      比例
      */
-    public static byte[] reduceImg(InputStream sourceImg, int width, int height, Float rate) {
+    public static byte[] reduceImg(InputStream sourceImg, int width, int height, Double rate) {
         try {
             Image image = ImageIO.read(sourceImg);
             // 如果比例不为空则说明是按比例压缩
@@ -120,8 +120,8 @@ public class ImageUtils {
                 int widthSrc = image.getWidth(null);
                 int heightSrc = image.getHeight(null);
                 //按比例缩放或扩大图片大小，将浮点型转为整型
-                width = (int) (widthSrc * rate);
-                height = (int) (heightSrc * rate);
+                width = (int) Math.ceil(widthSrc * rate);
+                height = (int) Math.ceil(heightSrc * rate);
             }
             // 构造一个类型为预定义图像类型之一的 BufferedImage
             BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);

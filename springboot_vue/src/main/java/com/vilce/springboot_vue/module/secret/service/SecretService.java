@@ -5,6 +5,7 @@ import com.vilce.springboot_vue.module.secret.model.ModulesRes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Description: 秘密花园服务
@@ -21,9 +22,9 @@ public interface SecretService {
      *
      * @param modulesDate  模块日期
      * @param modulesTitle 模块标题
-     * @param imgUrlList   图片地址
+     * @param imgList   图片地址
      */
-    void createModules(String modulesDate, String modulesTitle, List<String> imgUrlList);
+    void createModules(String modulesDate, String modulesTitle, List<String> imgList);
 
     /**
      * 更新图片模块
@@ -77,10 +78,10 @@ public interface SecretService {
     ModulesRes timeLineGetModules(int pageIndex, int pageSize);
 
     /**
-     * 上传图片
+     * 上传压缩图片
      *
      * @param file 图片
      * @return
      */
-    String coversUpload(MultipartFile file);
+    String coversImage(MultipartFile file);
 }

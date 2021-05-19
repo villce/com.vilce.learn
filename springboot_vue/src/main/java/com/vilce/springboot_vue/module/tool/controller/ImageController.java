@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.module.tool.controller;
 
-import com.vilce.common.model.po.Text;
+import com.vilce.springboot_vue.module.tool.model.CompressParam;
 import com.vilce.springboot_vue.module.tool.model.ImageBackground;
 import com.vilce.springboot_vue.module.tool.service.ImageService;
 import io.swagger.annotations.Api;
@@ -50,5 +50,11 @@ public class ImageController {
     @ApiOperation(value = "更改图片背景颜色")
     public String changBg(MultipartFile sourceFile, ImageBackground background) {
         return imageService.changBg(sourceFile, background.getWidth(), background.getHeight(), background.getColor());
+    }
+
+    @PostMapping("compress")
+    @ApiOperation(value = "压缩图片")
+    public String compress(MultipartFile sourceFile, CompressParam param) {
+        return imageService.compress(sourceFile, param.getScale(), param.getQuality());
     }
 }

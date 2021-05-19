@@ -21,8 +21,8 @@ public class ModulesReq {
     private String modulesDate;
     @ApiModelProperty(value = "模块标题", example = "测试")
     private String modulesTitle;
-    @ApiModelProperty(value = "图片地址", example = "[\"http://loalhost:8006/img/2021-03-02/202103020001.png\"]")
-    private List<String> imgUrlList;
+    @ApiModelProperty(value = "图片", example = "[\"http://loalhost:8006/img/2021-03-02/202103020001.png\"]")
+    private List<String> imgList;
 
     public int getId() {
         return id;
@@ -48,11 +48,11 @@ public class ModulesReq {
         this.modulesTitle = modulesTitle;
     }
 
-    public List<String> getImgUrlList() {
-        return imgUrlList;
+    public List<String> getImgList() {
+        return imgList;
     }
 
-    public void setImgUrlList(List<String> imgUrlList) {
-        this.imgUrlList = imgUrlList;
+    public void setImgList(List<String> imgList) {
+        this.imgList = imgList;
     }
 }

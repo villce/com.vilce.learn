@@ -91,6 +91,12 @@ const toolRouter =  {
             name: 'CertTool',
             component: () => import('@/views/admin/tool/certImage/CertTool'),
             meta: { title: '证件工具', icon: 'el-icon-s-cooperation' }
+        },
+        {
+            path: 'compressTool',
+            name: 'CompressTool',
+            component: () => import('@/views/admin/tool/compressImage/CompressTool'),
+            meta: { title: '压缩工具', icon: 'el-icon-s-cooperation'}
         }
     ]
 }

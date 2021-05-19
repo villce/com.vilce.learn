@@ -1,11 +1,10 @@
 package com.vilce.springboot_vue.module.tool.service.impl;
 
-import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.common.model.po.Text;
-import com.vilce.common.utils.MarkImageUtils;
-import com.vilce.common.model.po.Mark;
+import com.vilce.springboot_vue.module.tool.model.Mark;
+import com.vilce.springboot_vue.module.tool.model.Text;
 import com.vilce.springboot_vue.module.tool.service.MarkService;
+import com.vilce.springboot_vue.utils.MarkImageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;

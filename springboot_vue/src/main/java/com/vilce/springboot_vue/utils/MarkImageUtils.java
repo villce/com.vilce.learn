@@ -1,19 +1,18 @@
-package com.vilce.common.utils;
+package com.vilce.springboot_vue.utils;
 
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.common.model.po.Mark;
-import com.vilce.common.model.po.Text;
+import com.vilce.springboot_vue.module.tool.model.Mark;
+import com.vilce.springboot_vue.module.tool.model.Text;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.imageio.ImageIO;
 
 /**
  * @Description: 图片水印工具

@@ -3,9 +3,8 @@ package com.vilce.springboot_vue.module.tool.service.impl;
 import com.vilce.common.model.enums.DateEnum;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.common.utils.SpecialCharUtils;
 import com.vilce.common.utils.io.FileUtils;
-import com.vilce.springboot_vue.module.tool.model.ImageBackground;
+import com.vilce.springboot_vue.module.tool.model.CompressParam;
 import com.vilce.springboot_vue.module.tool.service.ImageService;
 import com.vilce.springboot_vue.utils.ImageUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +49,7 @@ public class ImageServiceImpl implements ImageService {
             Image image = ImageIO.read(file.getInputStream());
             return "成功";
         } catch (IOException e) {
-            throw new BasicException(190001, "文件错误！");
+            throw new BasicException(ResultStatus.DATA_EXCEPTION.getStatus(), "文件错误！");
         }
     }
 
@@ -112,7 +111,7 @@ public class ImageServiceImpl implements ImageService {
                 width = image.getWidth(null);
                 height = image.getHeight(null);
             } catch (IOException e) {
-                throw new BasicException(190001, "文件错误！");
+                throw new BasicException(ResultStatus.DATA_EXCEPTION.getStatus(), "文件错误！");
             }
         }
         InputStream changeImage = ImageUtils.changeBg(sourceFile, accountKey, color);
@@ -122,5 +121,27 @@ public class ImageServiceImpl implements ImageService {
         return data;
     }
 
-
+    /**
+     * 压缩图片
+     *
+     * @param sourceFile 源图片
+     * @param scale      压缩长宽比
+     * @param quality    压缩质量比
+     * @return
+     */
+    @Override
+    public String compress(MultipartFile sourceFile, double scale, double quality) {
+        try {
+            InputStream sourceStream = sourceFile.getInputStream();
+            Image image = ImageIO.read(sourceStream);
+            int width = (int) Math.ceil(image.getWidth(null) * scale);
+            int height = (int) Math.ceil(image.getHeight(null) * scale);
+            byte[] images = ImageUtils.reduceImg(sourceStream, width, height, quality);
+            Base64.Encoder encoder = Base64.getEncoder();
+            String data = encoder.encodeToString(images);
+            return data;
+        } catch (IOException e) {
+            throw new BasicException(ResultStatus.DATA_EXCEPTION.getStatus(), "图片异常");
+        }
+    }
 }

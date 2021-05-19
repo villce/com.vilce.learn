@@ -32,9 +32,9 @@ public class SecretController {
     @ApiOperation(value = "编辑图片模块")
     public void editModules(@RequestBody ModulesReq req) {
         if (req.getId() == 0) {
-            secretService.createModules(req.getModulesDate(), req.getModulesTitle(), req.getImgUrlList());
+            secretService.createModules(req.getModulesDate(), req.getModulesTitle(), req.getImgList());
         }else {
-            secretService.updateModules(req.getId(), req.getModulesDate(), req.getModulesTitle(), req.getImgUrlList());
+            secretService.updateModules(req.getId(), req.getModulesDate(), req.getModulesTitle(), req.getImgList());
         }
     }
 
@@ -68,9 +68,9 @@ public class SecretController {
         return secretService.timeLineGetModules(pageIndex, pageSize);
     }
 
-    @PostMapping("coversUpload")
-    @ApiOperation(value = "上传图片")
-    public String coversUpload(MultipartFile file) {
-        return secretService.coversUpload(file);
+    @PostMapping("coversImage")
+    @ApiOperation(value = "上传压缩图片")
+    public String coversImage(MultipartFile file) {
+        return secretService.coversImage(file);
     }
 }

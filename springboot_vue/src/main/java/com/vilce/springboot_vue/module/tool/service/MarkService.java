@@ -1,7 +1,7 @@
 package com.vilce.springboot_vue.module.tool.service;
 
-import com.vilce.common.model.po.Mark;
-import com.vilce.common.model.po.Text;
+import com.vilce.springboot_vue.module.tool.model.Mark;
+import com.vilce.springboot_vue.module.tool.model.Text;
 import org.springframework.web.multipart.MultipartFile;
 
 

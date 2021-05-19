@@ -1,6 +1,6 @@
 package com.vilce.springboot_vue.module.tool.service;
 
-import com.vilce.springboot_vue.module.tool.model.ImageBackground;
+import com.vilce.springboot_vue.module.tool.model.CompressParam;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -47,4 +47,14 @@ public interface ImageService {
      * @return
      */
     String changBg(MultipartFile sourceFile, int width, int height, String color);
+
+    /**
+     * 压缩图片
+     *
+     * @param sourceFile 源图片
+     * @param scale      压缩长宽比
+     * @param quality    压缩质量比
+     * @return
+     */
+    String compress(MultipartFile sourceFile, double scale, double quality);
 }

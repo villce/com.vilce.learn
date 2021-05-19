@@ -3,6 +3,7 @@ package com.vilce.springboot_vue.module.user.service.impl;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.model.po.BaseResponse;
+import com.vilce.common.utils.RequestUtils;
 import com.vilce.springboot_vue.module.user.mapper.UserMapper;
 import com.vilce.springboot_vue.module.user.model.po.AdminRole;
 import com.vilce.springboot_vue.module.user.model.po.AdminUser;
@@ -131,7 +132,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public AdminUser currentUser() {
-        String username = getCookie("vilce_token");
+        String username = RequestUtils.getRequest().getHeader("X-Token");
         if (StringUtils.isNotBlank(username)) {
             return getUserByUsername(username);
         }

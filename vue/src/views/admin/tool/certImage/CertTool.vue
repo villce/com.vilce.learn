@@ -82,6 +82,7 @@
 <script>
   import { downloadImage } from "@/utils/download";
   import { getServer, vilceServerConfig } from "@/utils/request";
+  import { changBg } from "@/api/tool/image"
 
   export default {
     name: "CertTool",

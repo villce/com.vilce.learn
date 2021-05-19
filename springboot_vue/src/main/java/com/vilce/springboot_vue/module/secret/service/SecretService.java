@@ -63,19 +63,18 @@ public interface SecretService {
     /**
      * 获取最新模块
      *
-     * @param pageSize 获取量
      * @return
      */
-    ModulesRes getNewModules(int pageSize);
+    Modules getNewModules();
 
     /**
      * 时间轴分段获取模块
      *
-     * @param pageIndex 当前段
-     * @param pageSize  页面展示数量
+     * @param index 索引
+     * @param next 相邻值
      * @return
      */
-    ModulesRes timeLineGetModules(int pageIndex, int pageSize);
+    Modules timeLineGetModules(int index, int next);
 
     /**
      * 上传压缩图片

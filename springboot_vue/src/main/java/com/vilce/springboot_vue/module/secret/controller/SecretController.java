@@ -56,16 +56,16 @@ public class SecretController {
         return secretService.findModules(modulesId);
     }
 
-    @GetMapping("getNewModules/{pageSize}")
+    @GetMapping("getNewModules")
     @ApiOperation(value = "获取最新的模块")
-    public ModulesRes getNewModules(@PathVariable int pageSize) {
-        return secretService.getNewModules(pageSize);
+    public Modules getNewModules() {
+        return secretService.getNewModules();
     }
 
-    @GetMapping("timeLineGetModules/{pageIndex}/{pageSize}")
-    @ApiOperation(value = "时间轴分段获取模块")
-    public ModulesRes timeLineGetModules(@PathVariable int pageIndex, @PathVariable int pageSize) {
-        return secretService.timeLineGetModules(pageIndex, pageSize);
+    @GetMapping("timeLineGetModules/{index}/{next}")
+    @ApiOperation(value = "时间轴获取相邻模块")
+    public Modules timeLineGetModules(@PathVariable int index, @PathVariable int next) {
+        return secretService.timeLineGetModules(index, next);
     }
 
     @PostMapping("coversImage")

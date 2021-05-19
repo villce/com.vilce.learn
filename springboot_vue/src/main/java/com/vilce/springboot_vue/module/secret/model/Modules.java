@@ -23,6 +23,8 @@ public class Modules implements Comparable<Modules> {
     private String modulesTitle;
     @ApiModelProperty(value = "图片地址", example = "[\"http://loalhost:8006/img/2021-03-02/202103020001.png\"]")
     private List<String> imgUrlList;
+    @ApiModelProperty(value = "索引")
+    private int index;
 
     public Modules(){}
 
@@ -77,5 +79,13 @@ public class Modules implements Comparable<Modules> {
 
     public void setImgUrlList(List<String> imgUrlList) {
         this.imgUrlList = imgUrlList;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

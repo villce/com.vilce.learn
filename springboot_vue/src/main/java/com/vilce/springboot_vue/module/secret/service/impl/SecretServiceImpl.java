@@ -1,10 +1,12 @@
 package com.vilce.springboot_vue.module.secret.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.vilce.common.model.enums.DateEnum;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.utils.FileUtils;
+import com.vilce.common.utils.JSONUtils;
 import com.vilce.common.utils.TimeUtils;
 import com.vilce.springboot_vue.module.secret.mapper.SecretMapper;
 import com.vilce.springboot_vue.module.secret.model.Modules;
@@ -17,8 +19,10 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -29,6 +33,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @Description: description
@@ -47,6 +53,10 @@ public class SecretServiceImpl implements SecretService {
     private String coversUrl;
     @Value("${com.vilce.image.url}")
     private String imageUrl;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    private static final String Secret_Module = "com:vilce:secret:modules";
 
     /**
      * 创建图片模块
@@ -156,43 +166,48 @@ public class SecretServiceImpl implements SecretService {
      * @return
      */
     @Override
-    public ModulesRes getNewModules(int pageSize) {
-        ModulesRes modulesRes = new ModulesRes();
-        List<Modules> modulesList = secretMapper.getNewModules(pageSize);
-        modulesList.forEach(modules -> {
+    public Modules getNewModules() {
+        List<Modules> modulesList = null;
+        String redisStr = redisTemplate.opsForValue().get(Secret_Module);
+        if (StringUtils.isNotBlank(redisStr)) {
+            modulesList = JSONUtils.toJavaBean(redisStr, List.class, Modules.class);
+        } else {
+            modulesList = secretMapper.getAllModules();
+        }
+        if (!CollectionUtils.isEmpty(modulesList)) {
+            Modules modules = modulesList.get(0);
+            modules.setIndex(0);
             List<String> imgUrlList = secretMapper.getModulesImg(modules.getId());
             modules.setImgUrlList(imgUrlList);
-        });
-        Collections.sort(modulesList);
-        modulesRes.setModulesList(modulesList);
-        modulesRes.setNum(secretMapper.countModules());
-        return modulesRes;
+            return modules;
+        }
+        return null;
     }
 
     /**
      * 时间轴分段获取模块
      *
-     * @param pageIndex 当前段
-     * @param pageSize  页面展示数量
+     * @param index 索引
+     * @param next 相邻值
      * @return
      */
     @Override
-    public ModulesRes timeLineGetModules(int pageIndex, int pageSize) {
-        ModulesRes modulesRes = new ModulesRes();
-        List<Modules> modulesList = secretMapper.getModules((pageIndex - 1) * pageSize, pageSize);
-        // 判断是否为末端
-        if (modulesList.size() != pageSize) {
-            modulesList = secretMapper.getModulesASC(pageSize);
+    public Modules timeLineGetModules(int index, int next) {
+        List<Modules> modulesList = null;
+        String redisStr = redisTemplate.opsForValue().get(Secret_Module);
+        if (StringUtils.isNotBlank(redisStr)) {
+            modulesList = JSONUtils.toJavaBean(redisStr, List.class, Modules.class);
         } else {
-            Collections.sort(modulesList);
+            modulesList = secretMapper.getAllModules();
         }
-        modulesList.forEach(modules -> {
+        if (!CollectionUtils.isEmpty(modulesList)) {
+            Modules modules = modulesList.get(index + next);
+            modules.setIndex(index + next);
             List<String> imgUrlList = secretMapper.getModulesImg(modules.getId());
             modules.setImgUrlList(imgUrlList);
-        });
-        modulesRes.setModulesList(modulesList);
-        modulesRes.setNum(secretMapper.countModules());
-        return modulesRes;
+            return modules;
+        }
+        return null;
     }
 
     /**

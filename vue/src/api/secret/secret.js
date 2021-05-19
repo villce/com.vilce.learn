@@ -43,17 +43,17 @@ export function getModules(pageIndex, pageSize) {
 }
 
 // 获取最新图片模块
-export function getNewModules(pageSize) {
+export function getNewModules() {
   return vilceServiceApi({
-    url: '/secret/getNewModules/' + pageSize,
+    url: '/secret/getNewModules',
     method: 'get'
   })
 }
 
 // 获取最新图片模块
-export function timeLineGetModules(pageIndex, pageSize) {
+export function timeLineGetModules(index, next) {
   return vilceServiceApi({
-    url: '/secret/timeLineGetModules/' + pageIndex + '/' + pageSize,
+    url: '/secret/timeLineGetModules/' + index + '/' + next,
     method: 'get'
   })
 }

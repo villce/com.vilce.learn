@@ -85,18 +85,17 @@ public interface SecretMapper {
     Modules findModulesById(int modulesId);
 
     /**
-     * 获取最新的模块信息
-     *
-     * @param num 获取量
-     * @return
-     */
-    List<Modules> getNewModules(int num);
-
-    /**
      * 顺序获取模块信息
      *
      * @param num 获取量
      * @return
      */
     List<Modules> getModulesASC(int num);
+
+    /**
+     * 获取所有模块
+     *
+     * @return
+     */
+    List<Modules> getAllModules();
 }

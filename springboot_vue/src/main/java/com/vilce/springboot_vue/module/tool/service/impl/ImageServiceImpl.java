@@ -1,12 +1,15 @@
 package com.vilce.springboot_vue.module.tool.service.impl;
 
+import com.google.common.collect.Lists;
 import com.vilce.common.model.enums.DateEnum;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.utils.io.FileUtils;
-import com.vilce.springboot_vue.module.tool.model.CompressParam;
+import com.vilce.springboot_vue.module.tool.model.res.ImageRes;
 import com.vilce.springboot_vue.module.tool.service.ImageService;
 import com.vilce.springboot_vue.utils.ImageUtils;
+import com.vilce.springboot_vue.utils.NumberUtils;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * @Description: Description
@@ -56,25 +61,29 @@ public class ImageServiceImpl implements ImageService {
     /**
      * 上传图片
      *
-     * @param file
+     * @param multipartFile
      * @return
      */
     @Override
-    public String coversUpload(MultipartFile file) {
-        File imageFolder = new File(StringUtils.join(coversUrl, "temp"));
-        File f = new File(imageFolder, DateFormatUtils.format(new Date(), DateEnum.YYYYMMDDHHMMSS.getFormat()) + file.getOriginalFilename()
-                .substring(file.getOriginalFilename().length() - 4));
-        if (!f.getParentFile().exists()) {
-            f.getParentFile().mkdirs();
+    public ImageRes imageUpload(MultipartFile multipartFile) {
+        String dateStr = DateFormatUtils.format(new Date(), DateEnum.YYYY_MM.getFormat());
+        String sourcePath = StringUtils.join(coversUrl, dateStr, "/source");
+        File sourcePathDir = new File(sourcePath);
+        if (!sourcePathDir.exists()) {
+            sourcePathDir.mkdirs();
         }
+        String sourceUrl = StringUtils.join(sourcePath + "/" + multipartFile.getOriginalFilename());
+        File file = new File(sourceUrl);
         try {
-            file.transferTo(f);
-            String imgURL = StringUtils.join(imageUrl, "temp/", f.getName());
-            return imgURL;
+            FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);
         } catch (IOException e) {
-            e.printStackTrace();
-            return "";
+            throw new BasicException(ResultStatus.DATA_EXCEPTION.getStatus(), "文件错误！");
         }
+        ImageRes imageRes = new ImageRes();
+        imageRes.setSourceImageUrl(sourceUrl);
+        imageRes.setSourceImageName(multipartFile.getOriginalFilename());
+        imageRes.setSourceImageSize(getSize(multipartFile.getSize()));
+        return imageRes;
     }
 
     /**
@@ -124,24 +133,60 @@ public class ImageServiceImpl implements ImageService {
     /**
      * 压缩图片
      *
-     * @param sourceFile 源图片
-     * @param scale      压缩长宽比
-     * @param quality    压缩质量比
+     * @param imageList 源图片
+     * @param scale     长宽
+     * @param quality   质量
      * @return
      */
     @Override
-    public String compress(MultipartFile sourceFile, double scale, double quality) {
-        try {
-            InputStream sourceStream = sourceFile.getInputStream();
-            Image image = ImageIO.read(sourceStream);
-            int width = (int) Math.ceil(image.getWidth(null) * scale);
-            int height = (int) Math.ceil(image.getHeight(null) * scale);
-            byte[] images = ImageUtils.reduceImg(sourceStream, width, height, quality);
-            Base64.Encoder encoder = Base64.getEncoder();
-            String data = encoder.encodeToString(images);
-            return data;
-        } catch (IOException e) {
-            throw new BasicException(ResultStatus.DATA_EXCEPTION.getStatus(), "图片异常");
+    public List<ImageRes> compress(List<ImageRes> imageList, int scale, int quality) {
+        List<ImageRes> imageResList = Lists.newLinkedList();
+        String dateStr = DateFormatUtils.format(new Date(), DateEnum.YYYY_MM.getFormat());
+        String compressPath = StringUtils.join(coversUrl, dateStr);
+        File compressPathDir = new File(compressPath);
+        if (!compressPathDir.exists()) {
+            compressPathDir.mkdirs();
+        }
+        imageList.forEach(image -> {
+            ImageRes imageRes = new ImageRes();
+            imageRes.setSourceImageName(image.getSourceImageName());
+            imageRes.setSourceImageSize(image.getSourceImageSize());
+            imageRes.setSourceImageUrl(image.getSourceImageUrl());
+            imageRes.setCompressImageUrl(StringUtils.join(imageUrl, dateStr, "/", image.getSourceImageName()));
+            String compressUrl = StringUtils.join(compressPath, "/", image.getSourceImageName());
+            File file = new File(image.getSourceImageUrl());
+            try {
+                Thumbnails.of(file)
+                        //图片大小（长宽）压缩比例 从0-1，1表示原图
+                        .scale(Float.valueOf(scale) / 100)
+                        //图片质量压缩比例 从0-1，越接近1质量越好
+                        .outputQuality(Float.valueOf(quality) / 100)
+                        .toOutputStream(new FileOutputStream(compressUrl));
+            } catch (IOException e) {
+                throw new BasicException(ResultStatus.DATA_EXCEPTION.getStatus(), "文件错误！");
+            }
+            File compressFile = new File(compressUrl);
+            imageRes.setCompressImageSize(getSize(compressFile.length()));
+            imageResList.add(imageRes);
+        });
+        return imageResList;
+    }
+
+    /**
+     * 换算图片大小（带单位）
+     *
+     * @param size
+     * @return
+     */
+    public String getSize(long size) {
+        if (size < 1024) {
+            return StringUtils.join(size, "B");
+        } else if (size < 1048576) {
+            double imageSize = Float.valueOf(size) / 1024;
+            return StringUtils.join(NumberUtils.rounding(imageSize, 2), "K");
+        } else {
+            double imageSize = Float.valueOf(size) / 1048576;
+            return StringUtils.join(NumberUtils.rounding(imageSize, 2), "M");
         }
     }
 }

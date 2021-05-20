@@ -10,9 +10,9 @@ export function changBg(data) {
 }
 
 // 上传图片
-export function coversUpload(data) {
+export function imageUpload(data) {
   return vilceServiceApi({
-    url: '/image/coversUpload',
+    url: '/image/imageUpload',
     method: 'post',
     data
   })
@@ -20,7 +20,7 @@ export function coversUpload(data) {
 
 // 删除指定图片
 export function deleteImage(imageName) {
-  return request({
+  return vilceServiceApi({
     url: '/image/deleteImage',
     method: 'get',
     params: { imageName }
@@ -29,8 +29,17 @@ export function deleteImage(imageName) {
 
 // 伪上传图片
 export function toolUpload(data) {
-  return request({
+  return vilceServiceApi({
     url: '/image/toolUpload',
+    method: 'post',
+    data
+  })
+}
+
+// 批量压缩图片
+export function compress(data) {
+  return vilceServiceApi({
+    url: '/image/compress',
     method: 'post',
     data
   })

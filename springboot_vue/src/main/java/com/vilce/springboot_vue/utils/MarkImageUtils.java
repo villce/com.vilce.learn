@@ -2,8 +2,8 @@ package com.vilce.springboot_vue.utils;
 
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.springboot_vue.module.tool.model.Mark;
-import com.vilce.springboot_vue.module.tool.model.Text;
+import com.vilce.springboot_vue.module.tool.model.req.Mark;
+import com.vilce.springboot_vue.module.tool.model.req.Text;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;

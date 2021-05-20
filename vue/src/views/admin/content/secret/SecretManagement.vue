@@ -9,10 +9,7 @@
                         :data="moduleList"
                         stripe
                         style="width: 100%">
-                    <el-table-column
-                            type="selection"
-                            width="55">
-                    </el-table-column>
+                    <el-table-column label="序号" type="index" fixed width="55"></el-table-column>
                     <el-table-column
                             prop="modulesTitle"
                             label="题目"
@@ -38,7 +35,7 @@
                     <el-table-column
                             fixed="right"
                             label="操作"
-                            width="180">
+                            width="100">
                         <template slot-scope="scope">
                             <el-button
                                     @click.native.prevent="updateModule(scope.row)"
@@ -156,8 +153,6 @@
             },
             handlerSuccess(response) {
                 this.imageList.add(response.data);
-                console.info(response)
-                console.info(this.imageList)
             },
             editModule() {
                 const moduleReq = {

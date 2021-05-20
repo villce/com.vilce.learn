@@ -1,8 +1,8 @@
 package com.vilce.springboot_vue.module.tool.service.impl;
 
 import com.vilce.common.model.exception.BasicException;
-import com.vilce.springboot_vue.module.tool.model.Mark;
-import com.vilce.springboot_vue.module.tool.model.Text;
+import com.vilce.springboot_vue.module.tool.model.req.Mark;
+import com.vilce.springboot_vue.module.tool.model.req.Text;
 import com.vilce.springboot_vue.module.tool.service.MarkService;
 import com.vilce.springboot_vue.utils.MarkImageUtils;
 import org.apache.commons.lang3.StringUtils;

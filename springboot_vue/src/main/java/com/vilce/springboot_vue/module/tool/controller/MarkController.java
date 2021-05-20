@@ -1,7 +1,7 @@
 package com.vilce.springboot_vue.module.tool.controller;
 
-import com.vilce.springboot_vue.module.tool.model.Mark;
-import com.vilce.springboot_vue.module.tool.model.Text;
+import com.vilce.springboot_vue.module.tool.model.req.Mark;
+import com.vilce.springboot_vue.module.tool.model.req.Text;
 import com.vilce.springboot_vue.module.tool.service.MarkService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

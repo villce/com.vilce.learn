@@ -1,7 +1,9 @@
 package com.vilce.springboot_vue.module.tool.service;
 
-import com.vilce.springboot_vue.module.tool.model.CompressParam;
+import com.vilce.springboot_vue.module.tool.model.res.ImageRes;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @Description: Description
@@ -27,7 +29,7 @@ public interface ImageService {
      * @param file
      * @return
      */
-    String coversUpload(MultipartFile file);
+    ImageRes imageUpload(MultipartFile file);
 
     /**
      * 删除指定路径图片
@@ -51,10 +53,10 @@ public interface ImageService {
     /**
      * 压缩图片
      *
-     * @param sourceFile 源图片
-     * @param scale      压缩长宽比
-     * @param quality    压缩质量比
+     * @param imageList 源图片
+     * @param scale     长宽
+     * @param quality   质量
      * @return
      */
-    String compress(MultipartFile sourceFile, double scale, double quality);
+    List<ImageRes> compress(List<ImageRes> imageList, int scale, int quality);
 }

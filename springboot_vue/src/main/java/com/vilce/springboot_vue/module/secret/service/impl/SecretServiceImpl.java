@@ -77,7 +77,6 @@ public class SecretServiceImpl implements SecretService {
         Modules modules = new Modules(modulesDate, modulesTitle);
         // 插入图片模块表
         secretMapper.createModules(modules);
-        String dateStr = DateFormatUtils.format(new Date(), DateEnum.YYYY_MM.getFormat());
         imgList.forEach(image -> {
             // 插入图片地址
             secretMapper.insertImg(modules.getId(), image);

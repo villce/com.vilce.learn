@@ -1,16 +1,16 @@
 package com.vilce.springboot_vue.module.tool.controller;
 
-import com.vilce.springboot_vue.module.tool.model.CompressParam;
-import com.vilce.springboot_vue.module.tool.model.ImageBackground;
+import com.vilce.springboot_vue.module.tool.model.req.CompressReq;
+import com.vilce.springboot_vue.module.tool.model.req.ImageBackground;
+import com.vilce.springboot_vue.module.tool.model.res.ImageRes;
 import com.vilce.springboot_vue.module.tool.service.ImageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @Description: Description
@@ -34,10 +34,10 @@ public class ImageController {
         return imageService.toolUpload(file);
     }
 
-    @PostMapping("coversUpload")
+    @PostMapping("imageUpload")
     @ApiOperation(value = "上传图片")
-    public String coversUpload(MultipartFile file) {
-        return imageService.coversUpload(file);
+    public ImageRes imageUpload(MultipartFile file) {
+        return imageService.imageUpload(file);
     }
 
     @GetMapping("deleteImage")
@@ -54,7 +54,7 @@ public class ImageController {
 
     @PostMapping("compress")
     @ApiOperation(value = "压缩图片")
-    public String compress(MultipartFile sourceFile, CompressParam param) {
-        return imageService.compress(sourceFile, param.getScale(), param.getQuality());
+    public List<ImageRes> compress(@RequestBody CompressReq req) {
+        return imageService.compress(req.getImageList(), req.getScale(), req.getQuality());
     }
 }

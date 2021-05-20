@@ -20,7 +20,7 @@ export function newMarkImg(data) {
 
 // 给图片添加文字水印
 export function wordToImage(data) {
-  return request({
+  return vilceServiceApi({
     url: '/mark/wordToImage',
     method: 'post',
     data

@@ -1,4 +1,4 @@
-package com.vilce.springboot_vue.module.tool.model;
+package com.vilce.springboot_vue.module.tool.model.req;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

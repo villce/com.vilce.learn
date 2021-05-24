@@ -1,22 +1,17 @@
 package com.vilce.springboot_vue.module.secret.service.impl;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.vilce.common.model.enums.DateEnum;
 import com.vilce.common.model.enums.ResultStatus;
 import com.vilce.common.model.exception.BasicException;
 import com.vilce.common.utils.FileUtils;
 import com.vilce.common.utils.JSONUtils;
-import com.vilce.common.utils.TimeUtils;
 import com.vilce.springboot_vue.module.secret.mapper.SecretMapper;
 import com.vilce.springboot_vue.module.secret.model.Modules;
 import com.vilce.springboot_vue.module.secret.model.ModulesRes;
 import com.vilce.springboot_vue.module.secret.service.SecretService;
-import com.vilce.springboot_vue.module.tool.service.ImageService;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -28,13 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description: description
@@ -172,6 +163,7 @@ public class SecretServiceImpl implements SecretService {
             modulesList = JSONUtils.toJavaBean(redisStr, List.class, Modules.class);
         } else {
             modulesList = secretMapper.getAllModules();
+            redisTemplate.opsForValue().set(Secret_Module, JSONUtils.toJSONString(modulesList), 300, TimeUnit.SECONDS);
         }
         if (!CollectionUtils.isEmpty(modulesList)) {
             Modules modules = modulesList.get(0);
@@ -198,6 +190,7 @@ public class SecretServiceImpl implements SecretService {
             modulesList = JSONUtils.toJavaBean(redisStr, List.class, Modules.class);
         } else {
             modulesList = secretMapper.getAllModules();
+            redisTemplate.opsForValue().set(Secret_Module, JSONUtils.toJSONString(modulesList), 300, TimeUnit.SECONDS);
         }
         if (!CollectionUtils.isEmpty(modulesList)) {
             Modules modules = modulesList.get(index + next);

@@ -2,7 +2,6 @@ package com.vilce.springboot_vue.module.article.model.po;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 import java.util.Date;
 import java.util.List;

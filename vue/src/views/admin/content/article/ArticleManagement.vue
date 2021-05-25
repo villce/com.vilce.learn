@@ -35,7 +35,7 @@
                         type="primary"
                         icon="el-icon-s-claim"
                         circle
-                        @click.native.prevent="articleDetails(scope.row)">
+                        @click.native.prevent="articleDetails(scope.row.id)">
                 </el-button>
               </el-tooltip>
               <el-tooltip effect="dark" content="编辑" placement="bottom">
@@ -44,7 +44,7 @@
                         type="info"
                         icon="el-icon-edit"
                         circle
-                        @click.native.prevent="editArticle(scope.row)">
+                        @click.native.prevent="editArticle(scope.row.id)">
                 </el-button>
               </el-tooltip>
               <el-tooltip effect="dark" content="移除" placement="bottom">
@@ -108,11 +108,11 @@
     handleCurrentChange(page) {
       this.loadArticles(page);
     },
-    editArticle(article) {
-      this.$router.replace({ path: '/content/article/editor', query: article });
+    editArticle(id) {
+      this.$router.replace({ path: '/content/article/editor', query: {id: id} });
     },
-    articleDetails(article) {
-      this.$router.replace({ path: '/content/article/details', query: article });
+    articleDetails(id) {
+      this.$router.replace({ path: '/content/article/details', query: {id: id} });
     },
     deleteArticle (id) {
       this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {

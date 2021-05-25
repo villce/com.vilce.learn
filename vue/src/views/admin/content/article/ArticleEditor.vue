@@ -83,7 +83,9 @@
             }
         },
         mounted() {
-            this.getArticleDetail();
+            if (this.$route.query.id) {
+                this.getArticleDetail();
+            }
         },
         methods: {
             async getArticleDetail() {

@@ -76,9 +76,9 @@
         </el-card>
       </el-aside>
       <el-main style="margin-top: -40px;margin-left: 50px">
-        <el-card v-for="article in articles" :key="article.id" style="width:90%;height: 250px;margin-top: 20px">
+        <el-card v-for="article in articles" :key="article.id" style="width:90%;height: 250px;margin-top: 20px;text-align: center">
           <router-link class="article-link" :to="{path:'article/details',query:{id: article.id}}">
-            <span style="font-size: 25px;text-align: center">
+            <span style="font-size: 25px">
               <strong>{{article.title}}</strong>
             </span>
           </router-link>

@@ -51,9 +51,9 @@
                         </el-option>
                     </el-select>
                     <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-        </span>
+                        <el-button @click="dialogVisible = false">取 消</el-button>
+                        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                    </span>
                 </el-dialog>
             </el-main>
         </el-container>
@@ -125,10 +125,13 @@
                         saveArticle(articleReq).then(resp => {
                             if (resp.status === 0) {
                                 this.$message({
-                                    type: 'info',
-                                    message: resp.message
+                                    type: 'success',
+                                    message: '文章发布成功！'
                                 })
                             }
+                            this.$router.replace({
+                                path: '/content/article'
+                            })
                         })
                     }
                 ).catch(() => {

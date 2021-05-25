@@ -1,74 +1,70 @@
 <template>
-  <div>
-    <el-link
-      href="/content/article/articleEditor"
-      :underline="false"
-      target="_blank"
-      style="margin: 18px 2%"
-      class="add-link">
-      <el-button type="success">写文章</el-button>
-    </el-link>
-    <el-card style="margin: 18px 2%;width: 95%">
-      <el-table
-        :data="articles"
-        stripe
-        style="width: 100%"
-        :max-height="tableHeight">
-        <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-        <el-table-column
-          prop="title"
-          label="题目"
-          fit>
-        </el-table-column>
-        <el-table-column
-          prop="publishDate"
-          label="发布日期"
-          width="200">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          align="center"
-          width="180">
-          <template slot-scope="scope">
-            <router-link :to="{path:'/content/article/details',query:{id: scope.row.id}}">
-              <el-button type="text" size="small">
-                查看
-              </el-button>
-            </router-link>
-            <router-link :to="{path:'/content/article/editor',query:{article: scope.row}}">
+  <el-container>
+    <el-header>
+      <router-link :to="{path:'/content/article/editor'}">
+        <el-button type="success" style="margin-top: 20px">写文章</el-button>
+      </router-link>
+    </el-header>
+    <el-main>
+      <el-card>
+        <el-table
+                :data="articles"
+                stripe
+                style="width: 100%"
+                :max-height="tableHeight">
+          <el-table-column align="center" label="序号" type="index" fixed></el-table-column>
+          <el-table-column
+                  prop="title"
+                  label="题目"
+                  fit>
+          </el-table-column>
+          <el-table-column
+                  prop="publishDate"
+                  label="发布日期"
+                  fit>
+          </el-table-column>
+          <el-table-column
+                  fixed="right"
+                  label="操作"
+                  align="center"
+                  width="180">
+            <template slot-scope="scope">
+              <router-link :to="{path:'/content/article/details',query:{id: scope.row.id}}">
+                <el-button type="text" size="small">
+                  查看
+                </el-button>
+              </router-link>
+              <router-link :to="{path:'/content/article/editor',query:{article: scope.row}}">
+                <el-button
+                        @click.native.prevent="editArticle(scope.row)"
+                        type="text"
+                        size="small">
+                  编辑
+                </el-button>
+              </router-link>
               <el-button
-                      @click.native.prevent="editArticle(scope.row)"
+                      @click.native.prevent="deleteArticle(scope.row.id)"
                       type="text"
                       size="small">
-                编辑
+                移除
               </el-button>
-            </router-link>
-            <el-button
-              @click.native.prevent="deleteArticle(scope.row.id)"
-              type="text"
-              size="small">
-              移除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div style="margin: 20px 0 50px 0">
-        <el-pagination
-          background
-          style="float:right;"
-          layout="total, prev, pager, next, jumper"
-          @current-change="handleCurrentChange"
-          :page-size="pageSize"
-          :current-page.sync="currentPage"
-          :total="total">
-        </el-pagination>
-      </div>
-    </el-card>
-  </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div style="margin: 20px 0 50px 0">
+          <el-pagination
+                  background
+                  style="float:right;"
+                  layout="total, prev, pager, next, jumper"
+                  @current-change="handleCurrentChange"
+                  :page-size="pageSize"
+                  :current-page.sync="currentPage"
+                  :total="total">
+          </el-pagination>
+        </div>
+      </el-card>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -79,7 +75,7 @@
   data () {
     return {
       articles: [],
-      pageSize: 2,
+      pageSize: 10,
       total: 1,
       currentPage: 1
     }

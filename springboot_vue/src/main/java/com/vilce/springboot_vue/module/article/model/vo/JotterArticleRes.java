@@ -51,11 +51,10 @@ public class JotterArticleRes implements Serializable,Comparable<JotterArticleRe
         jotterArticleRes.setType(article.getArticle_type());
         jotterArticleRes.setLabel(article.getArticle_label());
         jotterArticleRes.setTitle(article.getArticle_title());
-        jotterArticleRes.setContentHtml(article.getArticle_content_html().replaceAll("<!more>", ""));
+        jotterArticleRes.setContentHtml(article.getArticle_content_html().replaceAll("&lt;!more&gt;", ""));
         jotterArticleRes.setContentMd(article.getArticle_content_md().replaceAll("<!more>", ""));
         // 文章摘要需要自行截取，取前标识<more>之前的为摘要
-        String regex = "(.*?)<!more>";
-        jotterArticleRes.setIntroduction(RegexUtils.getSubUtilSimple(article.getArticle_content_html(), regex));
+        jotterArticleRes.setIntroduction(RegexUtils.getSubUtilSimple(article.getArticle_content_html(), "(.*?)&lt;!more&gt;"));
         jotterArticleRes.setPublishDate(TimeUtils.dateToYMD(article.getArticle_date()));
         return jotterArticleRes;
     }

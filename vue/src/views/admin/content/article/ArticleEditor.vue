@@ -61,7 +61,7 @@
 </template>
 
 <script>
-    import {saveArticle} from "@/api/article/article";
+    import {getOneArticle, saveArticle} from "@/api/article/article";
 
     export default {
         name: 'ArticleEditor',
@@ -83,12 +83,21 @@
             }
         },
         mounted() {
-            if (this.$route.params.article) {
-                this.article = this.$route.params.article;
-                this.dynamicTags = this.article.label;
-            }
+            this.getArticleDetail();
         },
         methods: {
+            async getArticleDetail() {
+                try {
+                    getOneArticle(this.$route.query.id).then(resp => {
+                        if (resp.status === 0) {
+                            this.article = resp.data;
+                            this.dynamicTags = this.article.label;
+                        }
+                    });
+                } catch (e) {
+                    global.console.log("文章获取异常");
+                }
+            },
             handleClose(tag) {
                 this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
             },

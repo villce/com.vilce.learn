@@ -29,25 +29,33 @@
                   align="center"
                   width="180">
             <template slot-scope="scope">
-              <router-link :to="{path:'/content/article/details',query:{id: scope.row.id}}">
-                <el-button type="text" size="small">
-                  查看
-                </el-button>
-              </router-link>
-              <router-link :to="{path:'/content/article/editor',query:{article: scope.row}}">
+              <el-tooltip effect="dark" content="查看" placement="bottom">
                 <el-button
-                        @click.native.prevent="editArticle(scope.row)"
-                        type="text"
-                        size="small">
-                  编辑
+                        size="mini"
+                        type="primary"
+                        icon="el-icon-s-claim"
+                        circle
+                        @click.native.prevent="articleDetails(scope.row)">
                 </el-button>
-              </router-link>
-              <el-button
-                      @click.native.prevent="deleteArticle(scope.row.id)"
-                      type="text"
-                      size="small">
-                移除
-              </el-button>
+              </el-tooltip>
+              <el-tooltip effect="dark" content="编辑" placement="bottom">
+                <el-button
+                        size="mini"
+                        type="info"
+                        icon="el-icon-edit"
+                        circle
+                        @click.native.prevent="editArticle(scope.row)">
+                </el-button>
+              </el-tooltip>
+              <el-tooltip effect="dark" content="移除" placement="bottom">
+                <el-button
+                        size="mini"
+                        type="danger"
+                        icon="el-icon-delete-solid"
+                        circle
+                        @click.native.prevent="deleteArticle(scope.row.id)">
+                </el-button>
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -100,15 +108,11 @@
     handleCurrentChange(page) {
       this.loadArticles(page);
     },
-    editArticle (article) {
-      this.$router.push(
-        {
-          name: 'ArticleEditor',
-          params: {
-            article: article
-          }
-        }
-      )
+    editArticle(article) {
+      this.$router.replace({ path: '/content/article/editor', query: article });
+    },
+    articleDetails(article) {
+      this.$router.replace({ path: '/content/article/details', query: article });
     },
     deleteArticle (id) {
       this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
@@ -119,11 +123,10 @@
         deleteArticle(id).then(resp => {
             if (resp.status === 0) {
               this.$message({
-                type: 'info',
-                message: resp.message
+                type: 'success',
+                message: '文章删除成功'
               })
-              this.loadArticles()
-              _this.$router.replace('/admin/dashboard')
+              this.loadArticles(1)
             }
           })
         }

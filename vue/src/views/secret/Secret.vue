@@ -78,7 +78,7 @@
         },
         methods: {
             currentUser() {
-                const username = this.$store.state.username;
+                const username = this.$store.state.user.name;
                 currentUser(username).then(resp => {
                     if (resp.status === 0) {
                         if (resp.data !== null) {
@@ -88,23 +88,31 @@
                 })
             },
             moveLeft() {
-                // 向左移动4个单位获取模块信息
-                if (this.modules.index < this.modulesNum - 1) {
-                    timeLineGetModules(this.modules.index, 1).then(resp => {
-                        if (resp.status === 0) {
-                            this.modules = resp.data;
-                        }
-                    })
+                try {
+                    // 向左移动4个单位获取模块信息
+                    if (this.modules.index < this.modulesNum - 1) {
+                        timeLineGetModules(this.modules.index, 1).then(resp => {
+                            if (resp.status === 0) {
+                                this.modules = resp.data;
+                            }
+                        })
+                    }
+                } catch (e) {
+                    global.console.log("图片获取异常");
                 }
             },
             moveRight() {
-                // 向左移动4个单位获取模块信息
-                if (this.modules.index > 0) {
-                    timeLineGetModules(this.modules.index, -1).then(resp => {
-                        if (resp.status === 0) {
-                            this.modules = resp.data;
-                        }
-                    })
+                try {
+                    // 向左移动4个单位获取模块信息
+                    if (this.modules.index > 0) {
+                        timeLineGetModules(this.modules.index, -1).then(resp => {
+                            if (resp.status === 0) {
+                                this.modules = resp.data;
+                            }
+                        })
+                    }
+                } catch (e) {
+                    global.console.log("图片获取异常");
                 }
             },
             loadModules() {

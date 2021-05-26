@@ -26,7 +26,7 @@ const generateService = function (serverConfig) {
                 // let each request carry token
                 // ['X-Token'] is a custom headers key
                 // please modify it according to the actual situation
-                config.headers['X-Token'] = getToken()
+                // config.headers['X-Token'] = getToken()
             }
             return config
         },
@@ -99,7 +99,7 @@ const getServer = function (server) {
     } else if (location.href.indexOf('180.163.42.164') > -1) {
         return server.production
     } else if (location.href.indexOf('localhost') > -1) {
-        return server.local
+        return server.dev
     }
 }
 const vilceServiceApi = generateService(vilceServerConfig);

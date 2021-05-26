@@ -131,8 +131,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public AdminUser currentUser() {
-        String username = RequestUtils.getRequest().getHeader("X-Token");
+    public AdminUser currentUser(String username) {
         if (StringUtils.isNotBlank(username)) {
             return getUserByUsername(username);
         }

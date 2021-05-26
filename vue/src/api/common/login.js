@@ -24,9 +24,9 @@ export function logout() {
   })
 }
 
-export function currentUser() {
+export function currentUser(username) {
   return vilceServiceApi({
-    url: '/login/currentUser',
+    url: '/login/currentUser/' + username,
     method: 'get'
   })
 }

@@ -78,9 +78,9 @@ public class LoginController {
         return "身份认证成功";
     }
 
-    @GetMapping("currentUser")
+    @GetMapping("currentUser/{username}")
     @ApiOperation(value = "获取当前用户信息")
-    public AdminUser currentUser() {
-        return userService.currentUser();
+    public AdminUser currentUser(@PathVariable String username) {
+        return userService.currentUser(username);
     }
 }

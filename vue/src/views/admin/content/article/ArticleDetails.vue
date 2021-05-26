@@ -17,8 +17,7 @@
 
 <script>
   import marked from "marked";
-  import {currentUser} from "@/api/common/login";
-  import {getOneArticle, statistics} from "@/api/article/article";
+  import {getOneArticle} from "@/api/article/article";
 
   let rendererMD = new marked.Renderer();
   marked.setOptions({

@@ -135,7 +135,8 @@
     },
     methods: {
       currentUser() {
-        currentUser().then(resp => {
+        const username = this.$store.state.user.name
+        currentUser(username).then(resp => {
           if (resp.status === 0) {
             if (resp.data !== null) {
               this.circleUrl = resp.data.icon;

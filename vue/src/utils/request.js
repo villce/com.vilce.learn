@@ -4,8 +4,8 @@ import store from '@/store'
 import {getToken} from '@/utils/auth'
 
 const vilceServerConfig = {
-  local: 'http://localhost:8006/api',
-  dev: 'http://42.192.39.179:8006/api',
+  local: 'http://localhost:8006',
+  dev: 'http://42.192.39.179:8006',
   test: 'http://10.10.86.229:8128',
   prod: 'http://180.163.42.201:38116',
   production: 'http://180.163.42.198:8116'

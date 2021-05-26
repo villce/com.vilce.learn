@@ -97,7 +97,7 @@
     }
   },
   methods: {
-    loadArticles (page) {
+    async loadArticles (page) {
       listArticles(page, this.pageSize).then(resp => {
         if (resp.status === 0) {
           this.articles = resp.data.articleResList;

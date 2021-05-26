@@ -140,7 +140,7 @@
                                     message: '文章发布成功！'
                                 })
                             }
-                            this.$router.replace({
+                            this.$router.push({
                                 path: '/content/article'
                             })
                         })

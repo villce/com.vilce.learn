@@ -135,7 +135,7 @@
     },
     methods: {
       currentUser() {
-        const username = this.$store.state.username;
+        const username = this.$store.state.user.name
         currentUser(username).then(resp => {
           if (resp.status === 0) {
             if (resp.data !== null) {

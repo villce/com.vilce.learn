@@ -28,10 +28,6 @@ public class JotterArticleRes implements Serializable,Comparable<JotterArticleRe
     private List<String> label;
     @ApiModelProperty(value = "文章标题",example = "示例")
     private String title;
-    @ApiModelProperty(value = "文章html",example = "示例")
-    private String contentHtml;
-    @ApiModelProperty(value = "文章md",example = "示例")
-    private String contentMd;
     @ApiModelProperty(value = "文章摘要",example = "示例")
     private String introduction;
     @ApiModelProperty(value = "文章发布时间",example = "2020.08.26 00:00:00")
@@ -51,8 +47,6 @@ public class JotterArticleRes implements Serializable,Comparable<JotterArticleRe
         jotterArticleRes.setType(article.getArticle_type());
         jotterArticleRes.setLabel(article.getArticle_label());
         jotterArticleRes.setTitle(article.getArticle_title());
-        jotterArticleRes.setContentHtml(article.getArticle_content_html().replaceAll("&lt;!more&gt;", ""));
-        jotterArticleRes.setContentMd(article.getArticle_content_md().replaceAll("<!more>", ""));
         // 文章摘要需要自行截取，取前标识<more>之前的为摘要
         jotterArticleRes.setIntroduction(RegexUtils.getSubUtilSimple(article.getArticle_content_html(), "(.*?)&lt;!more&gt;"));
         jotterArticleRes.setPublishDate(TimeUtils.dateToYMD(article.getArticle_date()));
@@ -105,22 +99,6 @@ public class JotterArticleRes implements Serializable,Comparable<JotterArticleRe
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getContentHtml() {
-        return contentHtml;
-    }
-
-    public void setContentHtml(String contentHtml) {
-        this.contentHtml = contentHtml;
-    }
-
-    public String getContentMd() {
-        return contentMd;
-    }
-
-    public void setContentMd(String contentMd) {
-        this.contentMd = contentMd;
     }
 
     public String getIntroduction() {

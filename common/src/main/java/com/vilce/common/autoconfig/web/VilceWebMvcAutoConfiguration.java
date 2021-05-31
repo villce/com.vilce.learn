@@ -46,8 +46,8 @@ public class VilceWebMvcAutoConfiguration implements WebMvcConfigurer, CommandLi
         this.webProperties = webProperties;
     }
 
-    @Value("${covers.url}")
-    private String coversUrl;
+//    @Value("${covers.url}")
+    private String coversUrl="/Users/vilce/Pictures/secret/compress/";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

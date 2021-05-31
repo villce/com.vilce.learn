@@ -99,7 +99,7 @@ const getServer = function (server) {
     } else if (location.href.indexOf('180.163.42.164') > -1) {
         return server.production
     } else if (location.href.indexOf('localhost') > -1) {
-        return server.dev
+        return server.local
     }
 }
 const vilceServiceApi = generateService(vilceServerConfig);

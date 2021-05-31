@@ -2,6 +2,7 @@ package com.vilce.springboot_vue.module.article.service;
 
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleDetails;
 import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticlePage;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
@@ -40,7 +41,7 @@ public interface JotterArticleService {
      * @param id
      * @return
      */
-    JotterArticleRes findArticleById(int id);
+    ArticleDetails findArticleById(int id);
 
     /**
      * 根据id删除文章

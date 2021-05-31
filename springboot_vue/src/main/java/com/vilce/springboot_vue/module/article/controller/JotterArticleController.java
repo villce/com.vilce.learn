@@ -3,6 +3,7 @@ package com.vilce.springboot_vue.module.article.controller;
 import com.vilce.common.autoconfig.redis.annotation.RedisFilter;
 import com.vilce.common.model.po.BaseResponse;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleDetails;
 import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticlePage;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
@@ -45,7 +46,7 @@ public class JotterArticleController {
 
     @GetMapping("getOneArticle/{id}")
     @ApiOperation(value = "根据id获取文章")
-    public JotterArticleRes getOneArticle(@PathVariable int id) {
+    public ArticleDetails getOneArticle(@PathVariable int id) {
         return jotterArticleService.findArticleById(id);
     }
 

@@ -7,6 +7,7 @@ import com.vilce.common.model.po.BaseResponse;
 import com.vilce.common.utils.JSONUtils;
 import com.vilce.springboot_vue.module.article.mapper.JotterArticleMapper;
 import com.vilce.springboot_vue.module.article.model.po.JotterArticle;
+import com.vilce.springboot_vue.module.article.model.vo.ArticleDetails;
 import com.vilce.springboot_vue.module.article.model.vo.ArticleStatistic;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticlePage;
 import com.vilce.springboot_vue.module.article.model.vo.JotterArticleRes;
@@ -63,10 +64,10 @@ public class JotterArticleServiceImpl implements JotterArticleService {
      * @return
      */
     @Override
-    public JotterArticleRes findArticleById(int id) {
+    public ArticleDetails findArticleById(int id) {
         JotterArticle article = jotterArticleMapper.findArticleById(id);
         article.setArticle_label(jotterArticleMapper.findArticleLabel(id));
-        JotterArticleRes articleRes = JotterArticleRes.create(article);
+        ArticleDetails articleRes = ArticleDetails.convert(article);
         return articleRes;
     }
 
@@ -157,7 +158,9 @@ public class JotterArticleServiceImpl implements JotterArticleService {
         } else {
             List<Integer> articleIdList = jotterArticleMapper.getArticleIdByLabel(label);
             for (Integer articleId : articleIdList) {
-                articleResList.add(findArticleById(articleId));
+                JotterArticle article = jotterArticleMapper.findArticleById(articleId);
+                article.setArticle_label(jotterArticleMapper.findArticleLabel(articleId));
+                articleResList.add(JotterArticleRes.create(article));
             }
             Collections.sort(articleResList);
             redisTemplate.opsForValue().set(ARTICLE, JSONUtils.toJSONString(articleResList), 300, TimeUnit.SECONDS);

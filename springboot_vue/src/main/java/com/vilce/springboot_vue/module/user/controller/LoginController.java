@@ -9,16 +9,11 @@ import com.vilce.springboot_vue.module.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.HtmlUtils;
-
-import java.security.Principal;
-import java.util.Objects;
 
 /**
  * @Description: 登录相关API
@@ -51,10 +46,8 @@ public class LoginController {
             } else {
                 return user;
             }
-        } catch (IncorrectCredentialsException e) {
-            throw new BasicException(ResultStatus.ERROR.getStatus(), "密码错误");
-        } catch (UnknownAccountException e) {
-            throw new BasicException(ResultStatus.ERROR.getStatus(), "账户不存在");
+        } catch (AuthenticationException e) {
+            throw new BasicException(ResultStatus.ERROR.getStatus(), "密码错误或账户不存在");
         }
     }
 

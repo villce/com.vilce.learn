@@ -1,6 +1,5 @@
 package com.vilce.test;
 
-import com.vilce.common.utils.HiddenUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * @Version: 1.0
  */
 @SpringBootApplication
-@EnableAsync
+//@EnableAsync
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class);

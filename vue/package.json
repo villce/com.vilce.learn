@@ -31,7 +31,7 @@
     "vue-count-to": "^1.0.13",
     "vue-router": "3.0.6",
     "vuex": "3.1.0",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.4",

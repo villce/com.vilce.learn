@@ -127,6 +127,14 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.example</groupId>
+                <artifactId>mock-test-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <testPackageName>com.vilce.springboot_vue.module.article.service.impl</testPackageName>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

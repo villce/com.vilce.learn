@@ -27,3 +27,6 @@
   
 - `gateway`：`gateway`网关项目
   - `port`：`8009`
+  
+- `erupt`：`erupt`项目
+  - `port`: 8010

@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: @project.name@
+  cloud:
+    consul:
+      config:
+        enabled: true
+        prefixes:
+          - @project.name@/@project.version@
+        defaultContext: 'config'
+        watch:
+          enabled: false
+          delay: 1000
+        format: yaml
+        data-key: data
+        profile-separator: '/'
+        acl-token: ${JAVA_CONSULACLTOKEN}
+      discovery:
+        # 表示注册服务时使用IP而不是hostname，默认：false
+        prefer-ip-address: true
+        # 访问服务时要使用的IP地址（还必须设置要使用的prefer-ip-address为true）--使用docker时设置
+        ip-address: ${JAVA_LOCALIP}
+        # 实例ID(唯一标识)，默认是：${spring.application.name}:comma,separated,profiles:${server.port}
+        instance-id: ${spring.application.name}:${random.value}
+        # 注册服务的端口（默认为监听端口）--使用docker时设置
+        port: ${JAVA_APPLICATIONPORT}
+        acl-token: ${JAVA_CONSULACLTOKEN}
+        management-suffix: monitor
+      host: ${JAVA_LOCALIP}
+      port: 8500
+  emis:
+    token:
+      system-number: @project.name@
